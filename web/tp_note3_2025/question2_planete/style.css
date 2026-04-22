@@ -1,0 +1,39 @@
+body {
+    background-image: url(https://mzarrouk.net/initiation-web/EvalMaterial/const.gif);
+    background-size: cover;
+    margin: 0;
+    padding: 0;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.conteneur {
+    position: relative;
+    width: 80%;
+    height: auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;    
+}
+
+.planets {
+    position: absolute;
+    width: 200px;
+}
+
+.planet1 {
+    left: -150px;
+    width: 120px;
+}
+
+.planet2 {
+    left: 0px;
+    width: 160px;
+}
+
+.planet3 {
+    left: 150px;
+    width: 200px;
+}

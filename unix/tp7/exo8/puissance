@@ -1,0 +1,17 @@
+#!/bin/sh
+set -x
+
+case $# in
+0 | 1)
+	printf '%s\n' "Fuck You"
+	;;
+2)
+	n=$1
+	k=$2
+	res=$1
+	while [ "$k" -gt 1 ]; do
+		res=$(($res * $n))
+		k=$(($k - 1))
+	done
+	printf '%d^%d=%d\n' "$1" "$2" "$res"
+esac

@@ -1,0 +1,16 @@
+"Hello world!";;
+print_string "Hello world!";;
+print_endline "Hello world!";;
+12+3;;
+let pi = 3.14 in pi+3;;
+if(22 = 3) then "coucou" else 23;;
+(if true then 12 else 23)+1;;
+(let x = 3) + 5;;
+12 > 24;;
+false && 3;;
+true || 2 = 3;;
+string_of_int true;;
+"coucou"^"salut";;
+let x = "coucou" in x^"salut";;
+(let x = "coucou " in x)^"salut";;
+let i = 22 in "coucou "^i;;

@@ -1,0 +1,5 @@
+(** Exercice 3 **)
+type op = Plus | Mult | Minus | Div;;
+type eArith =
+  | Num of int
+  | Eop of op * eArith * eArith;;

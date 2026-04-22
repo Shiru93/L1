@@ -1,0 +1,34 @@
+#!/bin/sh
+if [ $# -gt 3 ] || [ $# -lt 1 ]; then
+    printf '%s\n' "Usage: figr [REP] [EXTENSION] CHAINE" "Afficher toutes les lignes contenant CHAINE, pour chaque fichier dont l'extension est EXTENSION dans l'arborescence issue de REP." "Si REP est omis, la recherche a lieu depuis le répertoire courant." "Si EXTENSION est omise, la recherche est faites dans tous les fichiers normaux." "Avec deux arguments, le premier argument est considéré comme une EXTENSION"
+
+    exit 1
+fi
+
+if [ $# -eq 3 ]; then
+    if ! [ -d $1 ]; then
+        dossier="."
+        ext="$1"
+        chaine="$2"
+    fi
+    
+    dossier="$1"
+    ext="$2"
+    chaine="$3"
+
+elif [ $# -eq 2 ]; then
+    if ! [ -d $1 ]; then
+        dossier="."
+        ext="$1"
+        chaine="$2"
+    else 
+        dossier="$1"
+        chaine="$2"
+    fi
+fi
+
+if [ -z "$ext" ]; then
+    find $dossier -type f -exec grep $chaine {} \; | wc -l
+else
+    find $dossier -type f -name "$ext" -exec grep $chaine {} \; | wc -l
+fi

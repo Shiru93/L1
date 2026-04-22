@@ -1,0 +1,17 @@
+(** Exercice 4 **)
+let rec decoupe n l =
+  match (n, l) with
+  | (0, _) -> ([], l)
+  | (_, []) -> ([], [])
+  | (n, t::q) ->
+     let (preums, deuz) = decoupe (n-1) q in (t::preums, deuz);;
+
+let rec interclasser l1 l2 =
+  match (l1, l2) with
+  | ([], l) | (l, []) -> l
+  | (t1::q1, t2::q2) ->
+     if t1 <= t2 then
+       t1 :: interclasser q1 l2
+     else
+       t2 :: interclasser l1 q2;;
+

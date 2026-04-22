@@ -1,0 +1,7 @@
+(** Question 1 **)
+let rec factorielle n =
+  match n with
+  | 1 -> 1
+  | n -> n * factorielle (n-1);;
+
+factorielle 5;;

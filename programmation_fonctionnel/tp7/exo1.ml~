@@ -1,0 +1,7 @@
+(** Exercice 1 **)
+
+type 'a aBin =
+  | Etree
+  | Noeud of 'a * 'a aBin * 'a aBin;;
+
+let arbre1 = Noeud('B', Etree, Noeud('L', Etree, Noeud('A', Noeud('B', Etree, Etree), Etree)));;

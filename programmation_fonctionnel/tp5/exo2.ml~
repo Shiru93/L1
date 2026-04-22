@@ -1,0 +1,34 @@
+(** Exercice 2 **)
+let rec append l1 l2 =
+  match l1 with
+  | [] -> l2
+  | t::q -> t :: append q l2;;
+
+let liste1 = [1; 5; 8; 3; 4];;
+let liste2 = [5; 6; 8; 9; 1; 2; 4];;
+
+append liste1 liste2;;
+
+let rec nbOccurrences e l =
+  match l with
+  | [] -> 0
+  | t::q -> (if t = e then 1 else 0) + nbOccurrences e q;;
+
+nbOccurrences 4 (append liste1 liste2);;
+
+let rec enleveTout e l =
+  match l with
+  | [] -> []
+  | t::q when t = e -> enleveTout e q
+  | t::q -> t :: enleveTout e q;;
+
+enleveTout 4 (append liste1 liste2);;
+
+let rec enleveTout e l =
+  match l with
+  | [] -> []
+  | t::q -> 
+      if t = e then 
+        enleveTout e q
+      else 
+        t :: enleveTout e q

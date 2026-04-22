@@ -1,0 +1,7 @@
+type exprBool =
+  | Vrai
+  | Faux
+  | Non of exprBool
+  | Et of exprBool * exprBool
+  | Ou of exprBool * exprBool
+  | Impl of exprBool * exprBool;;

@@ -1,0 +1,5 @@
+type 'a stack =
+  | EStack
+  | Push of 'a * 'a stack;;
+
+(** Question 1 **)

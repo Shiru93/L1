@@ -1,0 +1,48 @@
+(** Question 1 *)
+let doubler n = n*2;;
+let n = 12;;
+doubler n;
+
+(** Question 2*)
+let repeter s = s ^ " " ^ s;;
+let s = "coucou";;
+repeter s;;
+
+(** Question 3 *)
+let estMajeur age =
+  if age >= 18 then true else false;;
+estMajeur 5;;
+estMajeur 19;;
+estMajeur 18;;
+
+(** Question 4 *)
+let majeurOuMineur age =
+  if age >= 18 then "majeur" else "mineur";;
+majeurOuMineur 7;;
+majeurOuMineur 18;;
+majeurOuMineur 26;;
+
+(** Question 5 *)
+let sommeEgalPi x y = x +. y = 3.14;;
+sommeEgalPi 0.14 3.;;
+sommeEgalPi 256. 54.58;;
+sommeEgalPi 1.7 1.7;;
+sommeEgalPi 1.07 1.07;;
+sommeEgalPi 1.07 2.07;;
+1.07 +. 2.07;;
+
+(** Question 6 *)
+let concatNB s n = s^(string_of_int n);;
+concatNB "coucou" 12;;
+
+(** Question 7 *)
+let estAnniv jour mois = (jour = 14) && (mois = "juillet");;
+estAnniv 17 "janvier";;
+estAnniv 14 "juillet";;
+
+(** Question 8 *)
+let estBissextile a = ((a mod 4) = 0 || (a mod 100 = 0) || ((a mod 400) = 0);;
+estBissextile 2000;;
+estBissextile 2400;;
+estBissextile 1900;;
+estBissextile 1800;;

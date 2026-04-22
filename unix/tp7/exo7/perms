@@ -1,0 +1,31 @@
+#!/bin/sh
+
+
+if [ "$#" -eq 0 ]; then
+	set -- *
+fi
+
+for arg; do
+	if ! [ -e "$arg" ]; then
+		printf '!!!! %s\n' "$arg"
+		continue
+	elif [ -d "$arg" ]; then
+		printf 'd'
+	fi
+	if [ -r "$arg" ]; then
+		printf 'r'
+	else
+		printf '-'
+	fi
+	if [ -w "$arg" ]; then
+		printf 'w'
+	else
+		printf '-'
+	fi
+	if [ -x "$arg" ]; then
+		printf 'x'
+	else
+		printf '-'
+	fi
+	printf ' %s\n' "$arg"
+done

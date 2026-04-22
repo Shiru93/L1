@@ -1,0 +1,8 @@
+#!/bin/sh
+i=0
+while IFS= read -r var; do
+	i=$((i + 1))
+	if [ ${#var} -gt 80 ]; then
+		printf '%6d %s\n' "$i" "$var"
+	fi
+done

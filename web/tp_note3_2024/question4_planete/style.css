@@ -1,0 +1,32 @@
+body {
+    background-image: url(https://mzarrouk.net/initiation-web/EvalMaterial/const.gif);
+    background-size: cover;
+    margin: 0;
+    padding: 0;
+}
+
+.planets {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.planets img {
+    width: 150px;
+    height: 150px;
+    margin: 20px;
+    animation-name: spin;
+    animation-duration: 5s;
+    animation-timing-function: linear;
+    animation-iteration-count: infinite;
+}
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}

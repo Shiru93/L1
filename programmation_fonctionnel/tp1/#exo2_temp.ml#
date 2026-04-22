@@ -1,0 +1,10 @@
+(** Question 1 *)
+let doubler n = n*2;;
+doubler 12;;
+
+(** Question 2*)
+let repeter x = x^" "^x;;
+repeter "coucou";;
+
+(** Question 3 *)
+

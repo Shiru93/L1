@@ -1,0 +1,88 @@
+/* Changer la couleur de l'arrière plan */
+body {
+    background-color: #e6f1ed;
+    font-family: serif; /* Applique une police serif par défaut */
+    margin: 0; /* Supprime les marges extérieures */
+    padding: 0; /* Supprime les marges intérieures */
+}
+
+/* Changer la couleur de l'en-tête et du pied de la page */
+header, footer p {
+    color: #e6f1ed;
+    background-color: #55351b;
+    padding: 10px; /* Marges intérieures : 10px sur tous les côtés */
+    margin: 10px 0; /* Marges extérieures : 10px en haut et en bas, 0 à gauche et à droite */
+    text-align: center; /* Centrer le texte */
+}
+
+/* Changer la couleur des textes globales */
+p, li {
+    color: #55351b;
+}
+
+/* Changer la couleur et ajouter de l'ombre au texte de classe rose */
+.rose {
+    color:  #c12179;
+    text-shadow: 5px 5px 7px #b2879e;
+}
+
+/* Changer la couleur et ajouter de l'ombre au texte de classe bleu */
+.bleu {
+    color: #2191c1;
+    text-shadow: 5px 5px 7px #82a1ae;
+}
+
+/* Changer la couleur et ajouter de l'ombre au texte de classe orange */
+.orange {
+    color: #c15c21;
+    text-shadow: 5px 5px 7px #cea187;
+}
+
+/* Changer la couleur et ajouter de l'ombre au texte de classe vert */
+.vert {
+    color: #21c146;
+    text-shadow: 5px 5px 7px #8ad99d;
+}
+
+/* Le menu de navigation s’affiche au milieu */
+nav {
+    text-align: center; 
+}
+
+/* Changer la couleur des textes de navigation */
+nav a {
+    color: #55351b;
+    text-decoration: underline; /* Souligne le texte */
+    text-decoration-color: #55351b; /* Couleur du soulignage */
+    text-decoration: none; /* Supprime le soulignement */
+    font-weight: bold; /* Texte en gras */
+    border-bottom: 2px solid #55351b; /* Bordure inférieure de 2px */
+    margin: 5px; /* Marge extérieure de 5px */
+    padding: 5px; /* Marge intérieure de 5px */
+}
+
+
+/* Style au survol des liens de navigation */
+nav a:hover {
+    color: #e6f1ed;
+    background-color: #55351b;
+    box-shadow: 5px 5px 3px grey;
+    text-shadow: 5px 5px 3px rgba(0, 0, 0, 0.3); /* Ombre de texte au survol */
+}
+
+/* Le texte entouré de la balise strong ne s’affiche pas en gras mais en souligné pointillé bleu */
+strong {
+    font-weight: normal; /* Désactive le gras */
+    text-decoration: underline dotted blue; /* Souligné en pointillé bleu */
+}
+
+/* Les éléments de classes rose, bleu, orange et vert aient 10px de marges intérieures */
+.rose, .bleu, .orange, .vert {
+    padding: 10px;
+}
+
+.img {
+    width: 30px; /* Largeur de l'image */
+    float: left; /* Fait flotter l'image à gauche */
+    margin-right: 10px; /* Espace entre l'image et le texte */
+}

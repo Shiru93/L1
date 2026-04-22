@@ -1,0 +1,9 @@
+Bonjours, je suis Ziya EMRE (numéro étudiant 12212738, GR3).
+Ce Tp noté je l'ai fais seul.
+
+EXERCICE 1 :
+On constate que la fonction avec les 4 boucles met énormément de temps (en minutes) pour des valeurs élevés tandis que la fonction rapide est nettement efficace (en secondes)
+
+Par exemple, pour une matrice carrée de 500 * 500
+La méthode lente (c'est-à-dire la fonction detecter_element_frequent(int M[MaxL][MaxC], int n)) met 79.591464 en temps CPU à parcourir toute la matrice tandis que la méthode rapide (fonction detecter_element_frequent_rapide(int M[MaxL][MaxC], int n, int V)) met 0.000671 secondes en temps CPU à parcourir tout le tableau.
+Ceux qui prouve une meilleure optimisation via la 2e méthode.

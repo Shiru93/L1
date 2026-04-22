@@ -1,0 +1,16 @@
+15 15
+MMMMMMMMMMMMMMM
+MP      B     M
+M         B   M
+M             M
+M             M
+M             M
+M             M
+M             M
+M         B   M
+M             M
+M     B       M
+M             M
+M             M
+M             M
+MMMMMMMMMMMMMMM

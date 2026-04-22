@@ -1,0 +1,62 @@
+(** Exercice 1 **)
+
+open List;;
+
+type livre =
+  {
+    titre : string;
+    auteur : string;
+    nbEmprunts : int;
+  };;
+
+let livresAuteur a l =
+  List.filter (fun livre -> livre.auteur = a) l;;
+
+let auMoinsDix l =
+  List.filter (fun livre -> livre.nbEmprunts >= 10) l;;
+
+let ajouterEmprunt liv l =
+  List.map (fun livre ->
+      if livre.titre = liv.titre && livre.auteur = liv.auteur then
+        { livre with nbEmprunts = livre.nbEmprunts + 1 }
+      else livre
+    ) l;;
+
+let ajouterEmprunt liv l =
+  List.map (fun livre -> 
+    if livre.titre = liv.titre && livre.auteur = liv.auteur then
+      { 
+        titre = livre.titre; 
+        auteur = livre.auteur; 
+        nbEmprunts = livre.nbEmprunts + 1 
+      }
+    else 
+      livre
+    ) l;;
+
+let ajouterEmprunt2 liv l =
+  map (fun x -> x.nbEmprunts + 1) (filter (fun u -> (u.auteur = liv.auteur) && (u.titre = liv.titre)) l);;
+
+let auteursIgnorees l =
+  map (fun x -> x.auteur) (filter (fun u -> u.nbEmprunts = 0) l);;
+
+let l1 = [{titre = "livre1" ; auteur = "auteur1" ; nbEmprunts = 3};{titre = "livre2" ; auteur = "auteur2" ; nbEmprunts = 0};{titre = "livre3" ; auteur = "auteur3" ; nbEmprunts = 5}];;
+let livre1 = {titre = "livre1" ; auteur = "auteur1" ; nbEmprunts = 3};;
+auteursIgnorees l1;;
+
+ajouterEmprunt2 livre1 l1;;
+
+let rec somme = function
+  | [] -> 0
+  | hd :: tl -> hd + somme tl;;
+
+let totalEmprunts l =
+  somme (map (fun x -> x.nbEmprunts) 
+        (filter (fun u -> u.nbEmprunts > 0) l));;
+
+totalEmprunts l1;;
+
+let supprimeIgnores l =
+  filter ( fun x -> x.nbEmprunts > 0) l;;
+
+supprimeIgnores l1;;
