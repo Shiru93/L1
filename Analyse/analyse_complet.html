@@ -1,0 +1,2463 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Analyse 1 & 2 — Institut Galilée</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=DM+Serif+Display&family=IBM+Plex+Mono:wght@400;500&family=Source+Serif+4:ital,wght@0,300;0,400;0,600;1,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"
+    onload="renderMathInElement(document.body, {
+        delimiters: [
+            {left: '$$', right: '$$', display: true},
+            {left: '$', right: '$', display: false},
+            {left: '\\\\(', right: '\\\\)', display: false},
+            {left: '\\\\[', right: '\\\\]', display: true}
+        ],
+        throwOnError: false
+    });"></script>
+<style>
+:root {
+  --ink: #1a1410;
+  --paper: #f7f3ed;
+  --cream: #ede8df;
+  --rust: #c0392b;
+  --gold: #b8860b;
+  --slate: #2c3e50;
+  --muted: #7a6f63;
+  --border: #d4ccc0;
+  --code-bg: #f0ece4;
+  --shadow: rgba(26,20,16,0.12);
+  --tab-active: #1a1410;
+  --tab-inactive: #7a6f63;
+  --highlight: #fff9e6;
+  --sidebar-w: 260px;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--paper);
+  color: var(--ink);
+  font-family: 'Source Serif 4', Georgia, serif;
+  font-size: 17px;
+  line-height: 1.75;
+  min-height: 100vh;
+}
+
+/* ── Header ── */
+header {
+  background: var(--ink);
+  color: var(--paper);
+  padding: 0;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  box-shadow: 0 2px 12px var(--shadow);
+}
+
+.header-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 32px;
+  height: 64px;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.header-brand {
+  font-family: 'Playfair Display', serif;
+  font-weight: 900;
+  font-size: 1.15rem;
+  letter-spacing: 0.02em;
+  color: var(--paper);
+  text-decoration: none;
+}
+
+.header-brand span {
+  color: #e8c96a;
+}
+
+.header-meta {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.7rem;
+  color: rgba(247,243,237,0.5);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+/* ── Tab Navigation ── */
+.tab-nav {
+  background: var(--cream);
+  border-bottom: 2px solid var(--border);
+  position: sticky;
+  top: 64px;
+  z-index: 90;
+}
+
+.tab-nav-inner {
+  display: flex;
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 32px;
+}
+
+.tab-btn {
+  font-family: 'Playfair Display', serif;
+  font-size: 0.9rem;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  padding: 16px 28px;
+  border: none;
+  background: none;
+  cursor: pointer;
+  color: var(--tab-inactive);
+  border-bottom: 3px solid transparent;
+  margin-bottom: -2px;
+  transition: color 0.2s, border-color 0.2s;
+  white-space: nowrap;
+}
+
+.tab-btn:hover { color: var(--ink); }
+
+.tab-btn.active {
+  color: var(--ink);
+  border-bottom-color: var(--rust);
+}
+
+.tab-btn .tab-icon { margin-right: 8px; font-size: 1rem; }
+
+/* ── Layout ── */
+.app-body {
+  display: flex;
+  max-width: 1400px;
+  margin: 0 auto;
+  min-height: calc(100vh - 126px);
+}
+
+/* ── Sidebar TOC ── */
+.sidebar {
+  width: var(--sidebar-w);
+  flex-shrink: 0;
+  position: sticky;
+  top: 126px;
+  height: calc(100vh - 126px);
+  overflow-y: auto;
+  padding: 28px 20px;
+  border-right: 1px solid var(--border);
+  background: var(--cream);
+  display: none;
+}
+
+.sidebar.active { display: block; }
+
+.sidebar-title {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.65rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 16px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--border);
+}
+
+.toc-list { list-style: none; }
+.toc-list li { margin-bottom: 2px; }
+
+.toc-link {
+  display: block;
+  font-family: 'Source Serif 4', serif;
+  font-size: 0.82rem;
+  color: var(--muted);
+  text-decoration: none;
+  padding: 5px 10px;
+  border-radius: 4px;
+  border-left: 2px solid transparent;
+  transition: all 0.15s;
+  line-height: 1.3;
+}
+
+.toc-link:hover {
+  color: var(--ink);
+  background: rgba(26,20,16,0.06);
+  border-left-color: var(--gold);
+}
+
+.toc-link.active {
+  color: var(--ink);
+  background: rgba(192,57,43,0.08);
+  border-left-color: var(--rust);
+  font-weight: 600;
+}
+
+.toc-link.h3 { padding-left: 22px; font-size: 0.77rem; }
+.toc-link.h4 { padding-left: 34px; font-size: 0.73rem; }
+
+/* ── Main Content ── */
+.main-content {
+  flex: 1;
+  min-width: 0;
+  padding: 48px 56px 80px;
+}
+
+.tab-panel { display: none; animation: fadeIn 0.3s ease; }
+.tab-panel.active { display: block; }
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ── Hero inside panel ── */
+.panel-hero {
+  margin-bottom: 48px;
+  padding-bottom: 32px;
+  border-bottom: 2px solid var(--border);
+}
+
+.panel-hero h1 {
+  font-family: 'Playfair Display', serif;
+  font-size: 2.6rem;
+  font-weight: 900;
+  color: var(--ink);
+  line-height: 1.15;
+  margin-bottom: 10px;
+}
+
+.panel-hero p {
+  font-size: 1rem;
+  color: var(--muted);
+  font-style: italic;
+}
+
+/* ── Typography ── */
+.main-content h1 {
+  font-family: 'Playfair Display', serif;
+  font-size: 2rem;
+  font-weight: 900;
+  color: var(--ink);
+  margin: 56px 0 20px;
+  padding-bottom: 10px;
+  border-bottom: 2px solid var(--border);
+  line-height: 1.2;
+}
+
+.main-content h2 {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.45rem;
+  font-weight: 700;
+  color: var(--ink);
+  margin: 44px 0 14px;
+  padding-left: 14px;
+  border-left: 4px solid var(--rust);
+  line-height: 1.3;
+}
+
+.main-content h3 {
+  font-family: 'DM Serif Display', serif;
+  font-size: 1.15rem;
+  font-weight: 400;
+  color: var(--slate);
+  margin: 32px 0 10px;
+  letter-spacing: 0.01em;
+}
+
+.main-content h4 {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.82rem;
+  font-weight: 500;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin: 24px 0 8px;
+}
+
+.main-content p {
+  margin-bottom: 14px;
+  max-width: 78ch;
+}
+
+.main-content ul, .main-content ol {
+  margin: 10px 0 16px 24px;
+  max-width: 78ch;
+}
+
+.main-content li { margin-bottom: 5px; }
+
+.main-content strong {
+  font-weight: 700;
+  color: var(--ink);
+}
+
+.main-content em { font-style: italic; color: var(--slate); }
+
+/* ── Blockquotes (callouts) ── */
+.main-content blockquote {
+  background: var(--highlight);
+  border-left: 4px solid var(--gold);
+  padding: 14px 20px;
+  margin: 20px 0;
+  border-radius: 0 6px 6px 0;
+  max-width: 80ch;
+}
+
+.main-content blockquote p {
+  margin: 0;
+  font-size: 0.95rem;
+  color: var(--slate);
+}
+
+/* ── Tables ── */
+.main-content table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 20px 0;
+  font-size: 0.9rem;
+  max-width: 80ch;
+}
+
+.main-content thead {
+  background: var(--ink);
+  color: var(--paper);
+}
+
+.main-content th {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.78rem;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  padding: 10px 14px;
+  text-align: left;
+}
+
+.main-content td {
+  padding: 9px 14px;
+  border-bottom: 1px solid var(--border);
+  vertical-align: top;
+}
+
+.main-content tbody tr:hover { background: rgba(26,20,16,0.03); }
+.main-content tbody tr:nth-child(even) { background: rgba(26,20,16,0.025); }
+
+/* ── Code ── */
+.main-content code {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.85em;
+  background: var(--code-bg);
+  border: 1px solid var(--border);
+  border-radius: 3px;
+  padding: 1px 5px;
+  color: var(--rust);
+}
+
+.main-content pre {
+  background: var(--ink);
+  color: #e8e0d5;
+  border-radius: 8px;
+  padding: 20px 24px;
+  overflow-x: auto;
+  margin: 16px 0;
+  font-size: 0.85rem;
+  line-height: 1.6;
+}
+
+.main-content pre code {
+  background: none;
+  border: none;
+  color: #e8e0d5;
+  padding: 0;
+}
+
+/* ── KaTeX math ── */
+.katex-display {
+  overflow-x: auto;
+  overflow-y: hidden;
+  padding: 8px 0;
+  margin: 16px 0 !important;
+}
+
+.katex { font-size: 1.05em; }
+
+/* ── Details/Summary (corrections) ── */
+.main-content details {
+  background: rgba(26,20,16,0.03);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  margin: 16px 0;
+  overflow: hidden;
+  max-width: 82ch;
+  transition: box-shadow 0.2s;
+}
+
+.main-content details:hover { box-shadow: 0 2px 12px var(--shadow); }
+
+.main-content details[open] {
+  background: white;
+  border-color: var(--rust);
+  box-shadow: 0 3px 16px var(--shadow);
+}
+
+.main-content summary {
+  cursor: pointer;
+  padding: 14px 20px;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.82rem;
+  font-weight: 500;
+  color: var(--rust);
+  letter-spacing: 0.04em;
+  list-style: none;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  user-select: none;
+}
+
+.main-content summary::before {
+  content: '▶';
+  font-size: 0.65rem;
+  transition: transform 0.2s;
+}
+
+.main-content details[open] summary::before { transform: rotate(90deg); }
+
+.main-content details[open] summary {
+  background: rgba(192,57,43,0.06);
+  border-bottom: 1px solid var(--border);
+}
+
+.main-content details > *:not(summary) {
+  padding: 0 20px;
+}
+
+.main-content details > p,
+.main-content details > ul,
+.main-content details > ol,
+.main-content details > h4,
+.main-content details > pre {
+  margin-top: 12px;
+}
+
+.main-content details > *:last-child { padding-bottom: 18px; }
+
+/* ── HR ── */
+.main-content hr {
+  border: none;
+  border-top: 1px solid var(--border);
+  margin: 40px 0;
+}
+
+/* ── Progress bar ── */
+#progress-bar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--rust), var(--gold));
+  width: 0%;
+  z-index: 999;
+  transition: width 0.1s;
+}
+
+/* ── Back to top ── */
+#back-top {
+  position: fixed;
+  bottom: 32px;
+  right: 32px;
+  width: 44px;
+  height: 44px;
+  background: var(--ink);
+  color: var(--paper);
+  border: none;
+  border-radius: 50%;
+  font-size: 1.1rem;
+  cursor: pointer;
+  opacity: 0;
+  transform: translateY(10px);
+  transition: opacity 0.3s, transform 0.3s;
+  z-index: 200;
+  box-shadow: 0 4px 14px var(--shadow);
+}
+
+#back-top.visible { opacity: 1; transform: translateY(0); }
+#back-top:hover { background: var(--rust); }
+
+/* ── Search bar ── */
+.search-wrap {
+  padding: 8px 32px;
+  background: var(--cream);
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+#search-input {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.82rem;
+  padding: 7px 14px;
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  background: var(--paper);
+  width: 280px;
+  color: var(--ink);
+  outline: none;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+#search-input:focus {
+  border-color: var(--rust);
+  box-shadow: 0 0 0 3px rgba(192,57,43,0.1);
+}
+
+#search-count {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.72rem;
+  color: var(--muted);
+}
+
+mark {
+  background: #ffe066;
+  color: var(--ink);
+  border-radius: 2px;
+  padding: 0 2px;
+}
+
+/* ── Responsive ── */
+@media (max-width: 900px) {
+  .sidebar { display: none !important; }
+  .main-content { padding: 28px 24px 60px; }
+  .tab-nav-inner { padding: 0 16px; overflow-x: auto; }
+  .tab-btn { padding: 14px 16px; font-size: 0.82rem; }
+  .main-content h1 { font-size: 1.6rem; }
+  .main-content h2 { font-size: 1.2rem; }
+  .panel-hero h1 { font-size: 1.8rem; }
+}
+
+/* ── Print ── */
+@media print {
+  header, .tab-nav, .sidebar, .search-wrap, #back-top, #progress-bar { display: none !important; }
+  .tab-panel { display: block !important; page-break-before: always; }
+  .main-content { padding: 0; }
+}
+
+/* Scrollbar */
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: var(--cream); }
+::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: var(--muted); }
+</style>
+</head>
+<body>
+
+<div id="progress-bar"></div>
+
+<header>
+  <div class="header-inner">
+    <a class="header-brand" href="#">Analyse <span>1 & 2</span></a>
+    <span class="header-meta">L1 Informatique · Institut Galilée · Paris 13</span>
+  </div>
+</header>
+
+<div class="search-wrap">
+  <input id="search-input" type="text" placeholder="🔍  Rechercher dans le document…" autocomplete="off">
+  <span id="search-count"></span>
+</div>
+
+<nav class="tab-nav" role="tablist">
+  <div class="tab-nav-inner">
+    <button class="tab-btn active" data-tab="cours" role="tab" aria-selected="true">
+      <span class="tab-icon">📚</span>Cours Complet
+    </button>
+    <button class="tab-btn" data-tab="exercices" role="tab">
+      <span class="tab-icon">📝</span>Exercices Corrigés
+    </button>
+    <button class="tab-btn" data-tab="partiels" role="tab">
+      <span class="tab-icon">📋</span>Sujets de Partiels
+    </button>
+  </div>
+</nav>
+
+<div class="app-body">
+  <aside class="sidebar active" id="sidebar">
+    <div class="sidebar-title">Table des matières</div>
+    <ul class="toc-list" id="toc-list"></ul>
+  </aside>
+
+  <main class="main-content" id="main-content">
+
+    <section class="tab-panel active" id="panel-cours" role="tabpanel">
+<h1>📚 Cours Complet — Analyse 1 &amp; 2</h1>
+<h3>L1 Informatique — Institut Galilée, Université Paris 13</h3>
+<blockquote>
+<p>Rédigé pour réussir les partiels. Toutes les définitions, théorèmes et preuves essentielles sont ici.</p>
+</blockquote>
+<hr />
+<h1>PARTIE 1 — ANALYSE 1</h1>
+<hr />
+<h2>Chapitre 1 — Les Nombres Réels</h2>
+<h3>1.1 Majorants, minorants, borne supérieure, borne inférieure</h3>
+<p><strong>Définition.</strong> Soit $A \subset \mathbb{R}$, $A \neq \emptyset$.<br />
+- $M$ est un <strong>majorant</strong> de $A$ si $\forall x \in A,\ x \leq M$.<br />
+- $m$ est un <strong>minorant</strong> de $A$ si $\forall x \in A,\ x \geq m$.<br />
+- $A$ est <strong>majorée</strong> s'il existe un majorant. <strong>Minorée</strong> s'il existe un minorant. <strong>Bornée</strong> si les deux.</p>
+<p><strong>Définition (Borne supérieure).</strong> Le plus petit des majorants de $A$, noté $\sup A$, est la <strong>borne supérieure</strong> de $A$.</p>
+<blockquote>
+<p>⚠️ $\sup A$ n'appartient pas forcément à $A$ ! (ex : $\sup\, ]0,1[ = 1 \notin ]0,1[$)</p>
+</blockquote>
+<p><strong>Théorème (axiome de la borne supérieure).</strong> Toute partie non vide et majorée de $\mathbb{R}$ admet une borne supérieure.</p>
+<p><strong>Caractérisation fondamentale.</strong> $M = \sup A$ si et seulement si :<br />
+1. $M$ est un majorant de $A$<br />
+2. $\forall \varepsilon &gt; 0,\ \exists x \in A$ tel que $x &gt; M - \varepsilon$</p>
+<p><strong>Exemple.</strong> $A = \left{2 + \frac{(-1)^n}{n},\ n \in \mathbb{N}^*\right}$<br />
+- Les termes pairs sont $&gt; 2$, les impairs sont $&lt; 2$.<br />
+- $\sup A = 3$ (atteint pour $n=1$), $\inf A = 1$ (atteint pour $n=1$... non, analysons : pour $n=1$ on a $2 - 1 = 1$, pour $n=2$ on a $2 + 1/2 = 5/2$, ...). $\inf A = 1$.</p>
+<p><strong>Propriété importante.</strong> $\mathbb{Q}$ est <strong>dense</strong> dans $\mathbb{R}$ : tout intervalle $]x, y[$ (avec $x &lt; y$) contient un rationnel. De même $\mathbb{R} \setminus \mathbb{Q}$ est dense dans $\mathbb{R}$.</p>
+<hr />
+<h3>1.2 Partie entière</h3>
+<p><strong>Définition.</strong> Pour $x \in \mathbb{R}$, la <strong>partie entière</strong> $E(x) = \lfloor x \rfloor$ est l'unique entier vérifiant $E(x) \leq x &lt; E(x) + 1$.</p>
+<p><strong>Propriétés clés :</strong><br />
+- $E(x) \leq x &lt; E(x)+1$<br />
+- $nE(x) \leq E(nx) &lt; nE(x)+n$ pour $n \in \mathbb{N}^*$<br />
+- $E(E(x)/n) = E(x/n)$ (attention aux pièges)</p>
+<hr />
+<h2>Chapitre 2 — Les Suites Réelles</h2>
+<h3>2.1 Définitions fondamentales</h3>
+<p><strong>Définition (Limite).</strong> On dit que la suite $(u_n)$ <strong>converge vers $\ell \in \mathbb{R}$</strong> si :<br />
+$$\forall \varepsilon &gt; 0,\ \exists N \in \mathbb{N},\ \forall n \geq N,\ |u_n - \ell| &lt; \varepsilon$$</p>
+<p><strong>Définition (Suite bornée).</strong> $(u_n)$ est bornée si $\exists M &gt; 0,\ \forall n \in \mathbb{N},\ |u_n| \leq M$.</p>
+<p><strong>Définition (Divergence vers $+\infty$).</strong> $(u_n) \to +\infty$ si $\forall A &gt; 0,\ \exists N,\ \forall n \geq N,\ u_n &gt; A$.</p>
+<p><strong>Théorème fondamental.</strong> Toute suite <strong>monotone et bornée</strong> est convergente.</p>
+<p><strong>Théorème des gendarmes.</strong> Si $\forall n \geq N_0$, $a_n \leq u_n \leq b_n$ et $a_n \to \ell$, $b_n \to \ell$, alors $u_n \to \ell$.</p>
+<h3>2.2 Suites adjacentes</h3>
+<p><strong>Définition.</strong> Deux suites $(u_n)$ et $(v_n)$ sont <strong>adjacentes</strong> si :<br />
+- l'une est croissante, l'autre est décroissante<br />
+- $v_n - u_n \to 0$</p>
+<p>Alors elles convergent vers la même limite.</p>
+<h3>2.3 Suites récurrentes — méthode</h3>
+<p>Pour étudier $u_{n+1} = f(u_n)$ :<br />
+1. Trouver les points fixes de $f$ ($f(\ell) = \ell$)<br />
+2. Étudier la monotonie de $(u_n)$ en comparant $u_{n+1}$ et $u_n$<br />
+3. Montrer que la suite est bornée<br />
+4. Conclure par convergence monotone, puis identifier la limite en passant à la limite dans $u_{n+1} = f(u_n)$</p>
+<p><strong>Exemple type (partiel 2023-2024).</strong> $u_{n+1} = \frac{1}{2}u_n + 1$.<br />
+- Point fixe : $\ell = \frac{1}{2}\ell + 1 \Rightarrow \ell = 2$.<br />
+- Si $u_0 &gt; 2$ : montrons $u_n &gt; 2$ par récurrence, puis $u_{n+1} - u_n = \frac{1}{2}(u_n - 1) - u_n + 1 = -\frac{1}{2}(u_n - 2) &lt; 0$ donc décroissante, bornée par 2, converge vers 2.<br />
+- La suite $(v_n = u_n - 2)$ est géométrique de raison $\frac{1}{2}$.</p>
+<h3>2.4 Calcul de limites</h3>
+<p><strong>Opérations usuelles.</strong> Si $u_n \to \ell$ et $v_n \to m$ ($\ell, m \in \mathbb{R}$) :<br />
+- $u_n + v_n \to \ell + m$<br />
+- $u_n \cdot v_n \to \ell \cdot m$<br />
+- $u_n / v_n \to \ell/m$ si $m \neq 0$</p>
+<p><strong>Formes indéterminées.</strong> $\infty - \infty$, $0 \cdot \infty$, $\infty/\infty$, $0/0$ → factoriser, comparer les ordres.</p>
+<p><strong>Exemple.</strong> $\frac{n^2 + 4n + 2}{n^2 + n + 4} = \frac{1 + 4/n + 2/n^2}{1 + 1/n + 4/n^2} \to 1$.</p>
+<p><strong>Règle de D'Alembert pour les suites.</strong> Si $u_n &gt; 0$ et $\frac{u_{n+1}}{u_n} \to a$ :<br />
+- $a &lt; 1$ : $u_n \to 0$<br />
+- $a &gt; 1$ : $u_n \to +\infty$<br />
+- $a = 1$ : indéterminé</p>
+<hr />
+<h2>Chapitre 3 — Fonctions et Applications</h2>
+<h3>3.1 Notions fondamentales</h3>
+<p><strong>Injectivité, surjectivité, bijectivité.</strong><br />
+- $f: X \to Y$ est <strong>injective</strong> si $f(x) = f(x') \Rightarrow x = x'$<br />
+- <strong>surjective</strong> si $\forall y \in Y,\ \exists x \in X,\ f(x) = y$<br />
+- <strong>bijective</strong> si injective ET surjective</p>
+<p><strong>Image directe / image réciproque.</strong><br />
+- $f(A \cup B) = f(A) \cup f(B)$ ✓<br />
+- $f(A \cap B) \subseteq f(A) \cap f(B)$ (inclusion stricte possible si $f$ non injective)</p>
+<p><strong>Parité.</strong> $f$ paire si $f(-x) = f(x)$, impaire si $f(-x) = -f(x)$.</p>
+<hr />
+<h2>Chapitre 4 — Limites de Fonctions</h2>
+<p><strong>Définition.</strong> $\lim_{x \to a} f(x) = \ell$ si $\forall \varepsilon &gt; 0,\ \exists \eta &gt; 0,\ |x - a| &lt; \eta \Rightarrow |f(x) - \ell| &lt; \varepsilon$.</p>
+<p><strong>Caractérisation séquentielle.</strong> $\lim_{x \to a} f(x) = \ell$ si et seulement si pour toute suite $(x_n)$ vérifiant $x_n \to a$ (et $x_n \neq a$), on a $f(x_n) \to \ell$.</p>
+<p><strong>Utilité.</strong> Pour montrer qu'une limite <strong>n'existe pas</strong> : trouver deux suites $x_n \to a$ et $y_n \to a$ avec $f(x_n) \to \ell_1 \neq \ell_2 \leftarrow f(y_n)$.</p>
+<p><strong>Théorème des gendarmes pour les fonctions.</strong> Si $g(x) \leq f(x) \leq h(x)$ au voisinage de $a$ et $\lim_{x\to a} g(x) = \lim_{x \to a} h(x) = \ell$, alors $\lim_{x\to a} f(x) = \ell$.</p>
+<hr />
+<h2>Chapitre 5 — Continuité et Dérivabilité</h2>
+<h3>5.1 Continuité</h3>
+<p><strong>Définition.</strong> $f$ est continue en $a$ si $\lim_{x \to a} f(x) = f(a)$.</p>
+<p><strong>Théorème des valeurs intermédiaires (TVI).</strong> Si $f$ est continue sur $[a,b]$ et $f(a) \cdot f(b) &lt; 0$, alors $\exists c \in ]a,b[$ tel que $f(c) = 0$.</p>
+<p><strong>Version générale.</strong> Si $f$ est continue sur $[a,b]$ et $y$ est compris entre $f(a)$ et $f(b)$, alors $\exists c \in [a,b]$ tel que $f(c) = y$.</p>
+<blockquote>
+<p>💡 <strong>Application clé au partiel :</strong> Pour montrer l'existence d'une solution à $f(x) = k$, on pose $g(x) = f(x) - k$ et on applique le TVI en trouvant $a, b$ tels que $g(a)$ et $g(b)$ sont de signes opposés.</p>
+</blockquote>
+<p><strong>Théorème de Weierstrass.</strong> Toute fonction continue sur un <strong>fermé borné</strong> $[a,b]$ est bornée et atteint ses bornes.</p>
+<h3>5.2 Dérivabilité</h3>
+<p><strong>Définition.</strong> $f$ est dérivable en $x_0$ si $\lim_{x \to x_0} \frac{f(x) - f(x_0)}{x - x_0}$ existe et est finie. On la note $f'(x_0)$.</p>
+<p><strong>Formulas de dérivation.</strong></p>
+<table>
+<thead>
+<tr>
+<th>Fonction</th>
+<th>Dérivée</th>
+<th>Domaine</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>$x^n$</td>
+<td>$nx^{n-1}$</td>
+<td>$\mathbb{R}$</td>
+</tr>
+<tr>
+<td>$e^x$</td>
+<td>$e^x$</td>
+<td>$\mathbb{R}$</td>
+</tr>
+<tr>
+<td>$\ln x$</td>
+<td>$1/x$</td>
+<td>$]0,+\infty[$</td>
+</tr>
+<tr>
+<td>$\sin x$</td>
+<td>$\cos x$</td>
+<td>$\mathbb{R}$</td>
+</tr>
+<tr>
+<td>$\cos x$</td>
+<td>$-\sin x$</td>
+<td>$\mathbb{R}$</td>
+</tr>
+<tr>
+<td>$\tan x$</td>
+<td>$1 + \tan^2 x = 1/\cos^2 x$</td>
+<td>$]-\pi/2+k\pi, \pi/2+k\pi[$</td>
+</tr>
+<tr>
+<td>$\arctan x$</td>
+<td>$\frac{1}{1+x^2}$</td>
+<td>$\mathbb{R}$</td>
+</tr>
+<tr>
+<td>$\arcsin x$</td>
+<td>$\frac{1}{\sqrt{1-x^2}}$</td>
+<td>$]-1,1[$</td>
+</tr>
+<tr>
+<td>$\arccos x$</td>
+<td>$-\frac{1}{\sqrt{1-x^2}}$</td>
+<td>$]-1,1[$</td>
+</tr>
+<tr>
+<td>$\sqrt{x}$</td>
+<td>$\frac{1}{2\sqrt{x}}$</td>
+<td>$]0,+\infty[$</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Règles.</strong> $(uv)' = u'v + uv'$, $(u/v)' = (u'v - uv')/v^2$, $(f \circ g)' = (f' \circ g) \cdot g'$.</p>
+<p><strong>Théorème de Rolle.</strong> Si $f$ continue sur $[a,b]$, dérivable sur $]a,b[$ et $f(a) = f(b)$, alors $\exists c \in ]a,b[$ tel que $f'(c) = 0$.</p>
+<p><strong>Théorème des accroissements finis (TAF).</strong> Si $f$ continue sur $[a,b]$, dérivable sur $]a,b[$, alors $\exists c \in ]a,b[$ tel que :<br />
+$$f(b) - f(a) = f'(c)(b-a)$$</p>
+<blockquote>
+<p>💡 <strong>Usage au partiel :</strong> Pour montrer une inégalité du type $|f(b)-f(a)| \leq M|b-a|$, appliquer le TAF puis majorer $|f'(c)|$.</p>
+</blockquote>
+<p><strong>Corollaire (monotonie et dérivée).</strong><br />
+- $f' \geq 0$ sur $I$ $\Leftrightarrow$ $f$ croissante sur $I$<br />
+- $f' &gt; 0$ sur $I$ $\Rightarrow$ $f$ strictement croissante</p>
+<h3>5.3 Fonctions réciproques</h3>
+<p><strong>Théorème.</strong> Si $f: I \to J$ est bijective, de classe $C^1$, et $f'(x_0) \neq 0$, alors $f^{-1}$ est dérivable en $y_0 = f(x_0)$ et :<br />
+$$(f^{-1})'(y_0) = \frac{1}{f'(f^{-1}(y_0))}$$</p>
+<p><strong>Exemples.</strong><br />
+- $(\arctan)'(x) = \frac{1}{1+x^2}$ (car $\tan' = 1 + \tan^2$)<br />
+- $(\arcsin)'(x) = \frac{1}{\sqrt{1-x^2}}$ (car $\sin' = \cos = \sqrt{1-\sin^2}$ sur $]-\pi/2, \pi/2[$)</p>
+<p><strong>Propriétés des fonctions arc :</strong><br />
+- $\arcsin x + \arccos x = \pi/2$ pour $x \in [-1,1]$<br />
+- $\arctan x + \arctan(1/x) = \pi/2$ pour $x &gt; 0$<br />
+- $\arcsin$ et $\arctan$ sont impaires</p>
+<hr />
+<h1>PARTIE 2 — ANALYSE 2</h1>
+<hr />
+<h2>Chapitre 1 — Dérivées d'ordre supérieur</h2>
+<h3>1.1 Dérivée seconde et convexité</h3>
+<p><strong>Définition.</strong> $f$ est <strong>deux fois dérivable</strong> sur $I$ si $f'$ est dérivable sur $I$. On note $f'' = (f')'$.</p>
+<p><strong>Définition (Convexité).</strong> $f$ est <strong>convexe</strong> sur $I$ si pour tout $(x_1, x_2) \in I^2$ et tout $t \in [0,1]$ :<br />
+$$f(x_1 + t(x_2 - x_1)) \leq f(x_1) + t(f(x_2) - f(x_1))$$<br />
+Géométriquement : la courbe est <strong>en dessous des cordes</strong>.</p>
+<p><strong>Remarque.</strong> En particulier (avec $t = 1/2$) : $f!\left(\frac{x_1+x_2}{2}\right) \leq \frac{f(x_1)+f(x_2)}{2}$ (inégalité de la moyenne arithmétique-géométrique).</p>
+<p><strong>Théorème (lien convexité — dérivée seconde).</strong><br />
+- $f'' \geq 0$ sur $I$ $\Leftrightarrow$ $f$ convexe sur $I$<br />
+- $f'' \leq 0$ sur $I$ $\Leftrightarrow$ $f$ concave sur $I$</p>
+<p><strong>Théorème (position courbe/tangente).</strong> Si $f'' &gt; 0$ sur $I$, la courbe est <strong>au-dessus de toutes ses tangentes</strong> sur $I$.</p>
+<p><strong>Point d'inflexion.</strong> Un point $(x_0, f(x_0))$ est un point d'inflexion si $f''$ s'annule <strong>en changeant de signe</strong> en $x_0$.</p>
+<p><strong>Inégalités classiques issues de la convexité :</strong><br />
+- $\exp$ est convexe sur $\mathbb{R}$ → $\forall x \in \mathbb{R},\ e^x \geq 1 + x$<br />
+- $\sin$ est concave sur $[0, \pi/2]$ → $\forall x \in [0, \pi/2],\ \frac{2x}{\pi} \leq \sin x \leq x$<br />
+- $(1+x)^\alpha \geq 1 + \alpha x$ pour $\alpha &gt; 1$ et $x &gt; -1$ (inégalité de Bernoulli, $x \mapsto (1+x)^\alpha$ convexe)</p>
+<hr />
+<h3>1.2 Dérivées d'ordre $n$ et classes $C^n$</h3>
+<p><strong>Définition.</strong> $f$ est <strong>$n$ fois dérivable</strong> sur $I$ si on peut définir $f^{(0)} = f$, $f^{(k)} = (f^{(k-1)})'$ pour $k = 1, \ldots, n$.</p>
+<p><strong>Définition (Classe $C^n$).</strong> $f$ est de <strong>classe $C^n$</strong> sur $I$ si $f$ est $n$ fois dérivable sur $I$ et $f^{(n)}$ est continue sur $I$.</p>
+<p><strong>Définition (Classe $C^\infty$).</strong> $f$ est de <strong>classe $C^\infty$</strong> (indéfiniment dérivable) si elle est $C^n$ pour tout $n \in \mathbb{N}$.</p>
+<p><strong>Inclusions strictes :</strong><br />
+$$C^\infty \subset \cdots \subset C^2 \subset D^2 \subset C^1 \subset D^1 \subset C^0$$</p>
+<blockquote>
+<p>⚠️ $C^n \subsetneq D^n$ ! On peut être $n$ fois dérivable sans être de classe $C^n$.</p>
+</blockquote>
+<p><strong>Régularité des fonctions usuelles :</strong> polynômes, $\sin$, $\cos$, $\exp$, $\ln$, $\tan$, $\arctan$ sont $C^\infty$ sur leur domaine de définition.</p>
+<p><strong>Dérivées usuelles d'ordre $n$ :</strong><br />
+- $(\exp)^{(n)} = \exp$<br />
+- $(\sin)^{(2n)} = (-1)^n \sin$, $(\sin)^{(2n+1)} = (-1)^n \cos$<br />
+- $(x^\alpha)^{(n)} = \alpha(\alpha-1)\cdots(\alpha-n+1) x^{\alpha-n}$ pour $n \leq \lfloor\alpha\rfloor$ (ou $\alpha \notin \mathbb{N}$)<br />
+- Pour $P$ polynôme de degré $n$ : $P^{(n+1)} = 0$</p>
+<hr />
+<h3>1.3 Théorème des opérations et formule de Leibniz</h3>
+<p><strong>Théorème.</strong> Si $f, g \in C^n(I)$ et $\alpha \in \mathbb{R}$ :<br />
+- $\alpha f + g \in C^n(I)$<br />
+- $f \cdot g \in C^n(I)$<br />
+- $f \circ g \in C^n(I)$ (si $g : I \to J$ et $f : J \to \mathbb{R}$, toutes deux $C^n$)<br />
+- $1/g \in C^n(I)$ si $g$ ne s'annule pas</p>
+<p><strong>Formule de Leibniz.</strong> Pour $f, g \in C^n(I)$ :<br />
+$$(f \cdot g)^{(n)} = \sum_{k=0}^{n} \binom{n}{k} f^{(k)} \cdot g^{(n-k)}$$</p>
+<blockquote>
+<p>💡 C'est comme le binôme de Newton mais pour la dérivation.</p>
+</blockquote>
+<p><strong>Coefficients binomiaux.</strong> $\binom{n}{k} = \frac{n!}{k!(n-k)!}$. Relation de Pascal : $\binom{n}{k} + \binom{n}{k+1} = \binom{n+1}{k+1}$.</p>
+<p><strong>Application type (partiel 2024).</strong> $f(x) = (x^2 + x + 1)e^{-x}$.<br />
+- $g(x) = e^{-x}$ → $g^{(n)}(x) = (-1)^n e^{-x}$<br />
+- $h(x) = x^2 + x + 1$ → $h^{(0)} = x^2+x+1$, $h^{(1)} = 2x+1$, $h^{(2)} = 2$, $h^{(k)} = 0$ pour $k \geq 3$<br />
+- Par Leibniz : $f^{(n)}(x) = \sum_{k=0}^{\min(n,2)} \binom{n}{k} h^{(k)}(x) \cdot (-1)^{n-k} e^{-x}$</p>
+<hr />
+<h2>Chapitre 2 — Intégration</h2>
+<h3>2.1 Intégrale de Riemann</h3>
+<p><strong>Construction.</strong> Pour $f$ continue sur $[a,b]$, on découpe en $n$ intervalles de longueur $(b-a)/n$ :<br />
+- <strong>Somme de Darboux inférieure :</strong> $S_n^-(f) = \frac{b-a}{n} \sum_{k=0}^{n-1} \min_{[a_k, a_{k+1}]} f$<br />
+- <strong>Somme de Darboux supérieure :</strong> $S_n^+(f) = \frac{b-a}{n} \sum_{k=0}^{n-1} \max_{[a_k, a_{k+1}]} f$<br />
+- <strong>Somme de Riemann :</strong> $S_n(f, u) = \frac{b-a}{n} \sum_{k=0}^{n-1} f(u_k)$ avec $u_k \in [a_k, a_{k+1}]$</p>
+<p>On a toujours : $S_n^- \leq S_n \leq S_n^+$.</p>
+<p><strong>Théorème.</strong> Pour $f$ continue sur $[a,b]$, les trois suites convergent vers la même limite, appelée <strong>intégrale de Riemann</strong> :<br />
+$$\int_a^b f(t)\, dt$$</p>
+<p><strong>Convergence des Darboux pour $f$ monotone :</strong><br />
+$$S_n^+ - S_n^- = \frac{(b-a)|f(b)-f(a)|}{n} \to 0$$</p>
+<p>Pour $f$ de classe $C^1$ avec $M = \sup|f'|$ :<br />
+$$S_n^+ - S_n^- \leq \frac{M(b-a)^2}{n}$$</p>
+<hr />
+<h3>2.2 Propriétés de l'intégrale</h3>
+<table>
+<thead>
+<tr>
+<th>Propriété</th>
+<th>Énoncé</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Linéarité</strong></td>
+<td>$\int_a^b (\lambda f + g) = \lambda \int_a^b f + \int_a^b g$</td>
+</tr>
+<tr>
+<td><strong>Positivité</strong></td>
+<td>$f \geq 0$ sur $[a,b]$ $\Rightarrow$ $\int_a^b f \geq 0$</td>
+</tr>
+<tr>
+<td><strong>Monotonie</strong></td>
+<td>$f \leq g$ sur $[a,b]$ $\Rightarrow$ $\int_a^b f \leq \int_a^b g$</td>
+</tr>
+<tr>
+<td><strong>Inégalité de la moyenne</strong></td>
+<td>$m(b-a) \leq \int_a^b f \leq M(b-a)$</td>
+</tr>
+<tr>
+<td><strong>Relation de Chasles</strong></td>
+<td>$\int_a^b f = \int_a^c f + \int_c^b f$</td>
+</tr>
+<tr>
+<td><strong>Inégalité triangulaire</strong></td>
+<td>$\left</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Convention.</strong> $\int_b^a f = -\int_a^b f$, $\int_a^a f = 0$.</p>
+<p><strong>Théorème de la moyenne.</strong> Si $f$ continue sur $[a,b]$, $\exists c \in [a,b]$ tel que $\frac{1}{b-a}\int_a^b f = f(c)$.</p>
+<hr />
+<h3>2.3 Primitives</h3>
+<p><strong>Définition.</strong> $F$ est une <strong>primitive</strong> de $f$ sur $I$ si $F' = f$ sur $I$.</p>
+<p><strong>Proposition.</strong> Si $F$ est une primitive de $f$ sur $I$, les primitives de $f$ sont les $F + C$ ($C \in \mathbb{R}$).</p>
+<p><strong>Primitives usuelles (table complète) :</strong></p>
+<table>
+<thead>
+<tr>
+<th>$f(x)$</th>
+<th>Primitive $F(x)$</th>
+<th>Intervalle</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>$x^n$ ($n \neq -1$)</td>
+<td>$\frac{x^{n+1}}{n+1}$</td>
+<td>$\mathbb{R}$ (ou $]0,+\infty[$ si $n &lt; 0$)</td>
+</tr>
+<tr>
+<td>$\frac{1}{x}$</td>
+<td>$\ln</td>
+<td>x</td>
+</tr>
+<tr>
+<td>$e^x$</td>
+<td>$e^x$</td>
+<td>$\mathbb{R}$</td>
+</tr>
+<tr>
+<td>$\sin x$</td>
+<td>$-\cos x$</td>
+<td>$\mathbb{R}$</td>
+</tr>
+<tr>
+<td>$\cos x$</td>
+<td>$\sin x$</td>
+<td>$\mathbb{R}$</td>
+</tr>
+<tr>
+<td>$\frac{1}{\cos^2 x}$</td>
+<td>$\tan x$</td>
+<td>$]-\pi/2+k\pi, \pi/2+k\pi[$</td>
+</tr>
+<tr>
+<td>$\tan x$</td>
+<td>$-\ln</td>
+<td>\cos x</td>
+</tr>
+<tr>
+<td>$\frac{1}{1+x^2}$</td>
+<td>$\arctan x$</td>
+<td>$\mathbb{R}$</td>
+</tr>
+<tr>
+<td>$\frac{1}{\sqrt{1-x^2}}$</td>
+<td>$\arcsin x$</td>
+<td>$]-1,1[$</td>
+</tr>
+<tr>
+<td>$\frac{1}{\sqrt{x^2+1}}$</td>
+<td>$\ln(x + \sqrt{x^2+1})$</td>
+<td>$\mathbb{R}$</td>
+</tr>
+<tr>
+<td>$\frac{1}{\sqrt{x^2-1}}$</td>
+<td>$\ln</td>
+<td>x + \sqrt{x^2-1}</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3>2.4 Théorème fondamental du calcul intégral</h3>
+<p><strong>Théorème (TFA).</strong> Soit $f$ continue sur $I$ et $a \in I$. La fonction $\Phi(x) = \int_a^x f(t)\, dt$ est dérivable sur $I$ et $\Phi' = f$.</p>
+<blockquote>
+<p>C'est l'<strong>unique</strong> primitive de $f$ sur $I$ qui s'annule en $a$.</p>
+</blockquote>
+<p><strong>Corollaire.</strong> Si $F$ est une primitive de $f$ continue sur $[a,b]$ :<br />
+$$\int_a^b f(t)\, dt = [F(x)]_a^b = F(b) - F(a)$$</p>
+<p><strong>Application.</strong> $\ln x = \int_1^x \frac{dt}{t}$ (définition du logarithme).</p>
+<hr />
+<h3>2.5 Méthodes de calcul</h3>
+<p><strong>Intégration par parties (IPP).</strong> Si $u, v$ de classe $C^1$ sur $[a,b]$ :<br />
+$$\int_a^b u'(t) v(t)\, dt = [u(t)v(t)]_a^b - \int_a^b u(t) v'(t)\, dt$$</p>
+<p><strong>Mémo IPP :</strong> on choisit $u'$ = facile à primitiver, $v$ = facile à dériver.<br />
+- $\int x e^x\, dx$ : $u' = e^x$, $v = x$ → $u = e^x$, $v' = 1$<br />
+- $\int \ln x\, dx$ : $u' = 1$, $v = \ln x$ → $u = x$, $v' = 1/x$<br />
+- $\int x^n \ln x\, dx$ : $u' = x^n$, $v = \ln x$</p>
+<p><strong>Changement de variable.</strong> Si $\phi : [\alpha, \beta] \to [a, b]$ de classe $C^1$ et $f$ continue :<br />
+$$\int_a^b f(t)\, dt = \int_\alpha^\beta f(\phi(s)) \phi'(s)\, ds$$</p>
+<p><strong>Stratégie :</strong> poser $t = \phi(s)$, calculer $dt = \phi'(s)\, ds$, changer les bornes.</p>
+<p><strong>Exemples classiques de changements de variable :</strong><br />
+- $\sqrt{1-x^2}$ → poser $x = \sin\theta$<br />
+- $\sqrt{x^2+1}$ → poser $x = \tan\theta$ ou $x = \sinh\theta$<br />
+- $\int_0^1 f(\sqrt{x})\, dx$ → poser $x = u^2$, $dx = 2u\, du$</p>
+<hr />
+<h3>2.6 Formule de Taylor avec reste intégral</h3>
+<p><strong>Théorème (Taylor-Laplace).</strong> Si $f \in C^{n+1}([a, x])$ :<br />
+$$f(x) = \sum_{k=0}^{n} \frac{f^{(k)}(a)}{k!}(x-a)^k + \int_a^x \frac{(x-t)^n}{n!} f^{(n+1)}(t)\, dt$$</p>
+<p>Le dernier terme est le <strong>reste intégral de Laplace</strong> $R_n(x)$.</p>
+<p><strong>Cas $n=0$ (formule de la moyenne) :</strong> $f(x) = f(a) + \int_a^x f'(t)\, dt$</p>
+<p><strong>Inégalité sur le reste.</strong> Si $|f^{(n+1)}| \leq M$ sur $[a, x]$ :<br />
+$$|R_n(x)| \leq M \frac{|x-a|^{n+1}}{(n+1)!}$$</p>
+<hr />
+<h2>Chapitre 3 — Développements Limités</h2>
+<h3>3.1 Définition et premières propriétés</h3>
+<p><strong>Définition.</strong> $f$ admet un <strong>développement limité à l'ordre $n$ en $a$</strong> (noté DL$_n(a)$) s'il existe des réels $a_0, a_1, \ldots, a_n$ tels que :<br />
+$$f(a+h) = a_0 + a_1 h + a_2 h^2 + \cdots + a_n h^n + o(h^n) \quad \text{quand } h \to 0$$</p>
+<p><strong>Notation $o$.</strong> $f = o(g)$ en $a$ signifie $\lim_{x \to a} f(x)/g(x) = 0$.</p>
+<p><strong>Unicité.</strong> Le DL est unique.</p>
+<p><strong>Formule de Taylor-Young.</strong> Si $f \in C^n$ au voisinage de $a$ :<br />
+$$f(a + h) = \sum_{k=0}^n \frac{f^{(k)}(a)}{k!} h^k + o(h^n)$$</p>
+<p><strong>Translation.</strong> Pour un DL en 0, on remplace $x$ par $x - a$ pour obtenir un DL en $a$.</p>
+<hr />
+<h3>3.2 DL usuels en 0</h3>
+<p>$$e^x = 1 + x + \frac{x^2}{2!} + \frac{x^3}{3!} + \cdots + \frac{x^n}{n!} + o(x^n)$$</p>
+<p>$$\sin x = x - \frac{x^3}{3!} + \frac{x^5}{5!} - \cdots + \frac{(-1)^n x^{2n+1}}{(2n+1)!} + o(x^{2n+2})$$</p>
+<p>$$\cos x = 1 - \frac{x^2}{2!} + \frac{x^4}{4!} - \cdots + \frac{(-1)^n x^{2n}}{(2n)!} + o(x^{2n+1})$$</p>
+<p>$$\ln(1+x) = x - \frac{x^2}{2} + \frac{x^3}{3} - \cdots + \frac{(-1)^{n-1}x^n}{n} + o(x^n)$$</p>
+<p>$$(1+x)^\alpha = 1 + \alpha x + \frac{\alpha(\alpha-1)}{2!}x^2 + \cdots + \frac{\alpha(\alpha-1)\cdots(\alpha-n+1)}{n!}x^n + o(x^n)$$</p>
+<p>$$\frac{1}{1-x} = 1 + x + x^2 + \cdots + x^n + o(x^n)$$</p>
+<p>$$\frac{1}{1+x} = 1 - x + x^2 - \cdots + (-1)^n x^n + o(x^n)$$</p>
+<p>$$\arctan x = x - \frac{x^3}{3} + \frac{x^5}{5} - \cdots + \frac{(-1)^n x^{2n+1}}{2n+1} + o(x^{2n+2})$$</p>
+<p>$$\arcsin x = x + \frac{x^3}{6} + \frac{3x^5}{40} + o(x^5)$$</p>
+<p>$$\sh x = x + \frac{x^3}{6} + \frac{x^5}{120} + o(x^5) \qquad \ch x = 1 + \frac{x^2}{2} + \frac{x^4}{24} + o(x^4)$$</p>
+<hr />
+<h3>3.3 Opérations sur les DL</h3>
+<p><strong>Troncature.</strong> Si $f = \sum_{k=0}^n a_k x^k + o(x^n)$, le DL à l'ordre $p &lt; n$ est obtenu en gardant les termes de degré $\leq p$.</p>
+<p><strong>Somme et produit.</strong> On additionne/multiplie les polynômes, puis on tronque à l'ordre voulu.</p>
+<p><strong>Substitution.</strong> Si $f$ a un DL en 0 et $u(x) = ax^p + o(x^p)$, on substitue $u(x)$ dans le DL de $f$ et on garde les termes jusqu'à l'ordre voulu.</p>
+<p><strong>Intégration.</strong> Si $f(x) = a_0 + a_1 x + \cdots + a_n x^n + o(x^n)$, alors :<br />
+$$\int_0^x f(t)\, dt = a_0 x + \frac{a_1 x^2}{2} + \cdots + \frac{a_n x^{n+1}}{n+1} + o(x^{n+1})$$</p>
+<p><strong>Division (quotient).</strong> Pour calculer le DL de $f/g$, on peut utiliser la division selon les puissances croissantes ou écrire $f = g \cdot q$ et identifier les coefficients.</p>
+<p><strong>Composition.</strong> Remplacer dans le DL de $f$ la variable par le DL de $g$, et tronquer.</p>
+<p><strong>⚠️ Erreur classique.</strong> Dans $e^{u(x)}$, si $u(x) = x^2 - x^3 + o(x^3)$, calculer $e^{u(x)}$ en développant $e^u = 1 + u + u^2/2 + \cdots$ en substituant.</p>
+<hr />
+<h3>3.4 Applications des DL</h3>
+<p><strong>Calcul de limites.</strong> Notamment les formes $0/0$ ou $\infty - \infty$.</p>
+<p><strong>Exemple.</strong> $\lim_{x \to 0} \frac{\sin x - x}{x^3}$ :<br />
+$$\sin x = x - \frac{x^3}{6} + o(x^3) \Rightarrow \frac{\sin x - x}{x^3} = \frac{-x^3/6 + o(x^3)}{x^3} = -\frac{1}{6} + o(1) \to -\frac{1}{6}$$</p>
+<p><strong>Position courbe/tangente.</strong> La tangente en $x_0$ est $T(x) = f(x_0) + f'(x_0)(x-x_0)$. Le DL de $f(x) - T(x)$ donne la position :<br />
+- Premier terme non nul de degré pair et positif → minimum local<br />
+- Premier terme non nul de degré pair et négatif → maximum local<br />
+- Premier terme non nul de degré impair → point d'inflexion</p>
+<p><strong>Développements asymptotiques.</strong> Pour étudier le comportement en $+\infty$, on factorise par la puissance dominante.</p>
+<p><strong>Exemple.</strong> $f(x) = \sqrt{x^2 + x} = x\sqrt{1 + 1/x}$. En posant $u = 1/x \to 0^+$ :<br />
+$$\sqrt{1+u} = 1 + \frac{u}{2} - \frac{u^2}{8} + o(u^2) \Rightarrow f(x) = x + \frac{1}{2} - \frac{1}{8x} + o(1/x)$$<br />
+Asymptote oblique : $y = x + 1/2$.</p>
+<hr />
+<h2>Récapitulatif — Méthodes clés pour les partiels</h2>
+<h3>Boîte à outils Analyse 1</h3>
+<table>
+<thead>
+<tr>
+<th>Problème</th>
+<th>Méthode</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Montrer $\sup A = M$</td>
+<td>Vérifier (i) $M$ majorant, (ii) $\forall \varepsilon, \exists x \in A, x &gt; M-\varepsilon$</td>
+</tr>
+<tr>
+<td>Convergence d'une suite récurrente</td>
+<td>Monotonie + borné → limite = point fixe</td>
+</tr>
+<tr>
+<td>Limite n'existe pas</td>
+<td>Trouver 2 sous-suites de limites différentes</td>
+</tr>
+<tr>
+<td>Existence d'un zéro</td>
+<td>TVI sur $g = f - k$</td>
+</tr>
+<tr>
+<td>Inégalité $|f(b)-f(a)| \leq M|b-a|$</td>
+<td>TAF + $|f'| \leq M$</td>
+</tr>
+<tr>
+<td>$f$ bijective</td>
+<td>Montrer strictement monotone + $f(I) = J$</td>
+</tr>
+</tbody>
+</table>
+<h3>Boîte à outils Analyse 2</h3>
+<table>
+<thead>
+<tr>
+<th>Problème</th>
+<th>Méthode</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Montrer une inégalité par convexité</td>
+<td>Trouver $f'' \geq 0$, appliquer Thm 2</td>
+</tr>
+<tr>
+<td>Calculer $f^{(n)}$</td>
+<td>Leibniz si produit, récurrence, formule directe</td>
+</tr>
+<tr>
+<td>Calculer $\int f$</td>
+<td>Primitives usuelles, IPP, changement de variable</td>
+</tr>
+<tr>
+<td>Limite avec DL</td>
+<td>Développer au bon ordre, simplifier</td>
+</tr>
+<tr>
+<td>Asymptote oblique en $\pm\infty$</td>
+<td>Développement asymptotique (factoriser + DL)</td>
+</tr>
+<tr>
+<td>Montrer $f \in C^n$</td>
+<td>Composition/produit de $C^n$ + théorème des opérations</td>
+</tr>
+</tbody>
+</table>
+    </section>
+
+    <section class="tab-panel" id="panel-exercices" role="tabpanel">
+<h1>📝 Exercices avec Corrections Détaillées — Analyse 1 &amp; 2</h1>
+<h3>L1 Informatique — Institut Galilée</h3>
+<blockquote>
+<p>Chaque exercice est accompagné d'une correction <strong>extrêmement détaillée</strong> avec toutes les étapes justifiées.</p>
+</blockquote>
+<hr />
+<h1>PARTIE 1 — ANALYSE 1</h1>
+<hr />
+<h2>🔵 Thème 1 : Bornes supérieure et inférieure</h2>
+<h3>Exercice 1.1</h3>
+<p>Soit $A = \left{2 + \frac{(-1)^n}{n},\ n \in \mathbb{N}^*\right}$.<br />
+1. Montrer que $A$ est borné.<br />
+2. Déterminer $\sup A$ et $\inf A$ en justifiant.</p>
+<details>
+<summary><strong>✅ Correction complète</strong></summary>
+
+**Question 1 — $A$ est borné.**
+
+Soit $n \in \mathbb{N}^*$. On a $\left|\frac{(-1)^n}{n}\right| = \frac{1}{n} \leq 1$.
+
+Donc $\left|2 + \frac{(-1)^n}{n}\right| \leq 2 + \frac{1}{n} \leq 3$.
+
+Ainsi tous les éléments de $A$ appartiennent à $[-3, 3]$ : $A$ est borné.
+
+**Question 2 — Calcul de $\sup A$.**
+
+*Valeurs explicites :*
+- $n = 1$ : $2 + (-1)^1/1 = 2 - 1 = 1$
+- $n = 2$ : $2 + 1/2 = 5/2$
+- $n = 3$ : $2 - 1/3 = 5/3$
+- $n = 4$ : $2 + 1/4 = 9/4$
+- ...
+
+Les termes pairs sont $2 + 1/n$ (valeurs $> 2$), les termes impairs sont $2 - 1/n$ (valeurs $< 2$).
+
+La suite des termes pairs $2 + 1/(2k)$ est strictement décroissante. Elle part de $5/2$ (pour $n=2$) et décroît vers 2.
+
+**Claim : $\sup A = 5/2$.**
+
+- $5/2$ est majorant : $2 + 1/n \leq 2 + 1/2 = 5/2$ pour tout $n \geq 2$. Pour $n = 1$ : $1 < 5/2$. Donc $5/2$ est majorant.
+- $5/2$ est atteint : $a_2 = 5/2 \in A$.
+
+Donc $5/2$ est le plus grand élément de $A$, donc $\sup A = 5/2$.
+
+**Claim : $\inf A = 1$.**
+
+- $1$ est minorant : $2 - 1/n \geq 2 - 1 = 1$ pour $n \geq 1$. Pour les termes pairs : $2 + 1/n > 2 > 1$. Donc $1$ est minorant.
+- $1$ est atteint : $a_1 = 1 \in A$.
+
+Donc $\inf A = 1$.
+
+</details>
+
+<hr />
+<h3>Exercice 1.2</h3>
+<p>Soit $A$ une partie non vide majorée de $\mathbb{R}$. Montrer que $M = \sup A$ si et seulement si :<br />
+1. $M$ est un majorant de $A$<br />
+2. $\forall \varepsilon &gt; 0,\ \exists x \in A$ tel que $x &gt; M - \varepsilon$</p>
+<details>
+<summary><strong>✅ Correction complète</strong></summary>
+
+**Sens direct ($M = \sup A$ $\Rightarrow$ 1 et 2).**
+
+*Pour 1 :* $M = \sup A$ est le plus petit des majorants, donc c'est en particulier un majorant.
+
+*Pour 2 :* Soit $\varepsilon > 0$. Alors $M - \varepsilon < M = \sup A$. Comme $M$ est le plus petit majorant, $M - \varepsilon$ n'est pas un majorant de $A$. Donc $\exists x \in A$ tel que $x > M - \varepsilon$.
+
+**Sens réciproque (1 et 2 $\Rightarrow$ $M = \sup A$).**
+
+On sait que $M$ est un majorant de $A$. Il reste à montrer que $M$ est le **plus petit** majorant.
+
+Soit $M'$ un majorant de $A$ quelconque. Montrons que $M \leq M'$.
+
+Par l'absurde, supposons $M' < M$. Posons $\varepsilon = M - M' > 0$.
+
+Par la condition 2, $\exists x \in A$ tel que $x > M - \varepsilon = M - (M - M') = M'$.
+
+Mais cela contredit le fait que $M'$ est un majorant de $A$ ! 
+
+Donc $M' \geq M$, ce qui montre que $M$ est le plus petit majorant, i.e. $M = \sup A$. $\blacksquare$
+
+</details>
+
+<hr />
+<h2>🔵 Thème 2 : Suites</h2>
+<h3>Exercice 2.1 — Calcul de limites</h3>
+<p>Calculer la limite (si elle existe) des suites suivantes :<br />
+1. $u_n = \frac{n^2 + 4n + 2}{n^2 + n + 4}$<br />
+2. $v_n = \frac{(-1)^n n^2 + 2n + 3}{n^2 + n + 3}$<br />
+3. $w_n = \frac{n^3 + 2n\sin(n) + 2}{n^4 + 2n + 1}$</p>
+<details>
+<summary><strong>✅ Correction complète</strong></summary>
+
+**1. $u_n = \frac{n^2 + 4n + 2}{n^2 + n + 4}$.**
+
+Factorisons par $n^2$ au numérateur et au dénominateur :
+$$u_n = \frac{n^2(1 + 4/n + 2/n^2)}{n^2(1 + 1/n + 4/n^2)} = \frac{1 + 4/n + 2/n^2}{1 + 1/n + 4/n^2}$$
+
+Quand $n \to +\infty$, $4/n \to 0$, $2/n^2 \to 0$, $1/n \to 0$, $4/n^2 \to 0$.
+
+Par les théorèmes opératoires sur les limites :
+$$\lim_{n \to +\infty} u_n = \frac{1 + 0 + 0}{1 + 0 + 0} = 1$$
+
+**2. $v_n = \frac{(-1)^n n^2 + 2n + 3}{n^2 + n + 3}$.**
+
+Factorisons par $n^2$ :
+$$v_n = \frac{(-1)^n + 2/n + 3/n^2}{1 + 1/n + 3/n^2}$$
+
+Le dénominateur tend vers 1. Le numérateur est $(-1)^n + 2/n + 3/n^2$.
+
+Pour la sous-suite des indices pairs : $v_{2k} = \frac{1 + 2/(2k) + 3/(2k)^2}{1 + \cdots} \to 1$.
+
+Pour la sous-suite des indices impairs : $v_{2k+1} = \frac{-1 + \cdots}{1 + \cdots} \to -1$.
+
+Les deux sous-suites ont des limites différentes : **$(v_n)$ diverge.**
+
+**3. $w_n = \frac{n^3 + 2n\sin(n) + 2}{n^4 + 2n + 1}$.**
+
+On a $|\sin n| \leq 1$ donc $|2n\sin(n)| \leq 2n$.
+
+Factorisons par $n^4$ :
+$$w_n = \frac{n^3(1 + 2\sin(n)/n^2 + 2/n^3)}{n^4(1 + 2/n^3 + 1/n^4)} = \frac{1}{n} \cdot \frac{1 + 2\sin(n)/n^2 + 2/n^3}{1 + 2/n^3 + 1/n^4}$$
+
+Le numérateur du second facteur est borné par $3$ et le dénominateur tend vers 1, donc ce second facteur est borné. Comme $1/n \to 0$ :
+$$\lim_{n \to +\infty} w_n = 0 \qquad \text{(par le critère : produit d'une suite nulle et d'une suite bornée)}$$
+
+</details>
+
+<hr />
+<h3>Exercice 2.2 — Suite récurrente (type partiel)</h3>
+<p>On définit la suite $(u_n)$ par $u_0 \in \mathbb{R}$ et $u_{n+1} = \frac{1}{2}u_n + 1$.</p>
+<ol>
+<li>Si $u_0 &gt; 2$, montrer que $(u_n)$ est décroissante et converge. Calculer sa limite.</li>
+<li>Si $u_0 &lt; 2$, montrer que $(u_n)$ est croissante et converge. Calculer sa limite.</li>
+<li>Soit $v_n = u_n - 2$. Montrer que $(v_n)$ est géométrique de raison $1/2$.</li>
+</ol>
+<details>
+<summary><strong>✅ Correction complète</strong></summary>
+
+**Étape préliminaire : point fixe.**
+
+$\ell$ est point fixe si $\ell = \frac{1}{2}\ell + 1$, soit $\frac{\ell}{2} = 1$, soit $\ell = 2$.
+
+**Étude du signe de $u_{n+1} - u_n$ :**
+$$u_{n+1} - u_n = \frac{1}{2}u_n + 1 - u_n = 1 - \frac{1}{2}u_n = \frac{2 - u_n}{2}$$
+
+Donc $u_{n+1} - u_n$ est du signe de $2 - u_n$.
+
+**Question 1 : $u_0 > 2$.**
+
+*Montrons par récurrence que $u_n > 2$ pour tout $n$.*
+
+Initialisation : $u_0 > 2$. ✓
+
+Hérédité : Supposons $u_n > 2$. Alors $u_{n+1} = \frac{1}{2}u_n + 1 > \frac{1}{2} \cdot 2 + 1 = 2$. ✓
+
+Donc $\forall n,\ u_n > 2$.
+
+*Monotonie :* $u_{n+1} - u_n = \frac{2 - u_n}{2} < 0$ car $u_n > 2$. Donc $(u_n)$ est **strictement décroissante**.
+
+*Bornée :* $(u_n)$ est décroissante et minorée par 2.
+
+*Convergence :* Par le théorème des suites monotones bornées, $(u_n)$ converge vers un réel $\ell \geq 2$.
+
+*Limite :* En passant à la limite dans $u_{n+1} = \frac{1}{2}u_n + 1$ : $\ell = \frac{1}{2}\ell + 1$, donc $\ell = 2$.
+
+**Question 2 : $u_0 < 2$.**
+
+*Montrons par récurrence que $u_n < 2$ pour tout $n$.*
+
+Initialisation : $u_0 < 2$. ✓
+
+Hérédité : $u_n < 2 \Rightarrow u_{n+1} = \frac{1}{2}u_n + 1 < \frac{1}{2} \cdot 2 + 1 = 2$. ✓
+
+*Monotonie :* $u_{n+1} - u_n = \frac{2-u_n}{2} > 0$ car $u_n < 2$. Donc $(u_n)$ est **strictement croissante**.
+
+*Bornée :* majorée par 2.
+
+*Convergence vers 2 :* même raisonnement.
+
+**Question 3 : $v_n = u_n - 2$.**
+
+$$v_{n+1} = u_{n+1} - 2 = \frac{1}{2}u_n + 1 - 2 = \frac{1}{2}u_n - 1 = \frac{1}{2}(u_n - 2) = \frac{1}{2}v_n$$
+
+Donc $(v_n)$ est une suite géométrique de raison $q = 1/2$ et de premier terme $v_0 = u_0 - 2$.
+
+On a $v_n = v_0 \cdot (1/2)^n = (u_0 - 2)/2^n \to 0$, ce qui confirme $u_n \to 2$. $\blacksquare$
+
+</details>
+
+<hr />
+<h3>Exercice 2.3 — Suite de Héron (algorithme de calcul de $\sqrt{a}$)</h3>
+<p>Soit $a &gt; 0$. On définit $(u_n)$ par $u_0 &gt; 0$ et $u_{n+1} = \frac{1}{2}\left(u_n + \frac{a}{u_n}\right)$.</p>
+<ol>
+<li>Montrer que $u_{n+1}^2 - a = \frac{(u_n^2 - a)^2}{4u_n^2}$.</li>
+<li>Montrer que pour $n \geq 1$, $u_n \geq \sqrt{a}$ et que $(u_n)_{n\geq 1}$ est décroissante.</li>
+<li>Conclure que $(u_n)$ converge vers $\sqrt{a}$.</li>
+</ol>
+<details>
+<summary><strong>✅ Correction complète</strong></summary>
+
+**Question 1.**
+$$u_{n+1}^2 = \frac{1}{4}\left(u_n + \frac{a}{u_n}\right)^2 = \frac{1}{4}\left(u_n^2 + 2a + \frac{a^2}{u_n^2}\right)$$
+
+$$u_{n+1}^2 - a = \frac{1}{4}\left(u_n^2 + 2a + \frac{a^2}{u_n^2}\right) - a = \frac{1}{4}\left(u_n^2 - 2a + \frac{a^2}{u_n^2}\right) = \frac{1}{4}\left(u_n - \frac{a}{u_n}\right)^2 = \frac{(u_n^2 - a)^2}{4u_n^2}$$
+
+**Question 2.**
+
+$u_{n+1}^2 - a = \frac{(u_n^2 - a)^2}{4u_n^2} \geq 0$ (c'est un carré divisé par un positif).
+
+Donc pour tout $n \geq 1$ (i.e. $n+1 \geq 1$) : $u_n^2 \geq a$, donc $u_n \geq \sqrt{a}$ (car $u_n > 0$ par récurrence).
+
+*Décroissance pour $n \geq 1$ :*
+$$u_{n+1} - u_n = \frac{1}{2}\left(u_n + \frac{a}{u_n}\right) - u_n = \frac{1}{2}\left(\frac{a}{u_n} - u_n\right) = \frac{a - u_n^2}{2u_n} \leq 0$$
+
+car $u_n^2 \geq a$ pour $n \geq 1$.
+
+**Question 3.**
+
+$(u_n)_{n \geq 1}$ est décroissante et minorée par $\sqrt{a}$. Donc elle converge vers un $\ell \geq \sqrt{a}$.
+
+En passant à la limite dans $u_{n+1} = \frac{1}{2}(u_n + a/u_n)$ : $\ell = \frac{1}{2}(\ell + a/\ell)$, soit $2\ell^2 = \ell^2 + a$, soit $\ell^2 = a$, soit $\ell = \sqrt{a}$. $\blacksquare$
+
+</details>
+
+<hr />
+<h2>🔵 Thème 3 : Continuité et TVI</h2>
+<h3>Exercice 3.1 — Application du TVI</h3>
+<p>Soit $f : \mathbb{R} \to \mathbb{R}$ continue, avec $\lim_{x \to -\infty} f(x) = -\infty$ et $\lim_{x \to +\infty} f(x) = +\infty$. Montrer que $f$ s'annule au moins une fois.</p>
+<details>
+<summary><strong>✅ Correction complète</strong></summary>
+
+**Utilisation des limites infinies.**
+
+Comme $\lim_{x \to +\infty} f(x) = +\infty$, il existe $R > 0$ tel que pour tout $x > R$, $f(x) > 1 > 0$.
+
+En particulier, $f(R+1) > 0$ (prenons $b = R+1$).
+
+Comme $\lim_{x \to -\infty} f(x) = -\infty$, il existe $R' > 0$ tel que pour tout $x < -R'$, $f(x) < -1 < 0$.
+
+En particulier, $f(-R'-1) < 0$ (prenons $a = -R'-1$).
+
+**Application du TVI.**
+
+$f$ est continue sur $[a, b]$ avec $f(a) < 0 < f(b)$.
+
+D'après le TVI (version "zéro"), il existe $c \in ]a, b[$ tel que $f(c) = 0$. $\blacksquare$
+
+**Application aux polynômes de degré impair :** $P(x) = a_n x^n + \ldots + a_0$ avec $n$ impair et $a_n \neq 0$.
+- Si $a_n > 0$ : $P(x) \to -\infty$ quand $x \to -\infty$ et $P(x) \to +\infty$ quand $x \to +\infty$.
+- D'après le résultat précédent, $P$ s'annule au moins une fois.
+
+</details>
+
+<hr />
+<h3>Exercice 3.2 — Continuité d'une fonction définie par morceaux</h3>
+<p>Étudier la continuité de $f$ définie sur $\mathbb{R}$ par :<br />
+$$f(x) = \begin{cases} x^2 \sin\frac{1}{x} &amp; \text{si } x \neq 0 \ 0 &amp; \text{si } x = 0 \end{cases}$$</p>
+<details>
+<summary><strong>✅ Correction complète</strong></summary>
+
+**Continuité en tout point $x_0 \neq 0$.**
+
+Pour $x \neq 0$, $f(x) = x^2 \sin(1/x)$ est une composée et un produit de fonctions continues sur $\mathbb{R}^*$. Donc $f$ est continue en tout $x_0 \neq 0$.
+
+**Continuité en $0$.**
+
+On doit vérifier que $\lim_{x \to 0} f(x) = f(0) = 0$.
+
+Pour tout $x \neq 0$ : $|f(x)| = |x^2 \sin(1/x)| = x^2 |\sin(1/x)| \leq x^2 \cdot 1 = x^2$.
+
+Donc $0 \leq |f(x) - f(0)| = |f(x)| \leq x^2$.
+
+Comme $x^2 \to 0$ quand $x \to 0$, par le théorème des gendarmes :
+$$\lim_{x \to 0} |f(x)| = 0$$
+donc $\lim_{x \to 0} f(x) = 0 = f(0)$.
+
+$f$ est continue en 0.
+
+**Conclusion.** $f$ est continue sur $\mathbb{R}$.
+
+*Remarque :* on peut montrer que $f$ est dérivable en 0 (avec $f'(0) = 0$) mais que $f'$ n'est pas continue en 0 (car $f'(x) = 2x\sin(1/x) - \cos(1/x)$ qui n'a pas de limite en 0). Donc $f \in D^1(\mathbb{R}) \setminus C^1(\mathbb{R})$.
+
+</details>
+
+<hr />
+<h2>🔵 Thème 4 : Dérivabilité et TAF</h2>
+<h3>Exercice 4.1 — Inégalités par le TAF</h3>
+<p>Montrer les inégalités suivantes :<br />
+1. $\forall x \geq 0$, $e^x \geq 1 + x$<br />
+2. $\forall x &gt; 0$, $\frac{1}{x+1} &lt; \ln(x+1) - \ln(x) &lt; \frac{1}{x}$<br />
+3. $\forall x \in [0,1]$, $\frac{x}{x+1} \leq \ln(1+x) \leq x$</p>
+<details>
+<summary><strong>✅ Correction complète</strong></summary>
+
+**1. $e^x \geq 1 + x$.**
+
+Posons $g(x) = e^x - 1 - x$. On a $g(0) = 0$ et $g'(x) = e^x - 1$.
+
+- Pour $x \geq 0$ : $g'(x) = e^x - 1 \geq e^0 - 1 = 0$. Donc $g$ est croissante sur $[0, +\infty[$, donc $g(x) \geq g(0) = 0$.
+
+Donc $e^x \geq 1 + x$ pour $x \geq 0$.
+
+*Alternative par convexité :* $\exp$ est convexe ($\exp'' = \exp > 0$), donc la courbe est au-dessus de sa tangente en 0, d'équation $y = 1 + x$.
+
+**2. Inégalités pour $\ln$.**
+
+Appliquons le TAF à $f(t) = \ln t$ sur $[x, x+1]$ (avec $x > 0$).
+
+$f$ est continue sur $[x, x+1]$ et dérivable sur $]x, x+1[$. Il existe $c \in ]x, x+1[$ tel que :
+$$f(x+1) - f(x) = f'(c) \cdot (x+1-x) = \frac{1}{c}$$
+
+Or $x < c < x+1$, donc $\frac{1}{x+1} < \frac{1}{c} < \frac{1}{x}$.
+
+D'où $\frac{1}{x+1} < \ln(x+1) - \ln(x) < \frac{1}{x}$.
+
+**3. Encadrement de $\ln(1+x)$.**
+
+*Inégalité droite $\ln(1+x) \leq x$ :*
+
+Posons $h(x) = x - \ln(1+x)$. $h(0) = 0$ et $h'(x) = 1 - \frac{1}{1+x} = \frac{x}{1+x} \geq 0$ pour $x \geq 0$. Donc $h$ croissante sur $[0,1]$, donc $h(x) \geq 0$.
+
+*Inégalité gauche $\frac{x}{x+1} \leq \ln(1+x)$ :*
+
+Posons $k(x) = \ln(1+x) - \frac{x}{x+1}$. $k(0) = 0$ et $k'(x) = \frac{1}{1+x} - \frac{(x+1) - x}{(x+1)^2} = \frac{1}{1+x} - \frac{1}{(1+x)^2} = \frac{x}{(1+x)^2} \geq 0$ pour $x \geq 0$. Donc $k$ croissante, donc $k(x) \geq 0$. $\blacksquare$
+
+</details>
+
+<hr />
+<h2>🔵 Thème 5 : Fonctions usuelles et réciproques</h2>
+<h3>Exercice 5.1 — Étude de $f(x) = \ln(x + \sqrt{1+x^2})$ (type partiel !)</h3>
+<ol>
+<li>Montrer que $f$ est dérivable sur $\mathbb{R}$ et calculer $f'(x)$.</li>
+<li>Montrer que $f$ est une bijection de $\mathbb{R}$ sur $\mathbb{R}$.</li>
+<li>Montrer que $f^{-1}$ est dérivable sur $\mathbb{R}$ et calculer $(f^{-1})'(y)$.</li>
+</ol>
+<details>
+<summary><strong>✅ Correction complète</strong></summary>
+
+**Question 1 — Dérivée de $f$.**
+
+D'abord, montrons que $f$ est bien définie sur $\mathbb{R}$ : pour tout $x \in \mathbb{R}$, $\sqrt{1+x^2} > 0$, et $x + \sqrt{1+x^2} > 0$ car $\sqrt{1+x^2} > |x| \geq -x$.
+
+$f$ est composée de fonctions $C^\infty$ sur $\mathbb{R}$, donc $f \in C^\infty(\mathbb{R})$.
+
+$$f'(x) = \frac{1}{x + \sqrt{1+x^2}} \cdot \left(1 + \frac{x}{\sqrt{1+x^2}}\right) = \frac{1}{x + \sqrt{1+x^2}} \cdot \frac{\sqrt{1+x^2} + x}{\sqrt{1+x^2}} = \frac{1}{\sqrt{1+x^2}}$$
+
+Donc $f'(x) = \frac{1}{\sqrt{1+x^2}} > 0$ pour tout $x \in \mathbb{R}$.
+
+**Question 2 — Bijection.**
+
+$f'(x) > 0$ sur $\mathbb{R}$ donc $f$ est **strictement croissante**, donc **injective**.
+
+Limites :
+- $\lim_{x \to +\infty} f(x) = \lim_{x \to +\infty} \ln(x + \sqrt{1+x^2})$. Comme $x + \sqrt{1+x^2} \geq x \to +\infty$, $f(x) \to +\infty$.
+- $\lim_{x \to -\infty} f(x)$ : on a $x + \sqrt{1+x^2} = x(1 + \sqrt{1/x^2+1}) \approx x \cdot 0 = ...$ Mieux : $f(-x) = \ln(-x + \sqrt{1+x^2})$. Or $(-x+\sqrt{1+x^2})(x+\sqrt{1+x^2}) = 1+x^2-x^2 = 1$. Donc $f(-x) = -\ln(x+\sqrt{1+x^2}) = -f(x)$. La fonction $f$ est **impaire**. Donc $\lim_{x\to-\infty} f(x) = -\lim_{x\to+\infty} f(x) = -\infty$.
+
+Par le TVI, $f(\mathbb{R}) = \mathbb{R}$, donc $f$ est **surjective** de $\mathbb{R}$ dans $\mathbb{R}$.
+
+Conclusion : $f$ est bijective.
+
+**Question 3 — Dérivée de $f^{-1}$.**
+
+$f$ est bijective de classe $C^1$, avec $f'(x) = \frac{1}{\sqrt{1+x^2}} \neq 0$.
+
+Par le théorème de dérivation des bijections réciproques :
+$$(f^{-1})'(y) = \frac{1}{f'(f^{-1}(y))} = \frac{1}{\frac{1}{\sqrt{1+(f^{-1}(y))^2}}} = \sqrt{1+(f^{-1}(y))^2}$$
+
+En posant $x = f^{-1}(y)$, on a $y = f(x) = \ln(x + \sqrt{1+x^2})$, donc $e^y = x + \sqrt{1+x^2}$.
+
+On peut montrer que $f^{-1}(y) = \frac{e^y - e^{-y}}{2} = \sinh y$ (sinus hyperbolique).
+
+$(f^{-1})'(y) = \sqrt{1 + \sinh^2 y} = \cosh y$. $\blacksquare$
+
+</details>
+
+<hr />
+<hr />
+<h1>PARTIE 2 — ANALYSE 2</h1>
+<hr />
+<h2>🟡 Thème 1 : Convexité et inégalités</h2>
+<h3>Exercice A.1 — Inégalités par convexité (type partiel !)</h3>
+<ol>
+<li>Montrer que $\forall x \in [0, 1]$, $\frac{\pi}{4} x \leq \arctan x \leq x$.</li>
+<li>Montrer que $\forall x &gt; -1$, $\forall \alpha &gt; 1$, $(1+x)^\alpha \geq 1 + \alpha x$.</li>
+</ol>
+<details>
+<summary><strong>✅ Correction complète</strong></summary>
+
+**1. Inégalités pour arctan.**
+
+Posons $g(x) = \arctan x$.
+
+$g'(x) = \frac{1}{1+x^2}$ et $g''(x) = -\frac{2x}{(1+x^2)^2}$.
+
+Sur $[0,1]$, $x \geq 0$ donc $g''(x) \leq 0$. Donc $g = \arctan$ est **concave** sur $[0,1]$.
+
+*Inégalité gauche $\frac{\pi}{4}x \leq \arctan x$ :*
+
+$g$ est concave sur $[0,1]$. En $x_1 = 0$ et $x_2 = 1$, la corde a pour équation :
+$$y = g(0) + \frac{g(1) - g(0)}{1 - 0}(x - 0) = 0 + \frac{\pi/4 - 0}{1}x = \frac{\pi}{4}x$$
+
+Pour une fonction concave, la courbe est **au-dessus des cordes**. Donc pour $x \in [0,1]$ :
+$$g(x) \geq \frac{\pi}{4}x$$
+
+*Inégalité droite $\arctan x \leq x$ :*
+
+$g$ est concave sur $[0,1]$ et sa tangente en $x_0 = 0$ a pour équation $y = g(0) + g'(0)(x-0) = x$ (car $g'(0) = 1$).
+
+Pour une fonction concave, la courbe est **en dessous de ses tangentes**. Donc pour $x \in [0,1]$ :
+$$g(x) \leq x$$
+
+Conclusion : $\frac{\pi}{4}x \leq \arctan x \leq x$ pour $x \in [0,1]$. $\blacksquare$
+
+**2. Inégalité de Bernoulli généralisée.**
+
+Posons $h(x) = (1+x)^\alpha$ sur $]-1, +\infty[$. On a :
+- $h'(x) = \alpha(1+x)^{\alpha-1}$
+- $h''(x) = \alpha(\alpha-1)(1+x)^{\alpha-2}$
+
+Pour $\alpha > 1$ et $x > -1$ : $(1+x)^{\alpha-2} > 0$ et $\alpha(\alpha-1) > 0$ (car $\alpha > 1$). Donc $h''(x) > 0$ : $h$ est **convexe** sur $]-1, +\infty[$.
+
+La tangente à la courbe de $h$ en $x_0 = 0$ est :
+$$T(x) = h(0) + h'(0)(x-0) = 1 + \alpha \cdot 1 \cdot x = 1 + \alpha x$$
+
+Pour une fonction convexe, la courbe est **au-dessus de ses tangentes**. Donc pour $x > -1$ :
+$$h(x) \geq T(x) \quad \Leftrightarrow \quad (1+x)^\alpha \geq 1 + \alpha x \qquad \blacksquare$$
+
+</details>
+
+<hr />
+<h2>🟡 Thème 2 : Dérivées d'ordre $n$ et formule de Leibniz</h2>
+<h3>Exercice B.1 — Dérivées d'ordre $n$ (type partiel !)</h3>
+<p>Soit $f(x) = (x^2 + x + 1)e^{-x}$.</p>
+<ol>
+<li>Justifier que $f \in C^\infty(\mathbb{R})$.</li>
+<li>Calculer $g^{(n)}(x)$ pour $g(x) = e^{-x}$.</li>
+<li>Calculer $f^{(n)}(x)$ par la formule de Leibniz.</li>
+</ol>
+<details>
+<summary><strong>✅ Correction complète</strong></summary>
+
+**Question 1.**
+
+$P(x) = x^2 + x + 1$ est un polynôme, donc $C^\infty(\mathbb{R})$.
+
+$g(x) = e^{-x}$ est $C^\infty(\mathbb{R})$ (composée de $\exp$ et d'une fonction affine).
+
+$f = P \cdot g$ est un produit de deux fonctions $C^\infty(\mathbb{R})$, donc $f \in C^\infty(\mathbb{R})$.
+
+**Question 2.** Par récurrence : $g^{(n)}(x) = (-1)^n e^{-x}$.
+
+*Initialisation :* $g^{(0)}(x) = e^{-x}$ ✓, $g^{(1)}(x) = -e^{-x} = (-1)^1 e^{-x}$ ✓.
+
+*Hérédité :* Supposons $g^{(n)}(x) = (-1)^n e^{-x}$. Alors $g^{(n+1)}(x) = ((-1)^n e^{-x})' = (-1)^n \cdot (-e^{-x}) = (-1)^{n+1} e^{-x}$. ✓
+
+**Question 3 — Formule de Leibniz.**
+
+Posons $u(x) = P(x) = x^2 + x + 1$ et $v(x) = e^{-x}$.
+
+Les dérivées de $u$ :
+- $u^{(0)} = x^2 + x + 1$
+- $u^{(1)} = 2x + 1$
+- $u^{(2)} = 2$
+- $u^{(k)} = 0$ pour $k \geq 3$
+
+Les dérivées de $v$ : $v^{(k)} = (-1)^k e^{-x}$.
+
+Par Leibniz :
+$$f^{(n)} = \sum_{k=0}^{n} \binom{n}{k} u^{(k)} v^{(n-k)}$$
+
+Comme $u^{(k)} = 0$ pour $k \geq 3$, seuls les termes $k = 0, 1, 2$ (si $n \geq 2$) contribuent.
+
+**Pour $n \geq 2$ :**
+$$f^{(n)}(x) = \binom{n}{0}(x^2+x+1)(-1)^n e^{-x} + \binom{n}{1}(2x+1)(-1)^{n-1}e^{-x} + \binom{n}{2} \cdot 2 \cdot (-1)^{n-2}e^{-x}$$
+
+$$= e^{-x}\left[(-1)^n(x^2+x+1) - n(-1)^{n-1}(2x+1) \cdot \frac{(-1)^{n-1}}{(-1)^n} \ldots\right]$$
+
+Simplifions en factorisant $(-1)^{n-2}$ :
+
+$$f^{(n)}(x) = (-1)^{n-2} e^{-x}\left[(x^2+x+1)\cdot(-1)^2 - n(2x+1)\cdot(-1) + n(n-1)\right]$$
+
+$$= (-1)^n e^{-x}\left[(x^2+x+1) + n(2x+1) + n(n-1)\right]$$
+
+Attendez, recalculons proprement :
+
+$$f^{(n)}(x) = (x^2+x+1)(-1)^n e^{-x} + n(2x+1)(-1)^{n-1}e^{-x} + \frac{n(n-1)}{2}\cdot 2 \cdot (-1)^{n-2}e^{-x}$$
+
+$$= (-1)^n e^{-x}\left[(x^2+x+1) - n(2x+1) + n(n-1)\right]$$
+
+car $(-1)^{n-1} = -(-1)^n$ et $(-1)^{n-2} = (-1)^n$.
+
+$$\boxed{f^{(n)}(x) = (-1)^n e^{-x}\left[x^2 + (1-2n)x + (1-n+n^2-n)\right] = (-1)^n e^{-x}\left[x^2 + (1-2n)x + (n^2-2n+1)\right]}$$
+
+Simplifions : $n^2 - 2n + 1 = (n-1)^2$, $1 - 2n = -(2n-1)$.
+
+$$f^{(n)}(x) = (-1)^n e^{-x}\left[x^2 - (2n-1)x + (n-1)^2\right]$$
+
+*Vérification pour $n = 1$ :* $f'(x) = (2x+1)e^{-x} - (x^2+x+1)e^{-x} = (-x^2+x)e^{-x}$.
+
+Formule : $(-1)^1 e^{-x}[x^2 - 1 \cdot x + 0] = -e^{-x}[x^2-x] = e^{-x}[x-x^2]$. ✓
+
+</details>
+
+<hr />
+<h3>Exercice B.2 — Récurrence sur les dérivées</h3>
+<p>Soit $f(x) = \frac{1}{x}e^x$ pour $x \neq 0$.</p>
+<ol>
+<li>Montrer par récurrence qu'il existe un polynôme $Q_n$ tel que $f^{(n)}(x) = \frac{Q_n(x)}{x^{n+1}}e^x$.</li>
+<li>Trouver une relation de récurrence entre $Q_{n+1}$ et $Q_n$.</li>
+<li>En utilisant la formule de Leibniz pour $f = g \cdot \exp$ avec $g(x) = 1/x$, donner une expression de $Q_n$.</li>
+</ol>
+<details>
+<summary><strong>✅ Correction complète</strong></summary>
+
+**Question 1 — Récurrence.**
+
+*Propriété $P_n$ :* $f^{(n)}(x) = \frac{Q_n(x)}{x^{n+1}}e^x$ pour un certain polynôme $Q_n$.
+
+*Initialisation $P_0$ :* $f^{(0)}(x) = f(x) = \frac{e^x}{x} = \frac{1}{x^1} e^x$. Donc $Q_0 = 1$. ✓
+
+*Hérédité :* Supposons $P_n$ vraie. Alors :
+$$f^{(n+1)}(x) = \left(\frac{Q_n(x)}{x^{n+1}}e^x\right)'$$
+
+Par la règle du produit :
+$$= \frac{Q_n'(x)x^{n+1} - (n+1)x^n Q_n(x)}{x^{2(n+1)}}e^x + \frac{Q_n(x)}{x^{n+1}}e^x$$
+
+$$= \frac{Q_n'(x)x^{n+1} - (n+1)x^n Q_n(x) + x^{n+1}Q_n(x)}{x^{2n+2}}e^x$$
+
+$$= \frac{x^n[Q_n'(x)x - (n+1)Q_n(x) + xQ_n(x)]}{x^{2n+2}}e^x = \frac{Q_n'(x)x + (x-n-1)Q_n(x)}{x^{n+2}}e^x$$
+
+Donc $Q_{n+1}(x) = xQ_n'(x) + (x-n-1)Q_n(x)$, qui est bien un polynôme si $Q_n$ est un polynôme. ✓
+
+**Question 2.** $Q_{n+1}(x) = xQ_n'(x) + (x - n - 1)Q_n(x)$.
+
+**Question 3 — Via Leibniz.**
+
+$g(x) = 1/x$, $g^{(k)}(x) = \frac{(-1)^k k!}{x^{k+1}}$ (par récurrence).
+
+Par Leibniz :
+$$f^{(n)}(x) = \sum_{k=0}^n \binom{n}{k} g^{(k)}(x) e^x = e^x \sum_{k=0}^n \binom{n}{k} \frac{(-1)^k k!}{x^{k+1}}$$
+
+$$= \frac{e^x}{x^{n+1}} \sum_{k=0}^n \binom{n}{k} (-1)^k k! \cdot x^{n-k} = \frac{e^x}{x^{n+1}} Q_n(x)$$
+
+avec $Q_n(x) = \sum_{k=0}^n \frac{n!}{(n-k)!}(-1)^k x^{n-k}$.
+
+</details>
+
+<hr />
+<h2>🟡 Thème 3 : Intégration et sommes de Darboux</h2>
+<h3>Exercice C.1 — Sommes de Darboux et calcul d'intégrale</h3>
+<p>En utilisant les sommes de Darboux pour $f(x) = x^3$ sur $[0,1]$, montrer que $\int_0^1 x^3\, dx = \frac{1}{4}$.</p>
+<p>On rappelle que $\sum_{k=1}^n k^3 = \frac{n^2(n+1)^2}{4}$.</p>
+<details>
+<summary><strong>✅ Correction complète</strong></summary>
+
+**Calcul des sommes de Darboux.**
+
+On découpe $[0,1]$ en $n$ intervalles : $a_k = k/n$ pour $k = 0, \ldots, n$.
+
+Comme $f(x) = x^3$ est **croissante** sur $[0,1]$, sur $[a_k, a_{k+1}]$ :
+- $\min = f(a_k) = (k/n)^3$
+- $\max = f(a_{k+1}) = ((k+1)/n)^3$
+
+$$S_n^-(f, [0,1]) = \frac{1}{n}\sum_{k=0}^{n-1}\left(\frac{k}{n}\right)^3 = \frac{1}{n^4}\sum_{k=0}^{n-1} k^3 = \frac{1}{n^4}\sum_{k=1}^{n-1}k^3$$
+
+D'après la formule donnée avec $n-1$ à la place de $n$ :
+$$\sum_{k=1}^{n-1}k^3 = \frac{(n-1)^2 n^2}{4}$$
+
+Donc $S_n^- = \frac{(n-1)^2 n^2}{4n^4} = \frac{(n-1)^2}{4n^2} = \frac{1}{4}\left(1 - \frac{1}{n}\right)^2$.
+
+$$S_n^+(f,[0,1]) = \frac{1}{n}\sum_{k=1}^{n}\left(\frac{k}{n}\right)^3 = \frac{1}{n^4}\sum_{k=1}^n k^3 = \frac{n^2(n+1)^2}{4n^4} = \frac{(n+1)^2}{4n^2} = \frac{1}{4}\left(1 + \frac{1}{n}\right)^2$$
+
+**Passage à la limite.**
+
+$$\lim_{n \to +\infty} S_n^- = \lim_{n\to+\infty} \frac{1}{4}\left(1-\frac{1}{n}\right)^2 = \frac{1}{4}$$
+
+$$\lim_{n \to +\infty} S_n^+ = \lim_{n\to+\infty} \frac{1}{4}\left(1+\frac{1}{n}\right)^2 = \frac{1}{4}$$
+
+Comme $S_n^- \leq \int_0^1 x^3\, dx \leq S_n^+$ et les deux encadrements tendent vers $\frac{1}{4}$, par le théorème des gendarmes :
+$$\int_0^1 x^3\, dx = \frac{1}{4} \qquad \blacksquare$$
+
+*Vérification par primitive :* $\int_0^1 x^3\, dx = [x^4/4]_0^1 = 1/4$. ✓
+
+</details>
+
+<hr />
+<h3>Exercice C.2 — Méthodes de calcul intégral</h3>
+<p>Calculer les intégrales suivantes :<br />
+1. $I_1 = \int_0^1 x e^x\, dx$<br />
+2. $I_2 = \int_0^1 \ln(1+x)\, dx$<br />
+3. $I_3 = \int_0^{\pi/2} \sin^3 x\, dx$<br />
+4. $I_4 = \int_1^e \frac{(\ln x)^2}{x}\, dx$</p>
+<details>
+<summary><strong>✅ Correction complète</strong></summary>
+
+**1. $I_1 = \int_0^1 x e^x\, dx$ (IPP).**
+
+Posons $u' = e^x$ (donc $u = e^x$) et $v = x$ (donc $v' = 1$).
+
+$$I_1 = [xe^x]_0^1 - \int_0^1 e^x\, dx = (1 \cdot e^1 - 0) - [e^x]_0^1 = e - (e^1 - e^0) = e - e + 1 = 1$$
+
+**2. $I_2 = \int_0^1 \ln(1+x)\, dx$ (IPP).**
+
+Posons $u' = 1$ (donc $u = x$) et $v = \ln(1+x)$ (donc $v' = \frac{1}{1+x}$).
+
+$$I_2 = [x\ln(1+x)]_0^1 - \int_0^1 \frac{x}{1+x}\, dx = \ln 2 - \int_0^1 \frac{x}{1+x}\, dx$$
+
+Or $\frac{x}{1+x} = 1 - \frac{1}{1+x}$. Donc :
+$$\int_0^1 \frac{x}{1+x}\, dx = [x - \ln(1+x)]_0^1 = (1 - \ln 2) - 0 = 1 - \ln 2$$
+
+$$I_2 = \ln 2 - (1 - \ln 2) = 2\ln 2 - 1$$
+
+**3. $I_3 = \int_0^{\pi/2} \sin^3 x\, dx$ (technique).**
+
+On écrit $\sin^3 x = \sin^2 x \cdot \sin x = (1 - \cos^2 x)\sin x$.
+
+Changement de variable : $t = \cos x$, $dt = -\sin x\, dx$.
+- $x = 0 \to t = 1$, $x = \pi/2 \to t = 0$.
+
+$$I_3 = \int_1^0 (1-t^2)(-dt) = \int_0^1 (1-t^2)\, dt = \left[t - \frac{t^3}{3}\right]_0^1 = 1 - \frac{1}{3} = \frac{2}{3}$$
+
+**4. $I_4 = \int_1^e \frac{(\ln x)^2}{x}\, dx$ (substitution).**
+
+Changement de variable : $t = \ln x$, $dt = dx/x$.
+- $x = 1 \to t = 0$, $x = e \to t = 1$.
+
+$$I_4 = \int_0^1 t^2\, dt = \left[\frac{t^3}{3}\right]_0^1 = \frac{1}{3}$$
+
+</details>
+
+<hr />
+<h2>🟡 Thème 4 : Formule de Taylor et reste intégral</h2>
+<h3>Exercice D.1 — Application du TFA</h3>
+<p>Soit $F(x) = \int_0^x |t|\, dt$.</p>
+<ol>
+<li>$F$ est-elle de classe $C^1$ sur $\mathbb{R}$ ? Deux fois dérivable sur $\mathbb{R}$ ?</li>
+<li>Calculer $F(x)$ pour tout $x \in \mathbb{R}$.</li>
+</ol>
+<details>
+<summary><strong>✅ Correction complète</strong></summary>
+
+**Question 1 — Sans calculer.**
+
+La fonction $t \mapsto |t|$ est continue sur $\mathbb{R}$ (mais pas dérivable en 0).
+
+D'après le théorème fondamental du calcul intégral, $F$ est **dérivable** sur $\mathbb{R}$ avec $F'(x) = |x|$.
+
+Comme $|x|$ est continue sur $\mathbb{R}$, $F \in C^1(\mathbb{R})$.
+
+$F'(x) = |x|$ est dérivable en tout $x \neq 0$, mais **pas dérivable en 0** (la dérivée à gauche de $|x|$ en 0 est $-1$ et la dérivée à droite est $+1$).
+
+Donc **$F$ n'est pas deux fois dérivable sur $\mathbb{R}$**.
+
+**Question 2 — Calcul de $F(x)$.**
+
+*Cas $x \geq 0$ :*
+$$F(x) = \int_0^x |t|\, dt = \int_0^x t\, dt = \left[\frac{t^2}{2}\right]_0^x = \frac{x^2}{2}$$
+
+*Cas $x < 0$ :*
+$$F(x) = \int_0^x |t|\, dt = -\int_x^0 |t|\, dt = -\int_x^0 (-t)\, dt = \int_x^0 t\, dt = \left[\frac{t^2}{2}\right]_x^0 = -\frac{x^2}{2}$$
+
+En résumé :
+$$F(x) = \begin{cases} \frac{x^2}{2} & \text{si } x \geq 0 \\ -\frac{x^2}{2} & \text{si } x < 0 \end{cases} = \frac{x|x|}{2}$$
+
+*Vérification :* $F'(x) = |x|$ ✓, $F(0) = 0$ ✓. Sur $\mathbb{R}^+$ : $F''(x) = 1 > 0$. Sur $\mathbb{R}^-$ : $F''(x) = -1 < 0$. En 0 : pas dérivable deux fois. ✓
+
+</details>
+
+<hr />
+<h2>🟡 Thème 5 : Développements Limités</h2>
+<h3>Exercice E.1 — Calcul de limites par DL</h3>
+<p>Calculer les limites suivantes :<br />
+1. $\lim_{x \to 0} \frac{\sin x - x + x^3/6}{x^5}$<br />
+2. $\lim_{x \to 0} \frac{e^x - 1 - x}{\sin^2 x}$<br />
+3. $\lim_{x \to 0} \frac{1 - \cos x}{\ln(1+x^2)}$<br />
+4. $\lim_{x \to +\infty} x\left(\sqrt{x^2+1} - x\right)$</p>
+<details>
+<summary><strong>✅ Correction complète</strong></summary>
+
+**1.**
+$$\sin x = x - \frac{x^3}{6} + \frac{x^5}{120} + o(x^5)$$
+$$\sin x - x + \frac{x^3}{6} = \frac{x^5}{120} + o(x^5)$$
+$$\frac{\sin x - x + x^3/6}{x^5} = \frac{1}{120} + o(1) \to \frac{1}{120}$$
+
+**2.**
+$$e^x - 1 - x = \frac{x^2}{2} + \frac{x^3}{6} + o(x^3)$$
+$$\sin^2 x = \left(x - \frac{x^3}{6} + o(x^3)\right)^2 = x^2 - \frac{x^4}{3} + o(x^4) \approx x^2 + o(x^2)$$
+
+$$\frac{e^x - 1 - x}{\sin^2 x} = \frac{x^2/2 + o(x^2)}{x^2 + o(x^2)} = \frac{1/2 + o(1)}{1 + o(1)} \to \frac{1}{2}$$
+
+**3.**
+$$1 - \cos x = \frac{x^2}{2} + o(x^2), \quad \ln(1+x^2) = x^2 + o(x^2)$$
+$$\frac{1-\cos x}{\ln(1+x^2)} = \frac{x^2/2 + o(x^2)}{x^2 + o(x^2)} = \frac{1/2 + o(1)}{1+o(1)} \to \frac{1}{2}$$
+
+**4.** Posons $u = 1/x^2 \to 0^+$ quand $x \to +\infty$.
+$$\sqrt{x^2+1} = x\sqrt{1+1/x^2} = x\left(1 + \frac{1}{2x^2} - \frac{1}{8x^4} + o(1/x^4)\right)$$
+$$\sqrt{x^2+1} - x = \frac{1}{2x} + o(1/x)$$
+$$x(\sqrt{x^2+1} - x) = x \cdot \frac{1}{2x} + o(1) = \frac{1}{2} + o(1) \to \frac{1}{2}$$
+
+</details>
+
+<hr />
+<h3>Exercice E.2 — DL et asymptote oblique</h3>
+<p>Étudier le comportement de $f(x) = \sqrt{x^2 + 2x + 3}$ en $+\infty$. Trouver une asymptote oblique.</p>
+<details>
+<summary><strong>✅ Correction complète</strong></summary>
+
+On factorise par $x$ (pour $x > 0$) :
+$$f(x) = \sqrt{x^2 + 2x + 3} = x\sqrt{1 + \frac{2}{x} + \frac{3}{x^2}}$$
+
+Posons $u = 2/x + 3/x^2 \to 0$ quand $x \to +\infty$.
+
+$$\sqrt{1+u} = 1 + \frac{u}{2} - \frac{u^2}{8} + o(u^2)$$
+
+$$u = \frac{2}{x} + \frac{3}{x^2}, \quad \frac{u}{2} = \frac{1}{x} + \frac{3}{2x^2}, \quad u^2 = \frac{4}{x^2} + o(1/x^2)$$
+
+Donc :
+$$\sqrt{1+u} = 1 + \frac{1}{x} + \frac{3}{2x^2} - \frac{1}{2x^2} + o(1/x^2) = 1 + \frac{1}{x} + \frac{1}{x^2} + o(1/x^2)$$
+
+$$f(x) = x\left(1 + \frac{1}{x} + \frac{1}{x^2} + o(1/x^2)\right) = x + 1 + \frac{1}{x} + o(1/x)$$
+
+**Asymptote oblique en $+\infty$ :** $y = x + 1$.
+
+*Vérification :* $f(x) - (x+1) = \frac{1}{x} + o(1/x) \to 0$. ✓
+
+La courbe est **au-dessus** de l'asymptote pour $x$ grand ($f(x) - (x+1) \approx 1/x > 0$).
+
+</details>
+
+<hr />
+<h3>Exercice E.3 — DL d'une somme de Darboux (type partiel avancé)</h3>
+<p>On définit $u_n = \sum_{k=0}^{n-1} \frac{1}{\sqrt{n^2 + k^2}}$.</p>
+<ol>
+<li>Montrer que $u_n$ est une somme de Riemann d'une certaine fonction sur $[0,1]$.</li>
+<li>Calculer $\lim_{n \to +\infty} u_n$.</li>
+</ol>
+<details>
+<summary><strong>✅ Correction complète</strong></summary>
+
+**Question 1.**
+
+$$u_n = \sum_{k=0}^{n-1} \frac{1}{\sqrt{n^2 + k^2}} = \sum_{k=0}^{n-1} \frac{1}{n\sqrt{1 + (k/n)^2}} = \frac{1}{n}\sum_{k=0}^{n-1} f\!\left(\frac{k}{n}\right)$$
+
+avec $f(x) = \frac{1}{\sqrt{1+x^2}}$.
+
+C'est la somme de Riemann (à gauche) de $f$ sur $[0,1]$ pour la subdivision en $n$ parties égales.
+
+La fonction $f(x) = \frac{1}{\sqrt{1+x^2}}$ est continue sur $[0,1]$ (c'est une composée de fonctions continues, le dénominateur ne s'annule pas).
+
+**Question 2.**
+
+Par la définition de l'intégrale de Riemann, la somme converge vers :
+$$\lim_{n \to +\infty} u_n = \int_0^1 \frac{dx}{\sqrt{1+x^2}}$$
+
+Or on sait (cf. table des primitives) que $\frac{d}{dx}\ln(x+\sqrt{1+x^2}) = \frac{1}{\sqrt{1+x^2}}$.
+
+Donc :
+$$\int_0^1 \frac{dx}{\sqrt{1+x^2}} = \left[\ln(x+\sqrt{1+x^2})\right]_0^1 = \ln(1+\sqrt{2}) - \ln(0+1) = \ln(1+\sqrt{2})$$
+
+$$\lim_{n \to +\infty} u_n = \ln(1+\sqrt{2})$$
+
+</details>
+    </section>
+
+    <section class="tab-panel" id="panel-partiels" role="tabpanel">
+<h1>📋 Sujets de Partiels avec Corrections — Analyse 1 &amp; 2</h1>
+<h3>L1 Informatique — Institut Galilée</h3>
+<blockquote>
+<p>3 sujets complets (Analyse 1 × 2, Analyse 2 × 1) — chaque correction est <strong>extrêmement détaillée</strong>.</p>
+</blockquote>
+<hr />
+<h1>🏆 SUJET 1 — PARTIEL ANALYSE 1 (simulé d'après annales 2022–2024)</h1>
+<p><strong>Durée : 2h — Documents et calculatrice interdits</strong></p>
+<hr />
+<h3>Exercice 1 — Définitions et bornes (4 points)</h3>
+<ol>
+<li>Soit $A$ une partie non vide de $\mathbb{R}$. Donner la définition de "$A$ est bornée".</li>
+<li>Soit $(u_n)$ une suite de réels. Donner la définition avec les quantificateurs de "$\lim_{n\to+\infty} u_n = +\infty$".</li>
+<li>On considère $A = \left{\frac{2m+n}{m+n},\ m, n \in \mathbb{N}^*\right}$.<br />
+   - (a) Montrer que $A$ est bornée.<br />
+   - (b) Déterminer $\sup A$ et $\inf A$. Justifier soigneusement.</li>
+</ol>
+<hr />
+<h3>Exercice 2 — Suites (6 points)</h3>
+<ol>
+<li>
+<p>Donner la nature et la limite (si elle existe) des suites suivantes :<br />
+   - $a_n = \dfrac{n^3 + 2}{n^3 + n^2 + 1}$<br />
+   - $b_n = \dfrac{(-1)^n n + 3}{n + 2}$<br />
+   - $c_n = \dfrac{n!}{n^n}$</p>
+</li>
+<li>
+<p>On définit la suite $(u_n)$ par $u_0 = 3$ et $u_{n+1} = \sqrt{2u_n - 1}$.<br />
+   - (a) Montrer par récurrence que pour tout $n \in \mathbb{N}$, $u_n &gt; 1$.<br />
+   - (b) Montrer que $(u_n)$ est décroissante.<br />
+   - (c) En déduire que $(u_n)$ converge et calculer sa limite.</p>
+</li>
+</ol>
+<hr />
+<h3>Exercice 3 — Continuité et TVI (4 points)</h3>
+<p>Soit $f : [0, 1] \to [0, 1]$ une fonction <strong>continue</strong> sur $[0, 1]$.</p>
+<ol>
+<li>
+<p>Montrer que l'équation $f(x) = x$ admet au moins une solution dans $[0, 1]$.<br />
+<em>(Indication : poser $g(x) = f(x) - x$.)</em></p>
+</li>
+<li>
+<p>On suppose de plus que $f$ est dérivable sur $]0,1[$ et que $|f'(x)| &lt; 1$ pour tout $x \in ]0,1[$. Montrer que l'équation $f(x) = x$ admet <strong>au plus</strong> une solution.<br />
+<em>(Indication : raisonner par l'absurde et utiliser le TAF.)</em></p>
+</li>
+</ol>
+<hr />
+<h3>Exercice 4 — Dérivabilité (6 points)</h3>
+<p>Soit $f : \mathbb{R} \to \mathbb{R}$ définie par $f(x) = \ln!\left(x + \sqrt{1+x^2}\right)$.</p>
+<ol>
+<li>Justifier que $f$ est bien définie et de classe $C^\infty$ sur $\mathbb{R}$.</li>
+<li>Calculer $f'(x)$ et montrer que $f'(x) = \dfrac{1}{\sqrt{1+x^2}}$.</li>
+<li>Étudier la parité de $f$.</li>
+<li>Calculer $f''(x)$ et étudier la convexité de $f$.</li>
+<li>Montrer que $f$ est une bijection de $\mathbb{R}$ sur $\mathbb{R}$, et que $f^{-1}$ est dérivable sur $\mathbb{R}$.</li>
+<li>Calculer $(f^{-1})'(y)$.</li>
+</ol>
+<hr />
+<h2>✅ CORRECTION SUJET 1</h2>
+<hr />
+<h3>Exercice 1</h3>
+<p><strong>1. Définition de "$A$ est bornée".</strong></p>
+<p>$A \subset \mathbb{R}$ est <strong>bornée</strong> si elle est à la fois majorée et minorée, c'est-à-dire si :<br />
+$$\exists M &gt; 0,\ \forall x \in A,\ |x| \leq M$$</p>
+<p><strong>2. Définition de $\lim u_n = +\infty$.</strong></p>
+<p>$$\forall A &gt; 0,\ \exists N \in \mathbb{N},\ \forall n \geq N,\ u_n &gt; A$$</p>
+<p><strong>3. Ensemble $A = \left{\frac{2m+n}{m+n},\ m,n \in \mathbb{N}^*\right}$.</strong></p>
+<p><strong>(a) $A$ est bornée.</strong></p>
+<p>On calcule : $\frac{2m+n}{m+n} = \frac{m + (m+n)}{m+n} = 1 + \frac{m}{m+n}$.</p>
+<p>Comme $m \geq 1$ et $n \geq 1$, on a $0 &lt; \frac{m}{m+n} &lt; 1$. Donc tout élément de $A$ est dans $]1, 2[$. $A$ est bornée.</p>
+<p><strong>(b) Calcul de sup et inf.</strong></p>
+<p><em>Claim : $\sup A = 2$.</em></p>
+<ul>
+<li><strong>2 est majorant :</strong> $\frac{2m+n}{m+n} = 1 + \frac{m}{m+n} &lt; 1 + 1 = 2$. ✓</li>
+<li><strong>2 est le plus petit majorant :</strong> Soit $\varepsilon &gt; 0$. Choisissons $m \in \mathbb{N}^*$ tel que $m &gt; \frac{1}{\varepsilon} - 1$, et $n = 1$. Alors $\frac{m}{m+1} &gt; 1 - \varepsilon$. Donc $\frac{2m+1}{m+1} = 1 + \frac{m}{m+1} &gt; 2 - \varepsilon$. Il existe donc $x \in A$ tel que $x &gt; 2 - \varepsilon$.</li>
+</ul>
+<p>Donc $\sup A = 2$. (Remarque : $2 \notin A$ car $\frac{m}{m+n} &lt; 1$ strictement.)</p>
+<p><em>Claim : $\inf A = 1$.</em></p>
+<ul>
+<li><strong>1 est minorant :</strong> $\frac{2m+n}{m+n} = 1 + \frac{m}{m+n} &gt; 1$. ✓</li>
+<li><strong>1 est le plus grand minorant :</strong> Soit $\varepsilon &gt; 0$. Choisissons $n \in \mathbb{N}^*$ tel que $n &gt; \frac{1}{\varepsilon} - 1$, et $m = 1$. Alors $\frac{1}{1+n} &lt; \varepsilon$. Donc $\frac{2+n}{1+n} = 1 + \frac{1}{1+n} &lt; 1 + \varepsilon$. Il existe donc $x \in A$ avec $x &lt; 1 + \varepsilon$.</li>
+</ul>
+<p>Donc $\inf A = 1$. ($1 \notin A$ non plus.)</p>
+<hr />
+<h3>Exercice 2</h3>
+<p><strong>1. Natures des suites.</strong></p>
+<p><strong>(a) $a_n = \frac{n^3+2}{n^3+n^2+1}$.</strong></p>
+<p>$$a_n = \frac{1 + 2/n^3}{1 + 1/n + 1/n^3} \to \frac{1+0}{1+0+0} = 1$$</p>
+<p>La suite <strong>converge vers 1</strong>.</p>
+<p><strong>(b) $b_n = \frac{(-1)^n n + 3}{n+2}$.</strong></p>
+<p>Pour $n$ pair : $b_n = \frac{n+3}{n+2} \to 1$.<br />
+Pour $n$ impair : $b_n = \frac{-n+3}{n+2} = \frac{-1+3/n}{1+2/n} \to -1$.</p>
+<p>Les deux sous-suites ont des limites différentes ($1 \neq -1$), donc <strong>$(b_n)$ diverge</strong>.</p>
+<p><strong>(c) $c_n = \frac{n!}{n^n}$.</strong></p>
+<p>On utilise le critère de D'Alembert :<br />
+$$\frac{c_{n+1}}{c_n} = \frac{(n+1)!}{(n+1)^{n+1}} \cdot \frac{n^n}{n!} = \frac{(n+1) \cdot n^n}{(n+1)^{n+1}} = \frac{n^n}{(n+1)^n} = \left(\frac{n}{n+1}\right)^n = \frac{1}{(1+1/n)^n}$$</p>
+<p>Or $\left(1+\frac{1}{n}\right)^n \to e$. Donc $\frac{c_{n+1}}{c_n} \to \frac{1}{e} &lt; 1$.</p>
+<p>Par le critère de D'Alembert, $c_n \to 0$. La suite <strong>converge vers 0</strong>.</p>
+<p><strong>2. Suite récurrente $u_0 = 3$, $u_{n+1} = \sqrt{2u_n - 1}$.</strong></p>
+<p><em>Propriété $P_n$ :</em> $u_n &gt; 1$.</p>
+<p><em>Initialisation :</em> $u_0 = 3 &gt; 1$. ✓</p>
+<p><em>Hérédité :</em> Supposons $u_n &gt; 1$. Alors $2u_n - 1 &gt; 2 \cdot 1 - 1 = 1 &gt; 0$ (bien défini), et $u_{n+1} = \sqrt{2u_n - 1} &gt; \sqrt{1} = 1$. ✓</p>
+<p><strong>(b) Monotonie.</strong></p>
+<p>$$u_{n+1}^2 = 2u_n - 1 \quad \text{et} \quad u_n^2 = u_n^2$$<br />
+$$u_{n+1}^2 - u_n^2 = 2u_n - 1 - u_n^2 = -(u_n^2 - 2u_n + 1) = -(u_n - 1)^2 \leq 0$$</p>
+<p>Donc $u_{n+1}^2 \leq u_n^2$. Comme $u_n &gt; 0$, $u_{n+1} \leq u_n$. La suite est <strong>décroissante</strong>.</p>
+<p><strong>(c) Convergence.</strong></p>
+<p>$(u_n)$ est décroissante et minorée par 1 (montré en (a)).</p>
+<p>Par le théorème des suites monotones bornées, $(u_n)$ converge vers un réel $\ell \geq 1$.</p>
+<p>Passage à la limite dans $u_{n+1} = \sqrt{2u_n - 1}$ :<br />
+$$\ell = \sqrt{2\ell - 1} \Rightarrow \ell^2 = 2\ell - 1 \Rightarrow \ell^2 - 2\ell + 1 = 0 \Rightarrow (\ell-1)^2 = 0 \Rightarrow \ell = 1$$</p>
+<p><strong>$(u_n)$ converge vers 1.</strong></p>
+<hr />
+<h3>Exercice 3</h3>
+<p><strong>1. Existence d'un point fixe.</strong></p>
+<p>Posons $g(x) = f(x) - x$. $g$ est continue sur $[0,1]$ (car $f$ et $x \mapsto x$ le sont).</p>
+<ul>
+<li>$g(0) = f(0) - 0 = f(0) \geq 0$ car $f : [0,1] \to [0,1]$, donc $f(0) \in [0,1]$.</li>
+<li>$g(1) = f(1) - 1 \leq 0$ car $f(1) \in [0,1]$.</li>
+</ul>
+<p><strong>Cas 1 :</strong> Si $g(0) = 0$, alors $x = 0$ est solution.<br />
+<strong>Cas 2 :</strong> Si $g(1) = 0$, alors $x = 1$ est solution.<br />
+<strong>Cas 3 :</strong> $g(0) &gt; 0$ et $g(1) &lt; 0$. Par le <strong>TVI</strong>, il existe $c \in ]0,1[$ tel que $g(c) = 0$, i.e. $f(c) = c$. $\blacksquare$</p>
+<p><strong>2. Unicité.</strong></p>
+<p>Supposons par l'absurde qu'il existe deux points fixes $x_1 \neq x_2$ dans $[0,1]$, avec $x_1 &lt; x_2$.</p>
+<p>$f(x_1) = x_1$ et $f(x_2) = x_2$.</p>
+<p>D'après le <strong>TAF</strong> appliqué à $f$ sur $[x_1, x_2]$ :<br />
+$$\exists c \in ]x_1, x_2[\ \text{tel que}\ f(x_2) - f(x_1) = f'(c)(x_2 - x_1)$$<br />
+$$x_2 - x_1 = f'(c)(x_2 - x_1)$$<br />
+$$1 = f'(c)$$</p>
+<p>Mais on a supposé $|f'(x)| &lt; 1$ pour tout $x \in ]0,1[$, donc $|f'(c)| &lt; 1$, d'où $f'(c) \neq 1$. <strong>Contradiction.</strong> </p>
+<p>Donc $f$ a au plus un point fixe dans $[0,1]$. $\blacksquare$</p>
+<hr />
+<h3>Exercice 4</h3>
+<p><strong>1. $f$ bien définie et $C^\infty$.</strong></p>
+<p>Pour tout $x \in \mathbb{R}$ : $\sqrt{1+x^2} &gt; 0$ donc $x + \sqrt{1+x^2} \geq \sqrt{1+x^2} - |x| \geq 0$.</p>
+<p>Plus précisément : $(x + \sqrt{1+x^2})(\sqrt{1+x^2} - x) = 1 + x^2 - x^2 = 1 &gt; 0$. Donc $x + \sqrt{1+x^2} &gt; 0$.</p>
+<p>$f = \ln \circ\, g$ avec $g(x) = x + \sqrt{1+x^2}$. $g$ est $C^\infty(\mathbb{R})$ (composées/somme de fonctions $C^\infty$, avec $1+x^2 &gt; 0$). $\ln$ est $C^\infty$ sur $]0,+\infty[$, et $g(x) &gt; 0$. Donc $f \in C^\infty(\mathbb{R})$.</p>
+<p><strong>2. Calcul de $f'(x)$.</strong></p>
+<p>$$f'(x) = \frac{g'(x)}{g(x)} = \frac{1 + \frac{x}{\sqrt{1+x^2}}}{x + \sqrt{1+x^2}} = \frac{\frac{\sqrt{1+x^2} + x}{\sqrt{1+x^2}}}{x + \sqrt{1+x^2}} = \frac{\sqrt{1+x^2}+x}{(x+\sqrt{1+x^2})\sqrt{1+x^2}} = \frac{1}{\sqrt{1+x^2}}$$</p>
+<p><strong>3. Parité.</strong></p>
+<p>$$f(-x) = \ln(-x + \sqrt{1+(-x)^2}) = \ln(\sqrt{1+x^2} - x)$$</p>
+<p>Or $(\sqrt{1+x^2}-x)(x+\sqrt{1+x^2}) = 1$, donc $\sqrt{1+x^2} - x = \frac{1}{x+\sqrt{1+x^2}}$.</p>
+<p>Donc $f(-x) = \ln!\left(\frac{1}{x+\sqrt{1+x^2}}\right) = -\ln(x+\sqrt{1+x^2}) = -f(x)$.</p>
+<p><strong>$f$ est impaire.</strong></p>
+<p><strong>4. Convexité.</strong></p>
+<p>$$f'(x) = (1+x^2)^{-1/2}, \quad f''(x) = -\frac{1}{2}(1+x^2)^{-3/2} \cdot 2x = -\frac{x}{(1+x^2)^{3/2}}$$</p>
+<ul>
+<li>$x &gt; 0$ : $f''(x) &lt; 0$, $f$ <strong>concave</strong> sur $]0, +\infty[$</li>
+<li>$x &lt; 0$ : $f''(x) &gt; 0$, $f$ <strong>convexe</strong> sur $]-\infty, 0[$</li>
+<li>$f''(0) = 0$ et change de signe → <strong>point d'inflexion</strong> en $(0, f(0)) = (0, 0)$</li>
+</ul>
+<p><strong>5 &amp; 6. Bijection et dérivée de $f^{-1}$.</strong></p>
+<p>$f'(x) = \frac{1}{\sqrt{1+x^2}} &gt; 0$ sur $\mathbb{R}$ → $f$ strictement croissante → <strong>injective</strong>.</p>
+<p>$\lim_{x \to +\infty} f(x) = +\infty$ et $\lim_{x\to-\infty} f(x) = -\infty$ (car $f$ impaire). Par TVI : <strong>surjective</strong> sur $\mathbb{R}$.</p>
+<p>Donc $f$ est bijective. $f'(x) \neq 0$ sur $\mathbb{R}$, donc $f^{-1}$ est dérivable sur $\mathbb{R}$.</p>
+<p>$(f^{-1})'(y) = \frac{1}{f'(f^{-1}(y))} = \sqrt{1+(f^{-1}(y))^2}$</p>
+<p>Si $y = f(x)$ alors $e^y = x + \sqrt{1+x^2}$ et $e^{-y} = \sqrt{1+x^2} - x$, donc $x = f^{-1}(y) = \frac{e^y - e^{-y}}{2}$.</p>
+<p>$(f^{-1})'(y) = \frac{e^y + e^{-y}}{2} = \cosh y$. $\blacksquare$</p>
+<h2>---</h2>
+<h1>🏆 SUJET 2 — PARTIEL ANALYSE 1 (simulé d'après annales)</h1>
+<p><strong>Durée : 2h — Documents et calculatrice interdits</strong></p>
+<hr />
+<h3>Exercice 1 — Bornes et suites (5 points)</h3>
+<ol>
+<li>Donner la définition de "la suite $(u_n)$ est adjacente à $(v_n)$".</li>
+<li>Montrer que les suites $u_n = \sum_{k=1}^n \frac{1}{k!}$ et $v_n = u_n + \frac{1}{n!}$ sont adjacentes.</li>
+<li>En déduire qu'elles ont même limite. On admet que cette limite vaut $e - 1$.</li>
+</ol>
+<hr />
+<h3>Exercice 2 — Suites récurrentes (6 points)</h3>
+<p>Soient $a, b &gt; 0$ avec $a &lt; b$. On définit les suites $(u_n)$ et $(v_n)$ par :<br />
+$$u_0 = a,\ v_0 = b,\quad u_{n+1} = \sqrt{u_n v_n},\quad v_{n+1} = \frac{u_n + v_n}{2}$$</p>
+<ol>
+<li>Montrer que pour tout $n$, $u_n &gt; 0$ et $v_n &gt; 0$.</li>
+<li>Montrer que pour tout $n$, $u_n \leq v_n$. <em>(Inégalité arithmétique-géométrique.)</em></li>
+<li>Montrer que $(u_n)$ est croissante et $(v_n)$ est décroissante.</li>
+<li>Montrer que $(u_n)$ et $(v_n)$ sont adjacentes et convergent vers une limite commune.</li>
+</ol>
+<hr />
+<h3>Exercice 3 — Continuité (4 points)</h3>
+<ol>
+<li>
+<p>Soit $f : \mathbb{R} \to \mathbb{R}$ continue telle que $f(x) = f(x^2)$ pour tout $x \in \mathbb{R}$.<br />
+   Montrer que $f$ est constante.<br />
+<em>(Indication : étudier $f(x)$ en faisant tendre $x^{2^n}$ vers 1 quand $n \to +\infty$.)</em></p>
+</li>
+<li>
+<p>Soit $g : \mathbb{R} \to \mathbb{R}$ continue et telle que $g(x) = g(x+1)$ pour tout $x \in \mathbb{R}$.<br />
+   Montrer que $g$ est bornée.</p>
+</li>
+</ol>
+<hr />
+<h3>Exercice 4 — Dérivabilité et étude de fonction (5 points)</h3>
+<p>Soit $h : \mathbb{R} \to \mathbb{R}$ définie par $h(x) = \arctan!\left(\frac{x+1}{x-1}\right)$ pour $x \neq 1$.</p>
+<ol>
+<li>Calculer $h'(x)$ pour $x \neq 1$ et montrer que $h'(x) = -\frac{1}{1+x^2}$.</li>
+<li>Montrer que $h$ est constante sur $]1, +\infty[$ et sur $]-\infty, 1[$, et déterminer ces constantes.</li>
+<li>En déduire la relation entre $\arctan(x)$ et $\arctan(1/x)$ pour $x &gt; 0$.</li>
+</ol>
+<hr />
+<h2>✅ CORRECTION SUJET 2</h2>
+<hr />
+<h3>Exercice 1</h3>
+<p><strong>1. Définition de suites adjacentes.</strong></p>
+<p>$(u_n)$ et $(v_n)$ sont <strong>adjacentes</strong> si :<br />
+- l'une est croissante et l'autre est décroissante<br />
+- $v_n - u_n \to 0$ (ou $u_n - v_n \to 0$)</p>
+<p><strong>2. Les suites $u_n$ et $v_n = u_n + 1/n!$ sont adjacentes.</strong></p>
+<ul>
+<li>$u_{n+1} - u_n = \frac{1}{(n+1)!} &gt; 0$ : $(u_n)$ est <strong>strictement croissante</strong>.</li>
+<li>$v_{n+1} - v_n = u_{n+1} + \frac{1}{(n+1)!} - u_n - \frac{1}{n!} = \frac{1}{(n+1)!} + \frac{1}{(n+1)!} - \frac{1}{n!} = \frac{2}{(n+1)!} - \frac{1}{n!}$.</li>
+</ul>
+<p>$v_{n+1} - v_n = \frac{2}{(n+1)!} - \frac{n+1}{(n+1)!} = \frac{2-(n+1)}{(n+1)!} = \frac{1-n}{(n+1)!} \leq 0$ pour $n \geq 1$.</p>
+<p>Donc $(v_n)$ est <strong>décroissante</strong> pour $n \geq 1$.</p>
+<ul>
+<li>$v_n - u_n = \frac{1}{n!} \to 0$.</li>
+</ul>
+<p>Les suites sont adjacentes.</p>
+<p><strong>3.</strong> Les suites adjacentes convergent vers la même limite $\ell$. Comme $u_n \to \ell$ et $u_n = \sum_{k=1}^n 1/k!$, on a $\ell = \sum_{k=1}^\infty 1/k! = e - 1$.</p>
+<hr />
+<h3>Exercice 2</h3>
+<p><strong>1. $u_n &gt; 0$ et $v_n &gt; 0$ pour tout $n$.</strong></p>
+<p>Par récurrence : $u_0 = a &gt; 0$, $v_0 = b &gt; 0$. Si $u_n &gt; 0$ et $v_n &gt; 0$, alors $u_{n+1} = \sqrt{u_n v_n} &gt; 0$ et $v_{n+1} = \frac{u_n+v_n}{2} &gt; 0$. ✓</p>
+<p><strong>2. $u_n \leq v_n$ pour tout $n$.</strong></p>
+<p><em>Par récurrence.</em> Initialisation : $u_0 = a &lt; b = v_0$. ✓</p>
+<p>Hérédité : Supposons $u_n \leq v_n$.</p>
+<p>$$u_{n+1} = \sqrt{u_n v_n} \leq \sqrt{v_n \cdot v_n} = v_n \quad \text{(car } u_n \leq v_n\text{)}$$</p>
+<p>$$v_{n+1} = \frac{u_n + v_n}{2} \geq \frac{u_n + u_n}{2} = u_n \geq \sqrt{u_n \cdot u_n}$$</p>
+<p>Inégalité arithmétique-géométrique : $\frac{u_n + v_n}{2} \geq \sqrt{u_n v_n}$ car $(\sqrt{v_n} - \sqrt{u_n})^2 \geq 0$ implique $v_n + u_n \geq 2\sqrt{u_n v_n}$.</p>
+<p>Donc $v_{n+1} = \frac{u_n+v_n}{2} \geq \sqrt{u_n v_n} = u_{n+1}$. ✓</p>
+<p><strong>3. Monotonie.</strong></p>
+<p>$u_{n+1} = \sqrt{u_n v_n} \geq \sqrt{u_n \cdot u_n} = u_n$ (car $v_n \geq u_n$). Donc $(u_n)$ est <strong>croissante</strong>.</p>
+<p>$v_{n+1} = \frac{u_n+v_n}{2} \leq \frac{v_n+v_n}{2} = v_n$ (car $u_n \leq v_n$). Donc $(v_n)$ est <strong>décroissante</strong>.</p>
+<p><strong>4. Convergence.</strong></p>
+<p>$(u_n)$ croissante bornée supérieure par $v_0 = b$ → converge vers $\ell_u$.</p>
+<p>$(v_n)$ décroissante bornée inférieure par $u_0 = a$ → converge vers $\ell_v$.</p>
+<p>En passant à la limite dans $u_{n+1} = \sqrt{u_n v_n}$ : $\ell_u = \sqrt{\ell_u \ell_v}$, donc $\ell_u^2 = \ell_u \ell_v$.</p>
+<p>En passant à la limite dans $v_{n+1} = (u_n+v_n)/2$ : $\ell_v = (\ell_u + \ell_v)/2$, donc $\ell_u = \ell_v = \ell$.</p>
+<p>Les suites sont adjacentes (monotones de sens contraire, même limite). $\blacksquare$</p>
+<hr />
+<h3>Exercice 3</h3>
+<p><strong>1. $f$ constante.</strong></p>
+<p>Soit $x \in \mathbb{R}$ quelconque. La relation $f(x) = f(x^2)$ donne par récurrence $f(x) = f(x^{2^n})$ pour tout $n$.</p>
+<p><em>Cas $|x| &lt; 1$ :</em> $|x^{2^n}| = |x|^{2^n} \to 0$ quand $n \to +\infty$.</p>
+<p>Par continuité de $f$ : $f(x) = \lim_{n\to+\infty} f(x^{2^n}) = f(0)$.</p>
+<p><em>Cas $|x| &gt; 1$ :</em> $|x^{2^n}| = |x|^{2^n} \to +\infty$ ... Remarquons que $f(x) = f(x^2)$ implique aussi que la relation $f(t) = f(\sqrt{t})$ (pour $t &gt; 0$), donc $f(x) = f(x^{1/2^n})$ et $x^{1/2^n} \to 1$. Donc $f(x) = f(1)$.</p>
+<p>On doit aussi montrer $f(0) = f(1)$ : $f(0) = f(0^2) = f(0)$ (OK). Et $0^{2^n} = 0 \to 0$ mais aussi $f(1) = f(1^2) = f(1)$ et $(1/2)^{2^n} \to 0$, donc $f(1/2) = f(0)$, et $f(1/2) = f(1/4) = f(1/16) \to f(0)$. Ainsi $f(1/2) = f(0)$. Et $f(2) = f(\sqrt{2}^{2\cdot 1}) = f(\sqrt{2})$ ... Plus directement :</p>
+<p>$f(1) = f(1^2) = f(1)$, et $(1/\sqrt{2})^{2^n} \to 0$, donc $f(1/\sqrt{2}) = f((1/\sqrt{2})^{2^n}) \to f(0)$.</p>
+<p>Mais $f(1) = f((1/\sqrt{2})^2 \cdot 2) \ldots$ Utilisons plutôt la relation $f(x) = f(x^2)$ pour $x = \sqrt{t}$ : $f(\sqrt{t}) = f(t)$ pour tout $t \geq 0$. Donc si $t &gt; 1$, $f(t) = f(t^{1/2^n}) \to f(1)$. Donc $f(t) = f(1)$ pour $t &gt; 0$.</p>
+<p>Et $f(0) = \lim f(1/n) = f(1)$ par continuité.</p>
+<p><strong>Conclusion :</strong> $f$ est constante égale à $f(1) = f(0)$. $\blacksquare$</p>
+<p><strong>2. $g$ bornée.</strong></p>
+<p>Soit $C = \max_{[0,1]} g$ (qui existe car $g$ est continue sur le compact $[0,1]$, donc bornée et atteint ses bornes).</p>
+<p>Pour tout $x \in \mathbb{R}$, posons $y = x - \lfloor x \rfloor \in [0,1[$. Par la relation $g(x) = g(x-1) = \ldots = g(y)$.</p>
+<p>Donc $|g(x)| = |g(y)| \leq \max_{[0,1]}|g|$, qui est fini.</p>
+<p>$g$ est bornée par $\max_{[0,1]}|g|$. $\blacksquare$</p>
+<hr />
+<h3>Exercice 4</h3>
+<p><strong>1. Calcul de $h'(x)$.</strong></p>
+<p>$$h'(x) = \frac{d}{dx}\arctan!\left(\frac{x+1}{x-1}\right)$$</p>
+<p>Posons $u = \frac{x+1}{x-1}$. $u' = \frac{(x-1)-(x+1)}{(x-1)^2} = \frac{-2}{(x-1)^2}$.</p>
+<p>$$h'(x) = \frac{u'}{1+u^2} = \frac{-2/(x-1)^2}{1 + (x+1)^2/(x-1)^2} = \frac{-2/(x-1)^2}{[(x-1)^2 + (x+1)^2]/(x-1)^2} = \frac{-2}{(x-1)^2+(x+1)^2}$$</p>
+<p>$(x-1)^2 + (x+1)^2 = x^2 - 2x + 1 + x^2 + 2x + 1 = 2x^2 + 2 = 2(1+x^2)$.</p>
+<p>$$h'(x) = \frac{-2}{2(1+x^2)} = \frac{-1}{1+x^2} \qquad \blacksquare$$</p>
+<p><strong>2. $h$ constante sur $]1,+\infty[$ et $]-\infty, 1[$.</strong></p>
+<p>$h'(x) = -\frac{1}{1+x^2}$... Attendez, mais aussi $(\arctan x)' = \frac{1}{1+x^2}$. Donc $h'(x) = -(\arctan x)'$.</p>
+<p>Cela signifie $(h + \arctan x)' = 0$ sur chaque intervalle. Donc $h(x) + \arctan x = C$ (constante sur chaque intervalle).</p>
+<p>Sur $]1, +\infty[$ : quand $x \to +\infty$, $h(x) = \arctan!\left(\frac{x+1}{x-1}\right) \to \arctan(1) = \pi/4$. Et $\arctan(+\infty) = \pi/2$. Donc $C_1 = \pi/4 + \pi/2 = 3\pi/4$.</p>
+<p>Hmm, vérifions : $h(x) = C_1 - \arctan x$ sur $]1,+\infty[$. En $x = 2$ : $h(2) = \arctan(3)$ et $C_1 - \arctan 2 = 3\pi/4 - \arctan 2$. Ces deux valeurs sont-elles égales ? $\arctan 3 + \arctan 2 = \pi - \arctan\frac{3+2}{1-6}$ ... utilisons une autre approche.</p>
+<p>En réalité $h'(x) = -\frac{1}{1+x^2}$ et $(\arctan x)' = \frac{1}{1+x^2}$, donc $(h(x) + \arctan x)' = 0$.</p>
+<p>Sur $]1,+\infty[$ : $h(x) = C_1 - \arctan x$. On calcule $C_1$ en prenant $x \to +\infty$ : $h(x) \to \arctan(1) = \pi/4$ et $\arctan x \to \pi/2$. Donc $C_1 = \pi/4 + \pi/2 = 3\pi/4$.</p>
+<p>Sur $]-\infty, 1[$ : $h(x) = C_2 - \arctan x$. On prend $x \to -\infty$ : $h(x) \to \arctan(-1) = -\pi/4$ et $\arctan x \to -\pi/2$. Donc $C_2 = -\pi/4 + (-\pi/2) = -3\pi/4$.</p>
+<p><strong>3. Pour $x &gt; 0$, $x \neq 1$ :</strong></p>
+<p>$h(x) + \arctan x = \frac{3\pi}{4}$ sur $]1,+\infty[$, soit $\arctan!\left(\frac{x+1}{x-1}\right) + \arctan x = \frac{3\pi}{4}$.</p>
+<p>En prenant $x \to 1/t$ (avec $t &gt; 0$) dans la formule sur $]1,+\infty[$, on obtient une formule reliant $\arctan(x)$ et $\arctan(1/x)$.</p>
+<p><strong>Résultat :</strong> Pour $x &gt; 0$, $\arctan x + \arctan(1/x) = \pi/2$. (Car $h(x) = \arctan\frac{x+1}{x-1}$ et quand $x &gt; 1$, $\frac{x+1}{x-1} &gt; 0$ and $\ldots$)</p>
+<p>Vérification directe : $\arctan x + \arctan(1/x) = \pi/2$ pour $x &gt; 0$ (formule classique). $\blacksquare$</p>
+<h2>---</h2>
+<h1>🏆 SUJET 3 — PARTIEL ANALYSE 2 (simulé d'après annales 2023–2025)</h1>
+<p><strong>Durée : 2h — Documents et calculatrice interdits</strong></p>
+<hr />
+<h3>Exercice 1 — Questions de cours et convexité (4 points)</h3>
+<ol>
+<li>Énoncer la formule de Leibniz.</li>
+<li>Donner les inclusions entre $C^\infty(I)$, $C^2(I)$, $D^2(I)$, $C^1(I)$, $D^1(I)$, $C^0(I)$. Dire si elles sont strictes.</li>
+<li>Montrer par la convexité que $\forall x \in [0,1]$ : $(1+x)^3 \geq 1 + 3x$.</li>
+<li>Montrer que $\forall x \in \mathbb{R}$ : $e^x \geq ex$.</li>
+</ol>
+<hr />
+<h3>Exercice 2 — Dérivées d'ordre $n$ (7 points)</h3>
+<p>Soit $f(x) = \frac{1}{x} \cdot e^x$ pour $x \neq 0$.</p>
+<ol>
+<li>Justifier à l'aide du cours que $f \in C^\infty(\mathbb{R}^*)$.</li>
+<li>Étudier la convexité de $f$ sur $]0, +\infty[$.</li>
+<li>Montrer par récurrence que pour tout $n \in \mathbb{N}^*$, il existe un polynôme $Q_n$ tel que $f^{(n)}(x) = \frac{Q_n(x)}{x^{n+1}}e^x$. Exprimer $Q_{n+1}$ en fonction de $Q_n$.</li>
+<li>(a) Montrer par récurrence que $g^{(n)}(x) = \frac{(-1)^n n!}{x^{n+1}}$ pour $g(x) = 1/x$.<br />
+   (b) Rappeler la formule de Leibniz et l'appliquer à $f = g \cdot e^x$ pour calculer $f^{(n)}(x)$.<br />
+   (c) En déduire $Q_n(x)$.</li>
+</ol>
+<hr />
+<h3>Exercice 3 — Intégrale et sommes de Riemann (5 points)</h3>
+<p>On définit la suite $(u_n)<em k="0">{n \geq 1}$ par :<br />
+$$u_n = \sum</em>$$}^{n-1} \frac{1}{\sqrt{n^2 + k^2}</p>
+<ol>
+<li>Montrer que pour tout $n \geq 1$, $u_n$ est une <strong>somme de Darboux</strong> d'une fonction à déterminer sur $[0,1]$. Préciser si c'est une somme supérieure ou inférieure.</li>
+<li>En déduire que $(u_n)$ converge et calculer sa limite.</li>
+<li>Montrer que $g : [0, +\infty[ \to \mathbb{R}$ définie par $g(x) = \ln(x + \sqrt{1+x^2})$ est de classe $C^1$ sur $[0, +\infty[$ et calculer $g'$.</li>
+<li>Calculer $\int_0^1 \ln(x + \sqrt{1+x^2})\, dx$.</li>
+</ol>
+<hr />
+<h3>Exercice 4 — Développements limités (4 points)</h3>
+<ol>
+<li>Donner les DL usuels de $e^x$, $\sin x$, $\cos x$, $\ln(1+x)$ en 0 à l'ordre 4.</li>
+<li>Calculer $\lim_{x\to 0} \frac{e^x - 1 - x - x^2/2}{x^3}$.</li>
+<li>Calculer le DL à l'ordre 4 en 0 de $f(x) = \sin(x^2)\ln(1+x)$.</li>
+<li>En déduire $\lim_{x\to 0} \frac{\sin(x^2)\ln(1+x)}{x^3}$.</li>
+</ol>
+<hr />
+<h2>✅ CORRECTION SUJET 3</h2>
+<hr />
+<h3>Exercice 1</h3>
+<p><strong>1. Formule de Leibniz.</strong></p>
+<p>Pour $f, g \in C^n(I)$ :<br />
+$$(f \cdot g)^{(n)} = \sum_{k=0}^n \binom{n}{k} f^{(k)} \cdot g^{(n-k)}$$</p>
+<p><strong>2. Inclusions.</strong></p>
+<p>$$C^\infty \subsetneq \cdots \subsetneq C^2 \subsetneq D^2 \subsetneq C^1 \subsetneq D^1 \subsetneq C^0$$</p>
+<p>Toutes les inclusions sont <strong>strictes</strong> : par exemple $x^2\sin(1/x)$ (prolongé par 0 en 0) est $D^1 \setminus C^1$.</p>
+<p><strong>3. $(1+x)^3 \geq 1 + 3x$ pour $x \in [0,1]$.</strong></p>
+<p>Posons $h(x) = (1+x)^3$. $h''(x) = 6(1+x) &gt; 0$ sur $[0,1]$. Donc $h$ est <strong>convexe</strong>.</p>
+<p>La tangente en $x_0 = 0$ : $T(x) = h(0) + h'(0)x = 1 + 3x$.</p>
+<p>Une fonction convexe est au-dessus de ses tangentes : $h(x) \geq T(x)$, soit $(1+x)^3 \geq 1+3x$. $\blacksquare$</p>
+<p><strong>4. $e^x \geq ex$.</strong></p>
+<p>$\exp$ est convexe sur $\mathbb{R}$ ($\exp'' = \exp &gt; 0$).</p>
+<p>Tangente en $x_0 = 1$ : $T(x) = e^1 + e^1(x-1) = ex$.</p>
+<p>Donc $e^x \geq ex$ pour tout $x \in \mathbb{R}$. $\blacksquare$</p>
+<hr />
+<h3>Exercice 2</h3>
+<p><strong>1.</strong> $f = g \cdot \exp$ avec $g(x) = 1/x \in C^\infty(\mathbb{R}^<em>)$ et $\exp \in C^\infty(\mathbb{R})$. Produit de deux fonctions $C^\infty(\mathbb{R}^</em>)$ → $f \in C^\infty(\mathbb{R}^*)$.</p>
+<p><strong>2. Convexité sur $]0,+\infty[$.</strong></p>
+<p>$f'(x) = -\frac{1}{x^2}e^x + \frac{1}{x}e^x = e^x\left(\frac{1}{x} - \frac{1}{x^2}\right) = \frac{e^x(x-1)}{x^2}$</p>
+<p>$f''(x) = \frac{d}{dx}\left[\frac{(x-1)e^x}{x^2}\right]$</p>
+<p>$= \frac{[(x-1)e^x]' \cdot x^2 - (x-1)e^x \cdot 2x}{x^4} = \frac{[e^x + (x-1)e^x]x^2 - 2x(x-1)e^x}{x^4}$</p>
+<p>$= \frac{e^x x[x^2 \cdot x - 2(x-1)]}{x^4} = \frac{e^x[x^2 - 2x + 2]}{x^3}$</p>
+<p>Le discriminant de $X^2 - 2X + 2$ est $4 - 8 = -4 &lt; 0$, donc $x^2 - 2x + 2 &gt; 0$ pour tout $x$.</p>
+<p>Sur $]0,+\infty[$ : $x^3 &gt; 0$ et $e^x &gt; 0$. Donc $f''(x) &gt; 0$ → $f$ est <strong>convexe</strong> sur $]0,+\infty[$.</p>
+<p><strong>3. Récurrence.</strong></p>
+<p><em>$P_1$ :</em> $f'(x) = \frac{(x-1)e^x}{x^2}$. Donc $Q_1(x) = x-1$. ✓</p>
+<p><em>Hérédité :</em> Si $f^{(n)}(x) = \frac{Q_n(x)}{x^{n+1}}e^x$, alors :</p>
+<p>$f^{(n+1)}(x) = \frac{Q_n'(x) \cdot x^{n+1} - (n+1)x^n \cdot Q_n(x)}{x^{2n+2}}e^x + \frac{Q_n(x)}{x^{n+1}}e^x$</p>
+<p>$= \frac{x^n[Q_n'(x)x - (n+1)Q_n(x) + xQ_n(x)]}{x^{2n+2}}e^x = \frac{xQ_n'(x) + (x-n-1)Q_n(x)}{x^{n+2}}e^x$</p>
+<p>Donc $Q_{n+1}(x) = xQ_n'(x) + (x-n-1)Q_n(x)$.</p>
+<p><strong>4(a). $g^{(n)}(x) = \frac{(-1)^n n!}{x^{n+1}}$.</strong></p>
+<p><em>Initialisation :</em> $g^{(0)}(x) = 1/x$ ✓, $g^{(1)}(x) = -1/x^2 = (-1)^1 \cdot 1!/x^2$ ✓.</p>
+<p><em>Hérédité :</em> $g^{(n+1)} = (g^{(n)})' = \left(\frac{(-1)^n n!}{x^{n+1}}\right)' = (-1)^n n! \cdot (-(n+1)) x^{-(n+2)} = \frac{(-1)^{n+1}(n+1)!}{x^{n+2}}$ ✓.</p>
+<p><strong>4(b). Formule de Leibniz appliquée à $f = g \cdot e^x$.</strong></p>
+<p>$(e^x)^{(k)} = e^x$ pour tout $k$.</p>
+<p>$$f^{(n)}(x) = \sum_{k=0}^n \binom{n}{k} g^{(k)}(x) \cdot (e^x)^{(n-k)} = e^x \sum_{k=0}^n \binom{n}{k} \frac{(-1)^k k!}{x^{k+1}}$$</p>
+<p>$$= \frac{e^x}{x^{n+1}} \sum_{k=0}^n \binom{n}{k} (-1)^k k! \cdot x^{n-k}$$</p>
+<p><strong>4(c).</strong> $Q_n(x) = \sum_{k=0}^n \binom{n}{k}(-1)^k k! \cdot x^{n-k} = \sum_{k=0}^n \frac{n!}{(n-k)!}(-1)^k x^{n-k}$.</p>
+<hr />
+<h3>Exercice 3</h3>
+<p><strong>1. Somme de Darboux.</strong></p>
+<p>$$u_n = \sum_{k=0}^{n-1} \frac{1}{\sqrt{n^2+k^2}} = \frac{1}{n}\sum_{k=0}^{n-1} \frac{1}{\sqrt{1+(k/n)^2}}$$</p>
+<p>C'est la <strong>somme de Riemann à gauche</strong> de $\varphi(x) = \frac{1}{\sqrt{1+x^2}}$ sur $[0,1]$.</p>
+<p>$\varphi$ est <strong>décroissante</strong> sur $[0,1]$ (car $\varphi'(x) = -\frac{x}{(1+x^2)^{3/2}} \leq 0$).</p>
+<p>Sur $[k/n, (k+1)/n]$, le minimum de $\varphi$ est $\varphi((k+1)/n)$ et le maximum est $\varphi(k/n)$.</p>
+<p>La somme de Riemann à gauche utilise $\varphi(k/n)$ = le maximum sur chaque intervalle.</p>
+<p><strong>Donc $u_n = S_n^+(\varphi, [0,1])$ est une somme de Darboux supérieure.</strong></p>
+<p><strong>2. Convergence.</strong></p>
+<p>$\varphi$ étant continue sur $[0,1]$, les sommes de Darboux convergent vers $\int_0^1 \frac{dx}{\sqrt{1+x^2}}$.</p>
+<p>$$\lim_{n\to+\infty} u_n = \int_0^1 \frac{dx}{\sqrt{1+x^2}} = \left[\ln(x+\sqrt{1+x^2})\right]_0^1 = \ln(1+\sqrt{2}) - \ln(1) = \ln(1+\sqrt{2})$$</p>
+<p><strong>3. Dérivée de $g(x) = \ln(x+\sqrt{1+x^2})$.</strong></p>
+<p>Pour $x \geq 0$ : $x + \sqrt{1+x^2} &gt; 0$ (montré en Sujet 1, Ex. 4).</p>
+<p>$g$ est $C^\infty$ sur $[0,+\infty[$ et $g'(x) = \frac{1}{\sqrt{1+x^2}}$ (même calcul qu'en Sujet 1).</p>
+<p><strong>4. Calcul de $\int_0^1 \ln(x+\sqrt{1+x^2})\, dx$.</strong></p>
+<p>On utilise l'<strong>intégration par parties</strong> avec $u' = 1$ (donc $u = x$) et $v = \ln(x+\sqrt{1+x^2})$ (donc $v' = 1/\sqrt{1+x^2}$) :</p>
+<p>$$\int_0^1 \ln(x+\sqrt{1+x^2})\, dx = \left[x\ln(x+\sqrt{1+x^2})\right]_0^1 - \int_0^1 \frac{x}{\sqrt{1+x^2}}\, dx$$</p>
+<p>$= 1 \cdot \ln(1+\sqrt{2}) - 0 - \int_0^1 \frac{x}{\sqrt{1+x^2}}\, dx$</p>
+<p>Pour $\int_0^1 \frac{x}{\sqrt{1+x^2}}\, dx$ : posons $t = 1+x^2$, $dt = 2x\, dx$ :<br />
+$$\int_0^1 \frac{x}{\sqrt{1+x^2}}\, dx = \frac{1}{2}\int_1^2 \frac{dt}{\sqrt{t}} = \left[\sqrt{t}\right]_1^2 = \sqrt{2} - 1$$</p>
+<p>$$\int_0^1 \ln(x+\sqrt{1+x^2})\, dx = \ln(1+\sqrt{2}) - (\sqrt{2}-1) = \ln(1+\sqrt{2}) - \sqrt{2} + 1$$</p>
+<hr />
+<h3>Exercice 4</h3>
+<p><strong>1. DL usuels à l'ordre 4.</strong></p>
+<p>$$e^x = 1 + x + \frac{x^2}{2} + \frac{x^3}{6} + \frac{x^4}{24} + o(x^4)$$<br />
+$$\sin x = x - \frac{x^3}{6} + o(x^4)$$<br />
+$$\cos x = 1 - \frac{x^2}{2} + \frac{x^4}{24} + o(x^4)$$<br />
+$$\ln(1+x) = x - \frac{x^2}{2} + \frac{x^3}{3} - \frac{x^4}{4} + o(x^4)$$</p>
+<p><strong>2. Limite.</strong></p>
+<p>$$e^x - 1 - x - \frac{x^2}{2} = \frac{x^3}{6} + \frac{x^4}{24} + o(x^4)$$<br />
+$$\frac{e^x - 1 - x - x^2/2}{x^3} = \frac{1}{6} + \frac{x}{24} + o(x) \to \frac{1}{6}$$</p>
+<p><strong>3. DL de $f(x) = \sin(x^2)\ln(1+x)$.</strong></p>
+<p>$\sin(x^2) = x^2 - \frac{x^6}{6} + o(x^6)$. À l'ordre 4 : $\sin(x^2) = x^2 + o(x^4)$.</p>
+<p>$\ln(1+x) = x - \frac{x^2}{2} + \frac{x^3}{3} - \frac{x^4}{4} + o(x^4)$</p>
+<p>$f(x) = x^2 \cdot \left(x - \frac{x^2}{2} + \frac{x^3}{3} - \frac{x^4}{4} + o(x^4)\right) + o(x^4) \cdot (\ldots)$</p>
+<p>$= x^3 - \frac{x^4}{2} + o(x^4)$</p>
+<p><strong>DL de $f$ à l'ordre 4 en 0 :</strong> $f(x) = x^3 - \frac{x^4}{2} + o(x^4)$</p>
+<p><strong>4. Limite.</strong></p>
+<p>$$\frac{f(x)}{x^3} = \frac{x^3 - x^4/2 + o(x^4)}{x^3} = 1 - \frac{x}{2} + o(x) \to \boxed{1}$$</p>
+<hr />
+<h2>📌 Résumé stratégique pour les partiels</h2>
+<table>
+<thead>
+<tr>
+<th>Type de question</th>
+<th>Réflexe</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Montrer $\sup A = M$</td>
+<td>(i) Majorant + (ii) $\forall \varepsilon, \exists x \in A, x &gt; M-\varepsilon$</td>
+</tr>
+<tr>
+<td>Suite récurrente</td>
+<td>Point fixe → monotonie → borné → converge → limite = point fixe</td>
+</tr>
+<tr>
+<td>Existence zéro</td>
+<td>TVI après avoir trouvé deux points de signes opposés</td>
+</tr>
+<tr>
+<td>Unicité zéro</td>
+<td>TAF + majoration de $f'$</td>
+</tr>
+<tr>
+<td>Inégalité par convexité</td>
+<td>$f'' \geq 0$, puis tangente ou corde</td>
+</tr>
+<tr>
+<td>$f^{(n)}$</td>
+<td>Récurrence + Leibniz si produit</td>
+</tr>
+<tr>
+<td>Somme $\to$ intégrale</td>
+<td>$\frac{1}{n}\sum f(k/n) \to \int_0^1 f$</td>
+</tr>
+<tr>
+<td>Calcul de limite</td>
+<td>DL au bon ordre, simplifier</td>
+</tr>
+<tr>
+<td>IPP</td>
+<td>Choisir $u'$ facile à primitiver, $v$ facile à dériver</td>
+</tr>
+</tbody>
+</table>
+    </section>
+
+  </main>
+</div>
+
+<button id="back-top" title="Retour en haut">↑</button>
+
+<script>
+// ── Tab switching ──
+const tabs = document.querySelectorAll('.tab-btn');
+const panels = document.querySelectorAll('.tab-panel');
+const sidebar = document.getElementById('sidebar');
+
+function switchTab(name) {
+  tabs.forEach(t => t.classList.toggle('active', t.dataset.tab === name));
+  panels.forEach(p => p.classList.toggle('active', p.id === 'panel-' + name));
+  buildTOC();
+  window.scrollTo({top: 0, behavior: 'smooth'});
+}
+
+tabs.forEach(t => t.addEventListener('click', () => switchTab(t.dataset.tab)));
+
+// ── Build TOC ──
+function buildTOC() {
+  const activePanel = document.querySelector('.tab-panel.active');
+  const headings = activePanel.querySelectorAll('h1, h2, h3');
+  const toc = document.getElementById('toc-list');
+  toc.innerHTML = '';
+
+  headings.forEach((h, i) => {
+    if (!h.id) h.id = 'heading-' + i + '-' + h.tagName;
+    const li = document.createElement('li');
+    const a = document.createElement('a');
+    a.href = '#' + h.id;
+    a.className = 'toc-link ' + h.tagName.toLowerCase();
+    a.textContent = h.textContent.replace(/[📚📝📋🏆🔵🟡]/g, '').trim();
+    a.addEventListener('click', e => {
+      e.preventDefault();
+      document.getElementById(h.id).scrollIntoView({behavior:'smooth', block:'start'});
+    });
+    li.appendChild(a);
+    toc.appendChild(li);
+  });
+}
+
+// ── Active TOC on scroll ──
+function updateActiveTOC() {
+  const activePanel = document.querySelector('.tab-panel.active');
+  const headings = [...activePanel.querySelectorAll('h1, h2, h3')];
+  const links = document.querySelectorAll('.toc-link');
+  const scrollY = window.scrollY + 150;
+
+  let current = 0;
+  headings.forEach((h, i) => {
+    if (h.getBoundingClientRect().top + window.scrollY <= scrollY) current = i;
+  });
+
+  links.forEach((l, i) => l.classList.toggle('active', i === current));
+}
+
+// ── Progress bar ──
+function updateProgress() {
+  const total = document.body.scrollHeight - window.innerHeight;
+  const pct = total > 0 ? (window.scrollY / total) * 100 : 0;
+  document.getElementById('progress-bar').style.width = pct + '%';
+}
+
+// ── Back to top ──
+const backTop = document.getElementById('back-top');
+function updateBackTop() {
+  backTop.classList.toggle('visible', window.scrollY > 400);
+}
+backTop.addEventListener('click', () => window.scrollTo({top:0, behavior:'smooth'}));
+
+window.addEventListener('scroll', () => {
+  updateProgress();
+  updateActiveTOC();
+  updateBackTop();
+});
+
+// ── Search ──
+let searchTimer;
+const searchInput = document.getElementById('search-input');
+const searchCount = document.getElementById('search-count');
+
+function clearSearch() {
+  document.querySelectorAll('mark').forEach(m => {
+    m.outerHTML = m.innerHTML;
+  });
+  searchCount.textContent = '';
+}
+
+function doSearch(query) {
+  clearSearch();
+  if (!query || query.length < 2) return;
+
+  const activePanel = document.querySelector('.tab-panel.active');
+  const walker = document.createTreeWalker(activePanel, NodeFilter.SHOW_TEXT, {
+    acceptNode(node) {
+      const p = node.parentNode;
+      if (!p) return NodeFilter.FILTER_REJECT;
+      const tag = p.tagName;
+      if (['SCRIPT','STYLE','MARK'].includes(tag)) return NodeFilter.FILTER_REJECT;
+      return NodeFilter.FILTER_ACCEPT;
+    }
+  });
+
+  const regex = new RegExp(query.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'gi');
+  const nodes = [];
+  let n;
+  while ((n = walker.nextNode())) nodes.push(n);
+
+  let count = 0;
+  nodes.forEach(node => {
+    const text = node.textContent;
+    if (!regex.test(text)) return;
+    regex.lastIndex = 0;
+    const frag = document.createDocumentFragment();
+    let last = 0, m;
+    while ((m = regex.exec(text))) {
+      frag.appendChild(document.createTextNode(text.slice(last, m.index)));
+      const mark = document.createElement('mark');
+      mark.textContent = m[0];
+      frag.appendChild(mark);
+      last = regex.lastIndex;
+      count++;
+    }
+    frag.appendChild(document.createTextNode(text.slice(last)));
+    node.parentNode.replaceChild(frag, node);
+  });
+
+  searchCount.textContent = count > 0 ? count + ' résultat' + (count > 1 ? 's' : '') : 'Aucun résultat';
+
+  if (count > 0) {
+    const first = document.querySelector('.tab-panel.active mark');
+    if (first) first.scrollIntoView({behavior:'smooth', block:'center'});
+  }
+}
+
+searchInput.addEventListener('input', e => {
+  clearTimeout(searchTimer);
+  searchTimer = setTimeout(() => doSearch(e.target.value.trim()), 350);
+});
+
+// ── Init ──
+buildTOC();
+updateProgress();
+</script>
+</body>
+</html>
