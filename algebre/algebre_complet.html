@@ -1,0 +1,2010 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Algèbre 1 & 2 — Institut Galilée</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=JetBrains+Mono:wght@400;500&family=Nunito+Sans:wght@300;400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"
+    onload="renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false},{left:'\\(',right:'\\)',display:false},{left:'\\[',right:'\\]',display:true}],throwOnError:false});"></script>
+<style>
+:root {
+  --bg: #0f0f14;
+  --surface: #16161e;
+  --surface2: #1c1c28;
+  --border: #2a2a3a;
+  --accent: #7c9ef8;
+  --accent2: #e06c75;
+  --gold: #e5c07b;
+  --green: #98c379;
+  --purple: #c678dd;
+  --text: #abb2bf;
+  --text-bright: #e6edf3;
+  --text-dim: #565f72;
+  --code-bg: #1a1a27;
+  --tab-h: 54px;
+  --header-h: 60px;
+  --sidebar-w: 260px;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Nunito Sans', system-ui, sans-serif;
+  font-size: 16px;
+  line-height: 1.8;
+  min-height: 100vh;
+}
+
+/* ── Header ── */
+header {
+  height: var(--header-h);
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  padding: 0 28px;
+  gap: 20px;
+}
+
+.brand {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.35rem;
+  font-weight: 700;
+  color: var(--text-bright);
+  letter-spacing: 0.01em;
+}
+
+.brand em { color: var(--accent); font-style: normal; }
+
+.header-badge {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.65rem;
+  color: var(--text-dim);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 3px 8px;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+}
+
+/* ── Search ── */
+.search-bar {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+#search-input {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.78rem;
+  padding: 6px 14px;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  color: var(--text);
+  outline: none;
+  width: 240px;
+  transition: border-color 0.2s;
+}
+#search-input:focus { border-color: var(--accent); }
+#search-input::placeholder { color: var(--text-dim); }
+
+#search-count {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.7rem;
+  color: var(--text-dim);
+}
+
+mark { background: rgba(229,192,123,.35); color: var(--gold); border-radius: 2px; padding: 0 2px; }
+
+/* ── Tabs ── */
+.tab-nav {
+  height: var(--tab-h);
+  background: var(--surface2);
+  border-bottom: 1px solid var(--border);
+  position: sticky;
+  top: var(--header-h);
+  z-index: 90;
+  display: flex;
+  align-items: stretch;
+  padding: 0 28px;
+  gap: 4px;
+}
+
+.tab-btn {
+  font-family: 'Nunito Sans', sans-serif;
+  font-size: 0.84rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  padding: 0 20px;
+  border: none;
+  background: none;
+  cursor: pointer;
+  color: var(--text-dim);
+  border-bottom: 2px solid transparent;
+  margin-bottom: -1px;
+  transition: color 0.2s, border-color 0.2s;
+  white-space: nowrap;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.tab-btn:hover { color: var(--text); }
+
+.tab-btn.active {
+  color: var(--text-bright);
+  border-bottom-color: var(--accent);
+}
+
+.tab-icon { font-size: 1rem; }
+
+/* ── Layout ── */
+.app-layout {
+  display: flex;
+  max-width: 1440px;
+  margin: 0 auto;
+}
+
+/* ── Sidebar ── */
+.sidebar {
+  width: var(--sidebar-w);
+  flex-shrink: 0;
+  position: sticky;
+  top: calc(var(--header-h) + var(--tab-h));
+  height: calc(100vh - var(--header-h) - var(--tab-h));
+  overflow-y: auto;
+  padding: 24px 16px;
+  border-right: 1px solid var(--border);
+  background: var(--surface);
+  display: none;
+}
+.sidebar.active { display: block; }
+
+.sidebar-title {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.62rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+  margin-bottom: 14px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--border);
+}
+
+.toc-list { list-style: none; }
+.toc-list li { margin-bottom: 1px; }
+
+.toc-link {
+  display: block;
+  font-size: 0.8rem;
+  color: var(--text-dim);
+  text-decoration: none;
+  padding: 5px 10px;
+  border-radius: 4px;
+  border-left: 2px solid transparent;
+  transition: all 0.15s;
+  line-height: 1.3;
+}
+.toc-link:hover { color: var(--text); background: rgba(255,255,255,.04); border-left-color: var(--border); }
+.toc-link.active { color: var(--text-bright); background: rgba(124,158,248,.1); border-left-color: var(--accent); }
+.toc-link.h3 { padding-left: 22px; font-size: 0.75rem; }
+.toc-link.h4 { padding-left: 34px; font-size: 0.71rem; }
+
+/* ── Content ── */
+.main-content { flex: 1; min-width: 0; padding: 44px 60px 80px; }
+
+.tab-panel { display: none; animation: fadeUp 0.25s ease; }
+.tab-panel.active { display: block; }
+
+@keyframes fadeUp {
+  from { opacity:0; transform: translateY(6px); }
+  to   { opacity:1; transform: translateY(0); }
+}
+
+/* ── Typography ── */
+.main-content h1 {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 2.2rem;
+  font-weight: 700;
+  color: var(--text-bright);
+  margin: 52px 0 18px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--border);
+  line-height: 1.2;
+}
+
+.main-content h2 {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: var(--accent);
+  margin: 40px 0 12px;
+  padding-left: 12px;
+  border-left: 3px solid var(--accent);
+}
+
+.main-content h3 {
+  font-family: 'Nunito Sans', sans-serif;
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--text-bright);
+  margin: 28px 0 10px;
+}
+
+.main-content h4 {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.78rem;
+  font-weight: 500;
+  color: var(--gold);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin: 20px 0 6px;
+}
+
+.main-content p { margin-bottom: 12px; max-width: 80ch; }
+
+.main-content ul, .main-content ol { margin: 8px 0 14px 24px; max-width: 80ch; }
+.main-content li { margin-bottom: 4px; }
+
+.main-content strong { font-weight: 700; color: var(--text-bright); }
+.main-content em { font-style: italic; color: var(--purple); }
+
+/* ── Blockquotes ── */
+.main-content blockquote {
+  background: rgba(229,192,123,.06);
+  border-left: 3px solid var(--gold);
+  padding: 12px 18px;
+  margin: 16px 0;
+  border-radius: 0 6px 6px 0;
+  max-width: 82ch;
+}
+.main-content blockquote p { margin: 0; color: var(--gold); font-size: 0.93rem; }
+
+/* ── Tables ── */
+.main-content table { width: 100%; border-collapse: collapse; margin: 16px 0; font-size: 0.88rem; max-width: 82ch; }
+.main-content thead { background: var(--surface2); }
+.main-content th { font-family: 'JetBrains Mono', monospace; font-size: 0.72rem; letter-spacing: 0.06em; text-transform: uppercase; padding: 10px 14px; text-align: left; color: var(--accent); border-bottom: 1px solid var(--border); }
+.main-content td { padding: 9px 14px; border-bottom: 1px solid rgba(42,42,58,.7); vertical-align: top; color: var(--text); }
+.main-content tbody tr:hover { background: rgba(255,255,255,.02); }
+
+/* ── Code ── */
+.main-content code { font-family: 'JetBrains Mono', monospace; font-size: 0.82em; background: var(--code-bg); border: 1px solid var(--border); border-radius: 4px; padding: 1px 5px; color: var(--green); }
+.main-content pre { background: var(--surface2); border: 1px solid var(--border); border-radius: 8px; padding: 18px 22px; overflow-x: auto; margin: 14px 0; }
+.main-content pre code { background: none; border: none; color: var(--text); }
+
+/* ── KaTeX ── */
+.katex-display { overflow-x: auto; padding: 6px 0; margin: 14px 0 !important; }
+.katex { font-size: 1.02em; }
+
+/* ── Details / corrections ── */
+.main-content details {
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  margin: 14px 0;
+  overflow: hidden;
+  max-width: 84ch;
+  transition: border-color 0.2s;
+}
+.main-content details:hover { border-color: rgba(124,158,248,.4); }
+.main-content details[open] { border-color: var(--accent); background: var(--surface); }
+
+.main-content summary {
+  cursor: pointer;
+  padding: 12px 18px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.79rem;
+  color: var(--accent);
+  letter-spacing: 0.04em;
+  list-style: none;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  user-select: none;
+}
+.main-content summary::before { content: '▶'; font-size: 0.6rem; transition: transform 0.2s; }
+.main-content details[open] summary::before { transform: rotate(90deg); }
+.main-content details[open] summary { background: rgba(124,158,248,.08); border-bottom: 1px solid var(--border); }
+.main-content details > *:not(summary) { padding: 0 18px; }
+.main-content details > *:last-child { padding-bottom: 16px; }
+
+/* ── HR ── */
+.main-content hr { border: none; border-top: 1px solid var(--border); margin: 36px 0; }
+
+/* ── Progress ── */
+#progress { position:fixed; top:0; left:0; height:2px; background:linear-gradient(90deg,var(--accent),var(--purple)); width:0; z-index:999; transition:width .1s; }
+
+/* ── Back top ── */
+#back-top { position:fixed; bottom:28px; right:28px; width:42px; height:42px; background:var(--surface2); border:1px solid var(--border); color:var(--text); border-radius:50%; font-size:1rem; cursor:pointer; opacity:0; transform:translateY(8px); transition:opacity .3s,transform .3s,background .2s; z-index:200; }
+#back-top.visible { opacity:1; transform:translateY(0); }
+#back-top:hover { background:var(--accent); color:var(--bg); border-color:var(--accent); }
+
+/* ── Responsive ── */
+@media(max-width:900px){
+  .sidebar{display:none!important;}
+  .main-content{padding:24px 20px 60px;}
+  .tab-nav{padding:0 12px;}
+  .tab-btn{padding:0 12px;font-size:.77rem;}
+}
+
+/* ── Scrollbar ── */
+::-webkit-scrollbar{width:6px;height:6px;}
+::-webkit-scrollbar-track{background:var(--bg);}
+::-webkit-scrollbar-thumb{background:var(--border);border-radius:3px;}
+::-webkit-scrollbar-thumb:hover{background:var(--text-dim);}
+</style>
+</head>
+<body>
+<div id="progress"></div>
+
+<header>
+  <div class="brand">Algèbre <em>1 & 2</em></div>
+  <span class="header-badge">L1 Info · Institut Galilée</span>
+  <div class="search-bar">
+    <input id="search-input" type="text" placeholder="⌕  Rechercher…" autocomplete="off">
+    <span id="search-count"></span>
+  </div>
+</header>
+
+<nav class="tab-nav" role="tablist">
+  <button class="tab-btn active" data-tab="cours" role="tab"><span class="tab-icon">📐</span>Cours Complet</button>
+  <button class="tab-btn" data-tab="exercices" role="tab"><span class="tab-icon">✏️</span>Exercices Corrigés</button>
+  <button class="tab-btn" data-tab="partiels" role="tab"><span class="tab-icon">🏆</span>Sujets de Partiels</button>
+</nav>
+
+<div class="app-layout">
+  <aside class="sidebar active" id="sidebar">
+    <div class="sidebar-title">Sommaire</div>
+    <ul class="toc-list" id="toc-list"></ul>
+  </aside>
+
+  <main class="main-content" id="main-content">
+    <section class="tab-panel active" id="panel-cours" role="tabpanel">
+<h1>📐 Cours Complet — Algèbre 1 &amp; 2</h1>
+<h3>L1 Informatique — Institut Galilée, Université Paris 13</h3>
+<blockquote>
+<p>Rédigé pour réussir les partiels. Algèbre 1 : structures ensemblistes &amp; logique. Algèbre 2 : nombres complexes, algèbre linéaire.</p>
+</blockquote>
+<hr />
+<h1>PARTIE 1 — ALGÈBRE 1 : Structures Mathématiques</h1>
+<hr />
+<h2>Chapitre 1 — Ensembles, sous-ensembles, éléments</h2>
+<h3>1.1 Notions fondamentales</h3>
+<p><strong>Définition.</strong> Un <strong>ensemble</strong> est une collection d'objets appelés <strong>éléments</strong>, avec la propriété que pour tout objet donné, l'assertion qu'il appartient à la collection est soit vraie, soit fausse.</p>
+<p><strong>Notation.</strong> $x \in E$ signifie "$x$ appartient à $E$". $x \notin E$ signifie "$x$ n'appartient pas à $E$".</p>
+<p><strong>Ensembles de nombres.</strong> $\mathbb{N} \subset \mathbb{Z} \subset \mathbb{Q} \subset \mathbb{R} \subset \mathbb{C}$.</p>
+<p><strong>Ensemble vide.</strong> Il existe un unique ensemble ne contenant aucun élément, noté $\emptyset$.</p>
+<p><strong>Ensemble en extension.</strong> $E = {1, 2, 3, 4}$ (liste des éléments).</p>
+<p><strong>Ensemble en compréhension.</strong> $E = {x \in A \mid P(x)}$ (éléments de $A$ vérifiant la propriété $P$).</p>
+<p><strong>Singleton.</strong> Ensemble contenant exactement un élément : ${a}$.</p>
+<h3>1.2 Inclusion et égalité</h3>
+<p><strong>Définition (inclusion).</strong> $A \subset B$ si tout élément de $A$ est aussi un élément de $B$.<br />
+$$A \subset B \iff \forall x,\ (x \in A \Rightarrow x \in B)$$</p>
+<p><strong>Inclusion stricte.</strong> $A \subsetneq B$ si $A \subset B$ et $A \neq B$.</p>
+<p><strong>Égalité.</strong> $A = B$ si et seulement si $A \subset B$ <strong>et</strong> $B \subset A$ (double inclusion).</p>
+<blockquote>
+<p>⚠️ <strong>Méthode clé pour les partiels :</strong> Pour prouver $A = B$, on prouve toujours la double inclusion : d'abord "$A \subset B$", puis "$B \subset A$".</p>
+</blockquote>
+<p><strong>Proposition (transitivité).</strong> Si $A \subset B$ et $B \subset C$, alors $A \subset C$.</p>
+<p><strong>Remarque.</strong> Pour tout ensemble $E$, on a $\emptyset \subset E$ et $E \subset E$.</p>
+<h3>1.3 Ensemble des parties</h3>
+<p><strong>Définition.</strong> L'ensemble des <strong>parties</strong> (ou sous-ensembles) de $E$ est noté $\mathcal{P}(E)$.</p>
+<p><strong>Exemple.</strong> $\mathcal{P}({1,2}) = {\emptyset, {1}, {2}, {1,2}}$. Si $|E| = n$ alors $|\mathcal{P}(E)| = 2^n$.</p>
+<hr />
+<h2>Chapitre 2 — Opérations sur les ensembles et propositions</h2>
+<h3>2.1 Opérations sur les ensembles</h3>
+<p>Soient $A, B \subset E$.</p>
+<table>
+<thead>
+<tr>
+<th>Opération</th>
+<th>Notation</th>
+<th>Définition</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Union</strong></td>
+<td>$A \cup B$</td>
+<td>${x \in E \mid x \in A \text{ ou } x \in B}$</td>
+</tr>
+<tr>
+<td><strong>Intersection</strong></td>
+<td>$A \cap B$</td>
+<td>${x \in E \mid x \in A \text{ et } x \in B}$</td>
+</tr>
+<tr>
+<td><strong>Complémentaire</strong></td>
+<td>$\overline{A}$ ou $E \setminus A$</td>
+<td>${x \in E \mid x \notin A}$</td>
+</tr>
+<tr>
+<td><strong>Différence</strong></td>
+<td>$A \setminus B$</td>
+<td>${x \in E \mid x \in A \text{ et } x \notin B}$</td>
+</tr>
+<tr>
+<td><strong>Différence symétrique</strong></td>
+<td>$A \triangle B$</td>
+<td>$(A \setminus B) \cup (B \setminus A)$</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Lois de De Morgan :</strong><br />
+$$\overline{A \cup B} = \overline{A} \cap \overline{B} \qquad \overline{A \cap B} = \overline{A} \cup \overline{B}$$</p>
+<p><strong>Distributivité :</strong><br />
+$$A \cap (B \cup C) = (A \cap B) \cup (A \cap C)$$<br />
+$$A \cup (B \cap C) = (A \cup B) \cap (A \cup C)$$</p>
+<h3>2.2 Propositions logiques</h3>
+<p><strong>Définition.</strong> Une <strong>proposition</strong> est une assertion qui est soit vraie (V), soit fausse (F). (Principe du tiers exclu.)</p>
+<p><strong>Connecteurs logiques :</strong></p>
+<table>
+<thead>
+<tr>
+<th>Connecteur</th>
+<th>Notation</th>
+<th>Lecture</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Négation</td>
+<td>$\neg P$</td>
+<td>"non $P$"</td>
+</tr>
+<tr>
+<td>Conjonction</td>
+<td>$P \wedge Q$</td>
+<td>"$P$ et $Q$"</td>
+</tr>
+<tr>
+<td>Disjonction</td>
+<td>$P \vee Q$</td>
+<td>"$P$ ou $Q$"</td>
+</tr>
+<tr>
+<td>Implication</td>
+<td>$P \Rightarrow Q$</td>
+<td>"si $P$ alors $Q$"</td>
+</tr>
+<tr>
+<td>Équivalence</td>
+<td>$P \Leftrightarrow Q$</td>
+<td>"$P$ si et seulement si $Q$"</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Tables de vérité fondamentales :</strong></p>
+<table>
+<thead>
+<tr>
+<th>$P$</th>
+<th>$Q$</th>
+<th>$P \wedge Q$</th>
+<th>$P \vee Q$</th>
+<th>$P \Rightarrow Q$</th>
+<th>$P \Leftrightarrow Q$</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>V</td>
+<td>V</td>
+<td>V</td>
+<td>V</td>
+<td>V</td>
+<td>V</td>
+</tr>
+<tr>
+<td>V</td>
+<td>F</td>
+<td>F</td>
+<td>V</td>
+<td>F</td>
+<td>F</td>
+</tr>
+<tr>
+<td>F</td>
+<td>V</td>
+<td>F</td>
+<td>V</td>
+<td>V</td>
+<td>F</td>
+</tr>
+<tr>
+<td>F</td>
+<td>F</td>
+<td>F</td>
+<td>F</td>
+<td>V</td>
+<td>V</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>⚠️ $P \Rightarrow Q$ est <strong>fausse uniquement</strong> si $P$ vraie et $Q$ fausse.</p>
+</blockquote>
+<p><strong>Contraposée.</strong> $P \Rightarrow Q$ est équivalente à $\neg Q \Rightarrow \neg P$.</p>
+<p><strong>Négation des connecteurs :</strong><br />
+$$\neg(P \wedge Q) \equiv \neg P \vee \neg Q \qquad \neg(P \vee Q) \equiv \neg P \wedge \neg Q$$<br />
+$$\neg(P \Rightarrow Q) \equiv P \wedge \neg Q$$</p>
+<hr />
+<h2>Chapitre 3 — Les quantificateurs</h2>
+<p><strong>Quantificateur universel.</strong> "$\forall x \in E,\ P(x)$" signifie "pour tout $x$ dans $E$, $P(x)$ est vraie."</p>
+<p><strong>Quantificateur existentiel.</strong> "$\exists x \in E,\ P(x)$" signifie "il existe au moins un $x$ dans $E$ tel que $P(x)$ est vraie."</p>
+<p><strong>Négation des quantificateurs :</strong><br />
+$$\neg(\forall x \in E,\ P(x)) \equiv \exists x \in E,\ \neg P(x)$$<br />
+$$\neg(\exists x \in E,\ P(x)) \equiv \forall x \in E,\ \neg P(x)$$</p>
+<p><strong>Ordre des quantificateurs.</strong> L'ordre est <strong>crucial</strong> :<br />
+- $\forall m \in \mathbb{N},\ \exists k \in \mathbb{N},\ m &lt; k$ (vrai : pour tout entier, il en existe un plus grand)<br />
+- $\exists k \in \mathbb{N},\ \forall m \in \mathbb{N},\ m &lt; k$ (faux : il n'existe pas d'entier supérieur à tous les autres)</p>
+<p><strong>Exemple type.</strong> La définition de la limite $\lim_{n\to\infty} u_n = \ell$ :<br />
+$$\forall \varepsilon &gt; 0,\ \exists N \in \mathbb{N},\ \forall n \geq N,\ |u_n - \ell| &lt; \varepsilon$$</p>
+<hr />
+<h2>Chapitre 4 — Types de démonstrations</h2>
+<h3>4.1 Méthodes de preuve</h3>
+<p><strong>Preuve directe.</strong> On suppose $P$ vraie et on déduit $Q$ par une chaîne d'implications.</p>
+<p><strong>Preuve par contraposée.</strong> Pour montrer $P \Rightarrow Q$, on montre $\neg Q \Rightarrow \neg P$.</p>
+<p><strong>Preuve par l'absurde.</strong> Pour montrer $P$, on suppose $\neg P$ et on aboutit à une contradiction.</p>
+<p><strong>Preuve par cas.</strong> On distingue tous les cas possibles et on prouve le résultat dans chacun.</p>
+<p><strong>Preuve par équivalences successives.</strong> $P \Leftrightarrow P_1 \Leftrightarrow P_2 \Leftrightarrow \cdots \Leftrightarrow Q$.</p>
+<h3>4.2 Démonstrations classiques</h3>
+<p><strong>$\sqrt{2}$ est irrationnel (absurde).</strong> Supposons $\sqrt{2} = p/q$ avec $p, q \in \mathbb{Z}$, $q &gt; 0$, $\gcd(p,q) = 1$. Alors $2q^2 = p^2$, donc $p^2$ est pair, donc $p$ est pair, donc $p = 2k$, donc $q^2 = 2k^2$, donc $q$ est pair. Contradiction avec $\gcd(p,q) = 1$.</p>
+<hr />
+<h2>Chapitre 5 — Produit cartésien et relations</h2>
+<h3>5.1 Produit cartésien</h3>
+<p><strong>Définition.</strong> $A \times B = {(a, b) \mid a \in A,\ b \in B}$.</p>
+<p><strong>Exemple.</strong> ${1,2} \times {a,b} = {(1,a),(1,b),(2,a),(2,b)}$.</p>
+<p><strong>Cardinal.</strong> $|A \times B| = |A| \cdot |B|$.</p>
+<h3>5.2 Relations</h3>
+<p><strong>Définition.</strong> Une <strong>relation</strong> sur $E$ est un sous-ensemble $R \subset E \times E$. On note $xRy$ si $(x,y) \in R$.</p>
+<p><strong>Relation d'équivalence.</strong> $R$ est une relation d'équivalence si elle est :<br />
+- <strong>Réflexive :</strong> $\forall x,\ xRx$<br />
+- <strong>Symétrique :</strong> $xRy \Rightarrow yRx$<br />
+- <strong>Transitive :</strong> $xRy$ et $yRz$ $\Rightarrow xRz$</p>
+<p><strong>Classe d'équivalence.</strong> $\bar{x} = {y \in E \mid xRy}$.</p>
+<p><strong>Relation d'ordre.</strong> $R$ est un <strong>ordre</strong> si elle est réflexive, <strong>antisymétrique</strong> ($xRy$ et $yRx$ $\Rightarrow x = y$) et transitive.</p>
+<hr />
+<h2>Chapitre 6 — Les applications</h2>
+<h3>6.1 Définitions</h3>
+<p><strong>Définition.</strong> Une <strong>application</strong> (ou fonction) $f : A \to B$ associe à chaque élément $x \in A$ un unique élément $f(x) \in B$.</p>
+<ul>
+<li>$A$ : <strong>ensemble de départ</strong> (ou domaine)</li>
+<li>$B$ : <strong>ensemble d'arrivée</strong> (ou codomaine)</li>
+<li>$f(A) = {f(x) \mid x \in A}$ : <strong>image</strong> de $f$</li>
+</ul>
+<p><strong>Image directe.</strong> $f(S) = {f(x) \mid x \in S}$ pour $S \subset A$.</p>
+<p><strong>Image réciproque.</strong> $f^{-1}(T) = {x \in A \mid f(x) \in T}$ pour $T \subset B$.</p>
+<p><strong>Propriétés importantes :</strong><br />
+- $f(S_1 \cup S_2) = f(S_1) \cup f(S_2)$ ✓<br />
+- $f(S_1 \cap S_2) \subset f(S_1) \cap f(S_2)$ (inclusion stricte possible)<br />
+- $f^{-1}(T_1 \cap T_2) = f^{-1}(T_1) \cap f^{-1}(T_2)$ ✓</p>
+<hr />
+<h2>Chapitre 7 — Injections, surjections, bijections</h2>
+<p><strong>Définition (injection).</strong> $f : A \to B$ est <strong>injective</strong> si :<br />
+$$\forall x, x' \in A,\ f(x) = f(x') \Rightarrow x = x'$$<br />
+Équivalent : $x \neq x' \Rightarrow f(x) \neq f(x')$.</p>
+<p><strong>Définition (surjection).</strong> $f : A \to B$ est <strong>surjective</strong> si :<br />
+$$\forall y \in B,\ \exists x \in A,\ f(x) = y$$<br />
+Équivalent : $f(A) = B$.</p>
+<p><strong>Définition (bijection).</strong> $f$ est <strong>bijective</strong> si elle est injective ET surjective. Chaque élément de $B$ a exactement un antécédent dans $A$.</p>
+<p><strong>Application réciproque.</strong> Si $f : A \to B$ est bijective, il existe une unique application $f^{-1} : B \to A$ telle que $f^{-1} \circ f = \text{id}_A$ et $f \circ f^{-1} = \text{id}_B$.</p>
+<p><strong>Composition.</strong> $(g \circ f)(x) = g(f(x))$.<br />
+- $f$ injective et $g$ injective $\Rightarrow g \circ f$ injective<br />
+- $f$ surjective et $g$ surjective $\Rightarrow g \circ f$ surjective</p>
+<hr />
+<h2>Chapitre 8 — Récurrence et entiers naturels</h2>
+<h3>8.1 Principe de récurrence</h3>
+<p><strong>Théorème (récurrence simple).</strong> Soit $P(n)$ une propriété dépendant de $n \in \mathbb{N}$.<br />
+Si :<br />
+1. <strong>Initialisation :</strong> $P(0)$ est vraie<br />
+2. <strong>Hérédité :</strong> pour tout $n \in \mathbb{N}$, si $P(n)$ est vraie alors $P(n+1)$ est vraie</p>
+<p>Alors $P(n)$ est vraie pour tout $n \in \mathbb{N}$.</p>
+<p><strong>Récurrence forte.</strong> Si $P(0)$ vraie et $\forall n$, $[P(0) \wedge \ldots \wedge P(n)] \Rightarrow P(n+1)$, alors $P(n)$ vraie pour tout $n$.</p>
+<p><strong>Exemples fondamentaux :</strong><br />
+$$\sum_{k=1}^n k = \frac{n(n+1)}{2}, \qquad \sum_{k=1}^n k^2 = \frac{n(n+1)(2n+1)}{6}, \qquad \sum_{k=1}^n k^3 = \left(\frac{n(n+1)}{2}\right)^2$$</p>
+<p>$$\sum_{k=0}^n x^k = \frac{x^{n+1}-1}{x-1} \text{ si } x \neq 1$$</p>
+<hr />
+<h2>Chapitre 9 &amp; 10 — Ensembles finis, cardinal et combinatoire</h2>
+<h3>9.1 Cardinal</h3>
+<p><strong>Définition.</strong> Le <strong>cardinal</strong> $|A|$ d'un ensemble fini $A$ est son nombre d'éléments.</p>
+<p><strong>Formule d'inclusion-exclusion :</strong><br />
+$$|A \cup B| = |A| + |B| - |A \cap B|$$<br />
+$$|A \cup B \cup C| = |A| + |B| + |C| - |A \cap B| - |A \cap C| - |B \cap C| + |A \cap B \cap C|$$</p>
+<h3>10.1 Combinatoire</h3>
+<p><strong>Arrangements (ordonnés, sans répétition).</strong> Nombre de façons de choisir $k$ éléments parmi $n$ en tenant compte de l'ordre :<br />
+$$A_n^k = \frac{n!}{(n-k)!}$$</p>
+<p><strong>Combinaisons (non ordonnées).</strong> Nombre de sous-ensembles de taille $k$ d'un ensemble de taille $n$ :<br />
+$$\binom{n}{k} = \frac{n!}{k!(n-k)!}$$</p>
+<p><strong>Propriétés des coefficients binomiaux :</strong><br />
+- $\binom{n}{0} = \binom{n}{n} = 1$<br />
+- $\binom{n}{k} = \binom{n}{n-k}$<br />
+- <strong>Formule de Pascal :</strong> $\binom{n}{k} + \binom{n}{k+1} = \binom{n+1}{k+1}$<br />
+- <strong>Binôme de Newton :</strong> $(a+b)^n = \sum_{k=0}^n \binom{n}{k} a^k b^{n-k}$</p>
+<hr />
+<h2>Chapitres 11 &amp; 12 — Entiers relatifs, rationnels, réels</h2>
+<h3>11.1 Division euclidienne</h3>
+<p><strong>Théorème.</strong> Pour tous $a \in \mathbb{Z}$, $b \in \mathbb{Z}^*$, il existe un unique couple $(q, r)$ avec $0 \leq r &lt; |b|$ tel que $a = bq + r$.</p>
+<p><strong>PGCD.</strong> Le plus grand commun diviseur de $a$ et $b$ est l'unique entier $&gt; 0$ divisant à la fois $a$ et $b$ et divisé par tout diviseur commun.</p>
+<p><strong>Algorithme d'Euclide.</strong> $\gcd(a, b) = \gcd(b, r)$ où $r = a \mod b$.</p>
+<p><strong>Théorème de Bézout.</strong> $\gcd(a,b) = 1 \Leftrightarrow \exists u, v \in \mathbb{Z},\ au + bv = 1$.</p>
+<p><strong>Lemme de Gauss.</strong> Si $a \mid bc$ et $\gcd(a,b) = 1$, alors $a \mid c$.</p>
+<p><strong>Théorème fondamental de l'arithmétique.</strong> Tout entier $\geq 2$ s'écrit de façon unique (à l'ordre des facteurs près) comme produit de nombres premiers.</p>
+<hr />
+<h1>PARTIE 2 — ALGÈBRE 2 : Algèbre Linéaire</h1>
+<hr />
+<h2>Chapitre I — Les Nombres Complexes</h2>
+<h3>I.1 Définitions et opérations</h3>
+<p><strong>Définition.</strong> Un <strong>nombre complexe</strong> est une expression $z = a + bi$ avec $a, b \in \mathbb{R}$ et $i^2 = -1$.<br />
+- $\text{Re}(z) = a$ : <strong>partie réelle</strong><br />
+- $\text{Im}(z) = b$ : <strong>partie imaginaire</strong><br />
+- $\mathbb{C}$ : ensemble des nombres complexes</p>
+<p><strong>Addition.</strong> $(a+bi) + (a'+b'i) = (a+a') + (b+b')i$</p>
+<p><strong>Multiplication.</strong> $(a+bi)(a'+b'i) = (aa' - bb') + (ab' + a'b)i$</p>
+<blockquote>
+<p><strong>Astuce :</strong> se rappeler $i^2 = -1$ et développer comme un polynôme.</p>
+</blockquote>
+<p><strong>Division.</strong> $\frac{z}{z'} = \frac{z \cdot \overline{z'}}{|z'|^2}$ (multiplier par le conjugué du dénominateur).</p>
+<h3>I.2 Conjugué et module</h3>
+<p><strong>Conjugué.</strong> $\overline{z} = \overline{a+bi} = a - bi$.</p>
+<p><strong>Propriétés du conjugué :</strong><br />
+- $\overline{z + z'} = \overline{z} + \overline{z'}$<br />
+- $\overline{z \cdot z'} = \overline{z} \cdot \overline{z'}$<br />
+- $z \in \mathbb{R} \Leftrightarrow z = \overline{z}$<br />
+- $z \in i\mathbb{R} \Leftrightarrow z = -\overline{z}$<br />
+- $\text{Re}(z) = \frac{z + \overline{z}}{2}$, $\text{Im}(z) = \frac{z - \overline{z}}{2i}$</p>
+<p><strong>Module.</strong> $|z| = \sqrt{a^2 + b^2} = \sqrt{z \overline{z}}$.</p>
+<p><strong>Propriétés du module :</strong><br />
+- $|zz'| = |z||z'|$<br />
+- $|z/z'| = |z|/|z'|$<br />
+- $|z + z'| \leq |z| + |z'|$ (inégalité triangulaire)<br />
+- $|z| = 0 \Leftrightarrow z = 0$</p>
+<h3>I.3 Forme trigonométrique (polaire)</h3>
+<p><strong>Argument.</strong> L'<strong>argument</strong> de $z \neq 0$ est l'angle orienté $\theta = \text{Arg}(z)$ entre l'axe réel positif et le vecteur $z$.</p>
+<p><strong>Calcul de l'argument :</strong><br />
+- Si $\text{Re}(z) &gt; 0$ : $\theta = \arctan!\left(\frac{\text{Im}(z)}{\text{Re}(z)}\right)$<br />
+- Si $\text{Re}(z) &lt; 0$ : $\theta = \arctan!\left(\frac{\text{Im}(z)}{\text{Re}(z)}\right) + \pi$<br />
+- Si $\text{Re}(z) = 0$ et $\text{Im}(z) &gt; 0$ : $\theta = \pi/2$</p>
+<p><strong>Notation exponentielle.</strong> $e^{i\theta} = \cos\theta + i\sin\theta$ (formule d'Euler).</p>
+<p><strong>Forme polaire.</strong> Tout $z \neq 0$ s'écrit $z = re^{i\theta}$ avec $r = |z| &gt; 0$ et $\theta = \text{Arg}(z)$.</p>
+<p><strong>Multiplication en forme polaire.</strong> $re^{i\theta} \cdot r'e^{i\theta'} = rr'e^{i(\theta+\theta')}$</p>
+<p><strong>Formule de Moivre.</strong> $(e^{i\theta})^n = e^{in\theta}$, soit $(\cos\theta + i\sin\theta)^n = \cos(n\theta) + i\sin(n\theta)$.</p>
+<h3>I.4 Racines et équations</h3>
+<p><strong>Racines $n$-ièmes de l'unité.</strong> Les solutions de $z^n = 1$ sont les $n$ nombres :<br />
+$$\omega_k = e^{2ik\pi/n} = \cos!\left(\frac{2k\pi}{n}\right) + i\sin!\left(\frac{2k\pi}{n}\right), \quad k = 0, 1, \ldots, n-1$$</p>
+<p>Ils forment les sommets d'un polygone régulier à $n$ côtés inscrit dans le cercle unité.</p>
+<p><strong>Propriété.</strong> La somme des racines $n$-ièmes de l'unité vaut $0$ (pour $n \geq 2$).</p>
+<p><strong>Racines $n$-ièmes de $a \in \mathbb{C}^*$.</strong> Si $a = re^{i\theta}$, les solutions de $z^n = a$ sont :<br />
+$$z_k = r^{1/n} e^{i(\theta/n + 2k\pi/n)}, \quad k = 0, 1, \ldots, n-1$$</p>
+<p><strong>Équation du second degré.</strong> $az^2 + bz + c = 0$ ($a \neq 0$). Discriminant $\Delta = b^2 - 4ac$.<br />
+- Si $\Delta = 0$ : une solution $z = -b/(2a)$<br />
+- Si $\Delta \neq 0$ : deux solutions $z = \frac{-b \pm \sqrt{\Delta}}{2a}$ (où $\sqrt{\Delta}$ est une racine carrée complexe de $\Delta$)</p>
+<blockquote>
+<p><strong>Attention :</strong> dans $\mathbb{C}$, toute équation du second degré a toujours (au moins) une solution !</p>
+</blockquote>
+<p><strong>Racines carrées d'un complexe.</strong> Pour trouver $z^2 = u = \alpha + \beta i$, poser $z = a + bi$ et résoudre le système :<br />
+$$a^2 - b^2 = \alpha, \quad 2ab = \beta, \quad a^2 + b^2 = |u|$$</p>
+<hr />
+<h2>Chapitre II — Systèmes Linéaires</h2>
+<h3>II.1 Définitions</h3>
+<p><strong>Équation linéaire.</strong> $a_1 x_1 + a_2 x_2 + \cdots + a_n x_n = b$ avec $a_j, b \in \mathbb{K}$ ($\mathbb{K} = \mathbb{R}$ ou $\mathbb{C}$).</p>
+<p><strong>Système linéaire.</strong> Ensemble de $p$ équations linéaires à $n$ inconnues :<br />
+$$\begin{cases} a_{11}x_1 + a_{12}x_2 + \cdots + a_{1n}x_n = b_1 \ a_{21}x_1 + a_{22}x_2 + \cdots + a_{2n}x_n = b_2 \ \vdots \ a_{p1}x_1 + a_{p2}x_2 + \cdots + a_{pn}x_n = b_p \end{cases}$$</p>
+<p><strong>Système homogène.</strong> Quand tous les $b_i = 0$. Toujours compatible (solution nulle).</p>
+<h3>II.2 Méthode du pivot de Gauss</h3>
+<p><strong>Opérations élémentaires sur les lignes :</strong><br />
+- $L_i \leftarrow \lambda L_i$ ($\lambda \neq 0$) : multiplier une ligne par un scalaire non nul<br />
+- $L_i \leftarrow L_i + \lambda L_j$ : ajouter un multiple d'une ligne à une autre<br />
+- $L_i \leftrightarrow L_j$ : échanger deux lignes</p>
+<p>Ces opérations <strong>ne changent pas l'ensemble des solutions</strong>.</p>
+<p><strong>Forme échelonnée.</strong> Une matrice est échelonnée si :<br />
+1. Les lignes nulles sont en bas<br />
+2. Dans deux lignes non nulles consécutives, la seconde a plus de zéros à gauche que la première</p>
+<p><strong>Forme échelonnée réduite.</strong> Échelonnée, avec de plus :<br />
+3. L'élément de tête de chaque ligne non nulle vaut 1<br />
+4. L'élément de tête est le seul coefficient non nul de sa colonne</p>
+<p><strong>Algorithme de Gauss :</strong><br />
+1. Trouver le pivot (premier élément non nul de la colonne la plus à gauche)<br />
+2. Mettre des zéros en dessous du pivot<br />
+3. Passer à la sous-matrice inférieure<br />
+4. Remonter pour la forme réduite (Gauss-Jordan)</p>
+<p><strong>Structure des solutions.</strong> Si le système est compatible, l'ensemble des solutions est de la forme :<br />
+$${x_{\text{part}} + \text{Ker}(A)}$$<br />
+où $x_{\text{part}}$ est une solution particulière et $\text{Ker}(A)$ est l'espace des solutions du système homogène associé. Le nombre de <strong>variables libres</strong> est $n - \text{rang}(A)$.</p>
+<h3>II.3 Système de Cramer</h3>
+<p>Si le système est carré ($n = p$) et $\det(A) \neq 0$, il admet une unique solution :<br />
+$$x_j = \frac{\det(A_j)}{\det(A)}$$<br />
+où $A_j$ est la matrice $A$ dont la $j$-ème colonne est remplacée par le second membre.</p>
+<hr />
+<h2>Chapitre III — Espaces et sous-espaces vectoriels</h2>
+<h3>III.1 Espace vectoriel</h3>
+<p><strong>Définition.</strong> Un $\mathbb{K}$-espace vectoriel est un ensemble $E$ muni d'une addition $+$ et d'une multiplication scalaire $\cdot : \mathbb{K} \times E \to E$ satisfaisant 8 axiomes (commutativité, associativité, élément neutre $0_E$, opposés, distributivités, associativité mixte, $1 \cdot v = v$).</p>
+<p><strong>Exemples :</strong> $\mathbb{R}^n$, $\mathbb{C}^n$, $\mathbb{K}^n$, l'espace des matrices $M_{p,n}(\mathbb{K})$, l'espace des polynômes $\mathbb{K}[X]$, l'espace des fonctions continues sur $[a,b]$.</p>
+<h3>III.2 Sous-espace vectoriel</h3>
+<p><strong>Définition.</strong> Un sous-ensemble $F \subset E$ est un <strong>sous-espace vectoriel (sev)</strong> si :<br />
+1. $0_E \in F$<br />
+2. $\forall u, v \in F,\ u + v \in F$ (stable par addition)<br />
+3. $\forall \lambda \in \mathbb{K},\ \forall u \in F,\ \lambda u \in F$ (stable par multiplication scalaire)</p>
+<p><strong>Critère compact.</strong> $F$ est un sev $\Leftrightarrow$ $F \neq \emptyset$ et $\forall u, v \in F,\ \forall \lambda, \mu \in \mathbb{K},\ \lambda u + \mu v \in F$.</p>
+<p><strong>Exemples de sev :</strong><br />
+- ${0}$ et $E$ (sev triviaux)<br />
+- Toute droite ou plan passant par l'origine dans $\mathbb{R}^n$<br />
+- $\text{Ker}(f)$ et $\text{Im}(f)$ pour $f$ linéaire<br />
+- L'ensemble des solutions d'un système homogène</p>
+<h3>III.3 Familles de vecteurs</h3>
+<p><strong>Combinaison linéaire.</strong> $v = \lambda_1 v_1 + \lambda_2 v_2 + \cdots + \lambda_k v_k$ avec $\lambda_i \in \mathbb{K}$.</p>
+<p><strong>Sous-espace engendré.</strong> $\text{Vect}(v_1, \ldots, v_k)$ = ensemble de toutes les combinaisons linéaires des $v_i$.</p>
+<p><strong>Famille libre (linéairement indépendante).</strong> $(v_1, \ldots, v_k)$ est libre si :<br />
+$$\lambda_1 v_1 + \lambda_2 v_2 + \cdots + \lambda_k v_k = 0 \Rightarrow \lambda_1 = \lambda_2 = \cdots = \lambda_k = 0$$</p>
+<p><strong>Famille liée.</strong> Non libre : l'un des vecteurs est combinaison linéaire des autres.</p>
+<blockquote>
+<p>💡 <strong>Méthode pour tester la liberté :</strong> poser $\sum \lambda_i v_i = 0$, résoudre le système linéaire, et vérifier si la seule solution est $\lambda_i = 0$ pour tout $i$.</p>
+</blockquote>
+<p><strong>Famille génératrice.</strong> $(v_1, \ldots, v_k)$ est génératrice de $E$ si tout vecteur de $E$ est combinaison linéaire des $v_i$, i.e., $\text{Vect}(v_1, \ldots, v_k) = E$.</p>
+<p><strong>Base.</strong> Une famille à la fois <strong>libre</strong> et <strong>génératrice</strong>.</p>
+<hr />
+<h2>Chapitre IV — Espaces vectoriels de dimension finie</h2>
+<h3>IV.1 Dimension</h3>
+<p><strong>Théorème.</strong> Toutes les bases d'un espace vectoriel de dimension finie ont le même cardinal, appelé <strong>dimension</strong> de l'espace et noté $\dim E$.</p>
+<p><strong>Dimensions usuelles :</strong> $\dim \mathbb{K}^n = n$, $\dim M_{p,n}(\mathbb{K}) = pn$, $\dim \mathbb{K}_d[X] = d+1$.</p>
+<p><strong>Théorème de la base incomplète.</strong> Toute famille libre peut être complétée en une base.</p>
+<h3>IV.2 Résultats fondamentaux</h3>
+<p><strong>Théorème.</strong> Soit $E$ de dimension $n$ et $(v_1, \ldots, v_n)$ une famille de $n$ vecteurs :<br />
+$$\text{libre} \Leftrightarrow \text{génératrice} \Leftrightarrow \text{base}$$</p>
+<p>(N'importe laquelle des trois conditions implique les deux autres, si on a exactement $n$ vecteurs !)</p>
+<p><strong>Dimension d'un sev.</strong> Si $F \subset E$, alors $\dim F \leq \dim E$. Égalité $\Leftrightarrow F = E$.</p>
+<p><strong>Formule de Grassmann (dimension de la somme) :</strong><br />
+$$\dim(F + G) = \dim F + \dim G - \dim(F \cap G)$$</p>
+<p><strong>Somme directe.</strong> $F$ et $G$ sont en <strong>somme directe</strong> (notée $F \oplus G$) si $F \cap G = {0}$.<br />
+Dans ce cas : $\dim(F \oplus G) = \dim F + \dim G$.</p>
+<p><strong>Sous-espaces supplémentaires.</strong> $F$ et $G$ sont supplémentaires dans $E$ si $F + G = E$ et $F \cap G = {0}$, i.e., $E = F \oplus G$. Alors tout vecteur de $E$ s'écrit <strong>de façon unique</strong> comme $v = f + g$ avec $f \in F$ et $g \in G$.</p>
+<hr />
+<h2>Chapitre V — Matrices</h2>
+<h3>V.1 Définitions et opérations</h3>
+<p><strong>Matrice.</strong> Un tableau $A = (a_{ij})$ de taille $p \times n$ ($p$ lignes, $n$ colonnes).</p>
+<p><strong>Addition.</strong> $(A+B)<em ij="ij">{ij} = a</em>$ (même taille).} + b_{ij</p>
+<p><strong>Multiplication scalaire.</strong> $(\lambda A)<em ij="ij">{ij} = \lambda a</em>$.</p>
+<p><strong>Produit matriciel.</strong> $C = AB$ avec $A \in M_{p,n}$ et $B \in M_{n,q}$ : $c_{ij} = \sum_{k=1}^n a_{ik} b_{kj}$.</p>
+<blockquote>
+<p>⚠️ Le produit matriciel est <strong>non commutatif</strong> en général : $AB \neq BA$.</p>
+</blockquote>
+<p><strong>Matrices spéciales :</strong><br />
+- $I_n$ : matrice identité $n \times n$<br />
+- $0$ : matrice nulle<br />
+- $A^T$ : transposée ($a^T_{ij} = a_{ji}$)</p>
+<h3>V.2 Matrices inversibles</h3>
+<p><strong>Définition.</strong> $A \in M_n$ est <strong>inversible</strong> s'il existe $B$ tel que $AB = BA = I_n$. On note $B = A^{-1}$.</p>
+<p><strong>Calcul de l'inverse.</strong> Par la méthode de Gauss-Jordan : augmenter la matrice $[A | I_n]$ et réduire à $[I_n | A^{-1}]$.</p>
+<p><strong>Déterminant.</strong> $\det(A) \neq 0 \Leftrightarrow A$ est inversible.</p>
+<p><strong>Formule pour $2 \times 2$ :</strong><br />
+$$A = \begin{pmatrix} a &amp; b \ c &amp; d \end{pmatrix}, \quad \det(A) = ad - bc, \quad A^{-1} = \frac{1}{ad-bc}\begin{pmatrix} d &amp; -b \ -c &amp; a \end{pmatrix}$$</p>
+<p><strong>Règle de Sarrus (pour $3 \times 3$).</strong> Développement par cofacteurs ou règle des diagonales.</p>
+<h3>V.3 Rang d'une matrice</h3>
+<p><strong>Définition.</strong> Le <strong>rang</strong> de $A$ est la dimension de l'espace engendré par les colonnes (ou par les lignes).</p>
+<p><strong>Calcul.</strong> Par l'échelonnement : $\text{rang}(A)$ = nombre de pivots dans la forme échelonnée.</p>
+<p><strong>Propriété.</strong> $\text{rang}(A) \leq \min(p, n)$. $A$ inversible $\Leftrightarrow \text{rang}(A) = n$ (pour $A$ carrée).</p>
+<hr />
+<h2>Chapitre VI — Applications Linéaires</h2>
+<h3>VI.1 Définitions</h3>
+<p><strong>Définition.</strong> $f : E \to F$ est <strong>linéaire</strong> si :<br />
+1. $\forall u, v \in E,\ f(u + v) = f(u) + f(v)$<br />
+2. $\forall \lambda \in \mathbb{K},\ \forall u \in E,\ f(\lambda u) = \lambda f(u)$</p>
+<p>Équivalent : $f(\lambda u + \mu v) = \lambda f(u) + \mu f(v)$.</p>
+<p><strong>Noyau.</strong> $\text{Ker}(f) = {u \in E \mid f(u) = 0}$ — c'est un sev de $E$.</p>
+<p><strong>Image.</strong> $\text{Im}(f) = {f(u) \mid u \in E} = f(E)$ — c'est un sev de $F$.</p>
+<p><strong>Injectivité.</strong> $f$ injective $\Leftrightarrow \text{Ker}(f) = {0}$.</p>
+<h3>VI.2 Théorème du rang</h3>
+<p><strong>Théorème (fondamental).</strong> Si $E$ est de dimension finie :<br />
+$$\dim(\text{Ker}(f)) + \dim(\text{Im}(f)) = \dim E$$</p>
+<p><strong>Corollaires :</strong><br />
+- Si $\dim E = \dim F$ : $f$ injective $\Leftrightarrow f$ surjective $\Leftrightarrow f$ bijective<br />
+- $\text{rang}(A) + \dim(\text{Ker}(A)) = n$ (nombre de colonnes)</p>
+<h3>VI.3 Matrice d'une application linéaire</h3>
+<p><strong>Principe.</strong> Si $\mathcal{B} = (e_1, \ldots, e_n)$ est une base de $E$ et $\mathcal{B}' = (f_1, \ldots, f_p)$ une base de $F$, la matrice de $f$ dans ces bases est la matrice $A$ dont la $j$-ème colonne contient les coordonnées de $f(e_j)$ dans $\mathcal{B}'$.</p>
+<p><strong>Composition.</strong> $\text{Mat}(g \circ f) = \text{Mat}(g) \cdot \text{Mat}(f)$.</p>
+<p><strong>Changement de base.</strong> Si $P$ est la matrice de changement de base ($P$ inversible), la nouvelle matrice est $P^{-1}AP$.</p>
+<hr />
+<h2>Récapitulatif — Méthodes clés pour les partiels</h2>
+<h3>Boîte à outils Algèbre 1</h3>
+<table>
+<thead>
+<tr>
+<th>Problème</th>
+<th>Réflexe</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Prouver $A = B$</td>
+<td>Double inclusion</td>
+</tr>
+<tr>
+<td>Montrer $\neg(\forall x, P(x))$</td>
+<td>Trouver un contre-exemple</td>
+</tr>
+<tr>
+<td>Prouver $P \Rightarrow Q$</td>
+<td>Direct, contraposée, ou absurde</td>
+</tr>
+<tr>
+<td>Montrer une propriété pour tout $n$</td>
+<td>Récurrence</td>
+</tr>
+<tr>
+<td>Cardinal de $A \cup B$</td>
+<td>$</td>
+</tr>
+<tr>
+<td>Nombre de bijections ${1,\ldots,n} \to {1,\ldots,n}$</td>
+<td>$n!$</td>
+</tr>
+</tbody>
+</table>
+<h3>Boîte à outils Algèbre 2</h3>
+<table>
+<thead>
+<tr>
+<th>Problème</th>
+<th>Réflexe</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Mettre $z$ sous forme polaire</td>
+<td>Calculer $|z|$ et $\text{Arg}(z)$</td>
+</tr>
+<tr>
+<td>Résoudre $z^n = a$</td>
+<td>Forme polaire + racines</td>
+</tr>
+<tr>
+<td>Résoudre $az^2+bz+c = 0$</td>
+<td>Discriminant $\Delta$, racine carrée complexe</td>
+</tr>
+<tr>
+<td>Montrer $F$ est un sev</td>
+<td>Vérifier $0 \in F$, stable $+$, stable $\cdot$</td>
+</tr>
+<tr>
+<td>Tester liberté d'une famille</td>
+<td>Résoudre $\sum \lambda_i v_i = 0$</td>
+</tr>
+<tr>
+<td>Dimension d'un sev défini par équations</td>
+<td>$n - \text{rang}(A)$</td>
+</tr>
+<tr>
+<td>Trouver base de $\text{Ker}(f)$</td>
+<td>Résoudre $Ax = 0$ par Gauss</td>
+</tr>
+<tr>
+<td>Trouver base de $\text{Im}(f)$</td>
+<td>Colonnes formant une famille libre de $A$</td>
+</tr>
+<tr>
+<td>Théorème du rang</td>
+<td>$\dim\text{Ker} + \dim\text{Im} = \dim E$</td>
+</tr>
+<tr>
+<td>Montrer $f$ bijective (même dim)</td>
+<td>Montrer injective OU surjective</td>
+</tr>
+</tbody>
+</table>
+    </section>
+    <section class="tab-panel" id="panel-exercices" role="tabpanel">
+<h1>📝 Exercices avec Corrections Détaillées — Algèbre 1 &amp; 2</h1>
+<h3>L1 Informatique — Institut Galilée</h3>
+<blockquote>
+<p>Corrections pas-à-pas, calquées sur les TD réels et les types d'exercices des partiels.</p>
+</blockquote>
+<hr />
+<h1>PARTIE 1 — ALGÈBRE 1</h1>
+<hr />
+<h2>🔵 Thème 1 : Ensembles et opérations</h2>
+<h3>Exercice 1.1 — Opérations sur les ensembles</h3>
+<p>Soit $E$ un ensemble et $A, B, C \subset E$. Montrer :</p>
+<ol>
+<li>$(A \cup B) \cap C = (A \cap C) \cup (B \cap C)$</li>
+<li>$\overline{A \cup B} = \overline{A} \cap \overline{B}$ (De Morgan)</li>
+<li>Si $A \subset B$ et $B \subset C$, alors $A \subset C$</li>
+</ol>
+<details>
+<summary><strong>✅ Correction complète</strong></summary>
+
+**1. Distributivité.**
+
+Il faut montrer que les deux ensembles ont les mêmes éléments, donc la double inclusion.
+
+*$\subset$ :* Soit $x \in (A \cup B) \cap C$.
+Alors $x \in A \cup B$ (donc $x \in A$ ou $x \in B$) **et** $x \in C$.
+- Si $x \in A$ : alors $x \in A$ et $x \in C$, donc $x \in A \cap C \subset (A \cap C) \cup (B \cap C)$.
+- Si $x \in B$ : alors $x \in B$ et $x \in C$, donc $x \in B \cap C \subset (A \cap C) \cup (B \cap C)$.
+
+*$\supset$ :* Soit $x \in (A \cap C) \cup (B \cap C)$.
+- Si $x \in A \cap C$ : alors $x \in A \subset A \cup B$ et $x \in C$, donc $x \in (A \cup B) \cap C$.
+- Si $x \in B \cap C$ : de même.
+
+Les deux inclusions sont prouvées. $\blacksquare$
+
+**2. De Morgan.**
+
+*$\subset$ :* Soit $x \in \overline{A \cup B}$. Alors $x \notin A \cup B$, donc $x \notin A$ **et** $x \notin B$, donc $x \in \overline{A}$ et $x \in \overline{B}$, donc $x \in \overline{A} \cap \overline{B}$.
+
+*$\supset$ :* Soit $x \in \overline{A} \cap \overline{B}$. Alors $x \notin A$ et $x \notin B$, donc $x \notin A \cup B$, donc $x \in \overline{A \cup B}$.
+
+Conclusion : $\overline{A \cup B} = \overline{A} \cap \overline{B}$. $\blacksquare$
+
+**3. Transitivité.**
+
+Soit $x \in A$. Comme $A \subset B$, on a $x \in B$. Comme $B \subset C$, on a $x \in C$. Donc $A \subset C$. $\blacksquare$
+
+</details>
+
+<hr />
+<h3>Exercice 1.2 — Images directes et réciproques</h3>
+<p>Soit $f : X \to Y$ et $A, B \subset X$, $S, T \subset Y$. Montrer :</p>
+<ol>
+<li>$f(A \cup B) = f(A) \cup f(B)$</li>
+<li>$f(A \cap B) \subset f(A) \cap f(B)$ (inclusion stricte possible)</li>
+<li>$f^{-1}(S \cap T) = f^{-1}(S) \cap f^{-1}(T)$</li>
+</ol>
+<details>
+<summary><strong>✅ Correction complète</strong></summary>
+
+**1.** Soit $y \in f(A \cup B)$. Alors $\exists x \in A \cup B$ tel que $y = f(x)$.
+- Si $x \in A$ : $y = f(x) \in f(A)$.
+- Si $x \in B$ : $y = f(x) \in f(B)$.
+Donc $y \in f(A) \cup f(B)$.
+
+Réciproquement : si $y \in f(A)$, alors $\exists x \in A \subset A \cup B$ avec $y = f(x)$, donc $y \in f(A \cup B)$. De même pour $f(B)$.
+
+**2.** Soit $y \in f(A \cap B)$. Alors $\exists x \in A \cap B$ avec $y = f(x)$. Comme $x \in A$, $y \in f(A)$. Comme $x \in B$, $y \in f(B)$. Donc $y \in f(A) \cap f(B)$.
+
+*Contre-exemple pour l'égalité :* Soit $f : \{1,2\} \to \{1\}$ définie par $f(1)=f(2)=1$. Prenons $A = \{1\}$ et $B = \{2\}$. Alors $A \cap B = \emptyset$ donc $f(A \cap B) = \emptyset$, mais $f(A) \cap f(B) = \{1\} \cap \{1\} = \{1\} \neq \emptyset$.
+
+**3.** Soit $x \in f^{-1}(S \cap T)$. Alors $f(x) \in S \cap T$, donc $f(x) \in S$ et $f(x) \in T$, donc $x \in f^{-1}(S)$ et $x \in f^{-1}(T)$, donc $x \in f^{-1}(S) \cap f^{-1}(T)$.
+
+La réciproque est immédiate. $\blacksquare$
+
+</details>
+
+<hr />
+<h2>🔵 Thème 2 : Logique et quantificateurs</h2>
+<h3>Exercice 2.1 — Négations</h3>
+<p>Écrire la négation de chacune des propositions suivantes :</p>
+<ol>
+<li>$\forall x \in \mathbb{R},\ x^2 \geq 0$</li>
+<li>$\exists n \in \mathbb{N},\ n^2 = 2$</li>
+<li>$\forall \varepsilon &gt; 0,\ \exists N \in \mathbb{N},\ \forall n \geq N,\ |u_n - \ell| &lt; \varepsilon$</li>
+<li>$\forall x \in [0,1],\ f(x) \leq M$</li>
+</ol>
+<details>
+<summary><strong>✅ Correction complète</strong></summary>
+
+**1.** Négation : $\exists x \in \mathbb{R},\ x^2 < 0$. (Fausse.)
+
+**2.** Négation : $\forall n \in \mathbb{N},\ n^2 \neq 2$. (Vraie.)
+
+**3.** Négation de la définition de limite : $\exists \varepsilon > 0,\ \forall N \in \mathbb{N},\ \exists n \geq N,\ |u_n - \ell| \geq \varepsilon$.
+
+*Méthode :* nier de gauche à droite en remplaçant $\forall$ par $\exists$ et $\exists$ par $\forall$, et en niant la proposition atomique finale.
+
+**4.** Négation : $\exists x \in [0,1],\ f(x) > M$.
+
+</details>
+
+<hr />
+<h2>🔵 Thème 3 : Injections, surjections, bijections</h2>
+<h3>Exercice 3.1 (type partiel Algèbre 1)</h3>
+<p>Soit $f : \mathbb{R} \to \mathbb{R}$ définie par $f(x) = \frac{2x}{1+x^2}$.</p>
+<ol>
+<li>$f$ est-elle surjective ?</li>
+<li>$f$ est-elle injective ?</li>
+<li>Restreindre le domaine et/ou le codomaine pour obtenir une bijection.</li>
+</ol>
+<details>
+<summary><strong>✅ Correction complète</strong></summary>
+
+**1. Surjectivité.**
+
+Il faudrait que $\forall y \in \mathbb{R}$, l'équation $f(x) = y$ ait une solution.
+
+$f(x) = y \Leftrightarrow \frac{2x}{1+x^2} = y \Leftrightarrow yx^2 - 2x + y = 0$.
+
+- Si $y = 0$ : $-2x = 0 \Rightarrow x = 0$. Solution existe.
+- Si $y \neq 0$ : équation du second degré. Discriminant $\Delta = 4 - 4y^2 = 4(1-y^2)$.
+  - $\Delta \geq 0 \Leftrightarrow |y| \leq 1$.
+
+Donc pour $|y| > 1$, il n'y a pas de solution. **$f$ n'est pas surjective** de $\mathbb{R}$ dans $\mathbb{R}$.
+
+L'image de $f$ est $f(\mathbb{R}) = [-1, 1]$.
+
+**2. Injectivité.**
+
+$f(1) = \frac{2}{2} = 1$ et $f(-1) = \frac{-2}{2} = -1$. On a $f(1) \neq f(-1)$.
+
+Mais $f(2) = \frac{4}{5}$ et regardons si une autre valeur donne $4/5$ : $\frac{4}{5}x^2 - 2x + \frac{4}{5} = 0 \Rightarrow 4x^2 - 10x + 4 = 0 \Rightarrow x = 2$ ou $x = 1/2$.
+
+Donc $f(2) = f(1/2) = 4/5$ avec $2 \neq 1/2$. **$f$ n'est pas injective.**
+
+**3. Bijection.**
+
+$f$ est dérivable : $f'(x) = \frac{2(1+x^2) - 2x \cdot 2x}{(1+x^2)^2} = \frac{2(1-x^2)}{(1+x^2)^2}$.
+
+$f'(x) > 0 \Leftrightarrow x^2 < 1 \Leftrightarrow x \in ]-1, 1[$.
+
+Donc $f$ est strictement croissante sur $[-1, 1]$ et $f([-1,1]) = [-1, 1]$ (car $f(-1) = -1$, $f(0) = 0$, $f(1) = 1$).
+
+$f : [-1, 1] \to [-1, 1]$ est une **bijection**. $\blacksquare$
+
+</details>
+
+<hr />
+<h2>🔵 Thème 4 : Récurrence</h2>
+<h3>Exercice 4.1 — Récurrences classiques</h3>
+<p>Démontrer par récurrence :</p>
+<ol>
+<li>$\sum_{k=0}^n k = \frac{n(n+1)}{2}$</li>
+<li>$\forall n \geq 1,\ 2^n &gt; n$</li>
+<li><strong>Binôme de Newton :</strong> $(a+b)^n = \sum_{k=0}^n \binom{n}{k} a^k b^{n-k}$</li>
+</ol>
+<details>
+<summary><strong>✅ Correction complète</strong></summary>
+
+**1.** Notons $P(n) : \sum_{k=0}^n k = \frac{n(n+1)}{2}$.
+
+*Initialisation :* $P(0) : \sum_{k=0}^0 k = 0 = \frac{0 \cdot 1}{2}$. ✓
+
+*Hérédité :* Supposons $P(n)$ vraie. Alors :
+$$\sum_{k=0}^{n+1} k = \sum_{k=0}^n k + (n+1) = \frac{n(n+1)}{2} + (n+1) = (n+1)\left(\frac{n}{2}+1\right) = \frac{(n+1)(n+2)}{2}$$
+C'est bien $P(n+1)$. $\blacksquare$
+
+**2.** Notons $P(n) : 2^n > n$ pour $n \geq 1$.
+
+*Initialisation :* $P(1) : 2^1 = 2 > 1$. ✓
+
+*Hérédité :* Supposons $2^n > n$. Alors :
+$$2^{n+1} = 2 \cdot 2^n > 2n = n + n \geq n + 1$$
+(car $n \geq 1 \Rightarrow n \geq 1$). Donc $P(n+1)$. $\blacksquare$
+
+**3.** Notons $P(n) : (a+b)^n = \sum_{k=0}^n \binom{n}{k} a^k b^{n-k}$.
+
+*Initialisation :* $P(0) : (a+b)^0 = 1 = \binom{0}{0}a^0 b^0$. ✓
+
+*Hérédité :* Supposons $P(n)$. Alors :
+$$\begin{align}
+(a+b)^{n+1} &= (a+b)(a+b)^n = (a+b)\sum_{k=0}^n \binom{n}{k}a^k b^{n-k} \\
+&= \sum_{k=0}^n \binom{n}{k}a^{k+1}b^{n-k} + \sum_{k=0}^n \binom{n}{k}a^k b^{n+1-k}
+\end{align}$$
+
+En réindexant la première somme ($j = k+1$) :
+$$= \sum_{j=1}^{n+1}\binom{n}{j-1}a^j b^{n+1-j} + \sum_{j=0}^n\binom{n}{j}a^j b^{n+1-j}$$
+
+$$= a^{n+1} + \sum_{j=1}^n\left[\binom{n}{j-1}+\binom{n}{j}\right]a^j b^{n+1-j} + b^{n+1}$$
+
+Par la formule de Pascal $\binom{n}{j-1}+\binom{n}{j} = \binom{n+1}{j}$ :
+$$= \binom{n+1}{0}b^{n+1} + \sum_{j=1}^n\binom{n+1}{j}a^j b^{n+1-j} + \binom{n+1}{n+1}a^{n+1} = \sum_{k=0}^{n+1}\binom{n+1}{k}a^k b^{n+1-k}$$
+
+C'est bien $P(n+1)$. $\blacksquare$
+
+</details>
+
+<hr />
+<h2>🔵 Thème 5 : Combinatoire</h2>
+<h3>Exercice 5.1</h3>
+<ol>
+<li>Combien y a-t-il d'anagrammes du mot "MATHS" ?</li>
+<li>Combien de sous-comités de 3 personnes peut-on former parmi 10 personnes ?</li>
+<li>Combien y a-t-il de fonctions de ${1,2,3}$ dans ${a,b,c,d}$ ? De bijections ?</li>
+</ol>
+<details>
+<summary><strong>✅ Correction complète</strong></summary>
+
+**1.** "MATHS" a 5 lettres toutes distinctes. Le nombre d'arrangements est $5! = 120$.
+
+**2.** Un sous-comité non ordonné de 3 parmi 10 : $\binom{10}{3} = \frac{10!}{3! \cdot 7!} = \frac{10 \times 9 \times 8}{3 \times 2 \times 1} = 120$.
+
+**3.** Fonctions quelconques : pour chaque élément de $\{1,2,3\}$, on a 4 choix d'image. Total : $4^3 = 64$.
+
+Bijections : impossible car $|\{1,2,3\}| = 3 < 4 = |\{a,b,c,d\}|$. Une injection est possible mais pas de bijection. Le nombre d'injections est $4 \times 3 \times 2 = 24$ (choix décroissants).
+
+</details>
+
+<hr />
+<hr />
+<h1>PARTIE 2 — ALGÈBRE 2</h1>
+<hr />
+<h2>🟡 Thème 1 : Nombres complexes</h2>
+<h3>Exercice A.1 — Calculs fondamentaux</h3>
+<p>Calculer et mettre sous forme algébrique $a + bi$ :</p>
+<ol>
+<li>$(2+3i)(4-7i)$</li>
+<li>$\frac{1-2i}{2+3i}$</li>
+<li>$(1+i)^{10}$</li>
+<li>Les racines carrées de $3 - 4i$</li>
+</ol>
+<details>
+<summary><strong>✅ Correction complète</strong></summary>
+
+**1.** $(2+3i)(4-7i) = 8 - 14i + 12i - 21i^2 = 8 - 2i + 21 = 29 - 2i$.
+
+**2.** Multiplier par le conjugué du dénominateur :
+$$\frac{1-2i}{2+3i} = \frac{(1-2i)(2-3i)}{(2+3i)(2-3i)} = \frac{2 - 3i - 4i + 6i^2}{4 + 9} = \frac{2 - 7i - 6}{13} = \frac{-4 - 7i}{13} = -\frac{4}{13} - \frac{7}{13}i$$
+
+**3.** Forme polaire de $1+i$ : $|1+i| = \sqrt{2}$, $\text{Arg}(1+i) = \pi/4$.
+Donc $1 + i = \sqrt{2}\, e^{i\pi/4}$.
+$$(1+i)^{10} = (\sqrt{2})^{10} e^{i \cdot 10\pi/4} = 2^5 e^{i \cdot 5\pi/2} = 32 e^{i(\pi/2 + 2\pi)} = 32 e^{i\pi/2} = 32i$$
+
+**4.** Cherchons $z = a+bi$ tel que $z^2 = 3 - 4i$.
+Système :
+$$a^2 - b^2 = 3 \qquad (1)$$
+$$2ab = -4 \Rightarrow ab = -2 \qquad (2)$$
+$$a^2 + b^2 = |3-4i| = \sqrt{9+16} = 5 \qquad (3)$$
+
+De $(1) + (3)$ : $2a^2 = 8 \Rightarrow a^2 = 4 \Rightarrow a = \pm 2$.
+De $(2)$ : si $a = 2$ alors $b = -1$ ; si $a = -2$ alors $b = 1$.
+
+Les deux racines carrées sont $\boxed{2 - i}$ et $\boxed{-2 + i}$.
+
+*Vérification :* $(2-i)^2 = 4 - 4i + i^2 = 4 - 4i - 1 = 3 - 4i$. ✓
+
+</details>
+
+<hr />
+<h3>Exercice A.2 — Racines de l'unité et racines $n$-ièmes (type partiel)</h3>
+<ol>
+<li>Trouver toutes les racines cubiques de $-8$.</li>
+<li>Résoudre $z^4 + 1 = 0$.</li>
+<li>Montrer que $\sum_{k=0}^{n-1} e^{2ik\pi/n} = 0$ pour $n \geq 2$.</li>
+</ol>
+<details>
+<summary><strong>✅ Correction complète</strong></summary>
+
+**1.** On cherche les solutions de $z^3 = -8$.
+
+$-8 = 8 e^{i\pi}$. Les solutions sont $z_k = 8^{1/3} e^{i(\pi + 2k\pi)/3} = 2 e^{i\pi(1+2k)/3}$ pour $k = 0, 1, 2$.
+
+- $k=0$ : $z_0 = 2e^{i\pi/3} = 2(\cos(\pi/3) + i\sin(\pi/3)) = 2(1/2 + i\sqrt{3}/2) = 1 + i\sqrt{3}$
+- $k=1$ : $z_1 = 2e^{i\pi} = -2$
+- $k=2$ : $z_2 = 2e^{i5\pi/3} = 2(\cos(5\pi/3) + i\sin(5\pi/3)) = 2(1/2 - i\sqrt{3}/2) = 1 - i\sqrt{3}$
+
+*Vérification :* $z_0 z_1 z_2 = (1+i\sqrt{3})(-2)(1-i\sqrt{3}) = -2(1+3) = -8$. ✓
+
+**2.** $z^4 = -1 = e^{i\pi}$. Les solutions : $z_k = e^{i\pi(1+2k)/4}$ pour $k = 0, 1, 2, 3$.
+
+- $k=0$ : $e^{i\pi/4} = \frac{\sqrt{2}}{2}(1+i)$
+- $k=1$ : $e^{i3\pi/4} = \frac{\sqrt{2}}{2}(-1+i)$
+- $k=2$ : $e^{i5\pi/4} = \frac{\sqrt{2}}{2}(-1-i)$
+- $k=3$ : $e^{i7\pi/4} = \frac{\sqrt{2}}{2}(1-i)$
+
+**3.** Posons $S = \sum_{k=0}^{n-1} \omega^k$ avec $\omega = e^{2i\pi/n}$.
+
+C'est une somme géométrique de raison $\omega$ : $S = \frac{\omega^n - 1}{\omega - 1}$.
+
+Or $\omega^n = e^{2i\pi} = 1$, donc $\omega^n - 1 = 0$.
+
+Et $\omega \neq 1$ (car $n \geq 2$ et $2\pi/n \not\equiv 0 \pmod{2\pi}$), donc $\omega - 1 \neq 0$.
+
+Donc $S = 0/(\omega - 1) = 0$. $\blacksquare$
+
+</details>
+
+<hr />
+<h3>Exercice A.3 — Formules trigonométriques par les complexes</h3>
+<p>Exprimer $\cos(3\theta)$ et $\sin(3\theta)$ en fonction de $\cos\theta$ et $\sin\theta$.</p>
+<details>
+<summary><strong>✅ Correction complète</strong></summary>
+
+Par la formule de Moivre :
+$$(\cos\theta + i\sin\theta)^3 = \cos(3\theta) + i\sin(3\theta)$$
+
+En développant le membre gauche :
+$$(\cos\theta + i\sin\theta)^3 = \cos^3\theta + 3\cos^2\theta \cdot i\sin\theta + 3\cos\theta \cdot (i\sin\theta)^2 + (i\sin\theta)^3$$
+$$= \cos^3\theta + 3i\cos^2\theta\sin\theta - 3\cos\theta\sin^2\theta - i\sin^3\theta$$
+$$= (\cos^3\theta - 3\cos\theta\sin^2\theta) + i(3\cos^2\theta\sin\theta - \sin^3\theta)$$
+
+En identifiant parties réelle et imaginaire :
+$$\cos(3\theta) = \cos^3\theta - 3\cos\theta\sin^2\theta = \cos^3\theta - 3\cos\theta(1-\cos^2\theta) = 4\cos^3\theta - 3\cos\theta$$
+$$\sin(3\theta) = 3\cos^2\theta\sin\theta - \sin^3\theta = 3(1-\sin^2\theta)\sin\theta - \sin^3\theta = 3\sin\theta - 4\sin^3\theta \qquad \blacksquare$$
+
+</details>
+
+<hr />
+<h2>🟡 Thème 2 : Systèmes linéaires et pivot de Gauss</h2>
+<h3>Exercice B.1 — Résolution par Gauss</h3>
+<p>Résoudre le système :<br />
+$$\begin{cases} x + 2y - z = 3 \ 2x - y + z = -1 \ 3x + y + 2z = 4 \end{cases}$$</p>
+<details>
+<summary><strong>✅ Correction complète</strong></summary>
+
+**Matrice augmentée :**
+$$\begin{pmatrix} 1 & 2 & -1 & | & 3 \\ 2 & -1 & 1 & | & -1 \\ 3 & 1 & 2 & | & 4 \end{pmatrix}$$
+
+**Étape 1 :** $L_2 \leftarrow L_2 - 2L_1$ et $L_3 \leftarrow L_3 - 3L_1$ :
+$$\begin{pmatrix} 1 & 2 & -1 & | & 3 \\ 0 & -5 & 3 & | & -7 \\ 0 & -5 & 5 & | & -5 \end{pmatrix}$$
+
+**Étape 2 :** $L_3 \leftarrow L_3 - L_2$ :
+$$\begin{pmatrix} 1 & 2 & -1 & | & 3 \\ 0 & -5 & 3 & | & -7 \\ 0 & 0 & 2 & | & 2 \end{pmatrix}$$
+
+**Remontée :**
+- $L_3$ : $2z = 2 \Rightarrow z = 1$
+- $L_2$ : $-5y + 3 = -7 \Rightarrow -5y = -10 \Rightarrow y = 2$
+- $L_1$ : $x + 4 - 1 = 3 \Rightarrow x = 0$
+
+**Solution :** $(x, y, z) = (0, 2, 1)$.
+
+*Vérification dans $L_3$ :* $3(0) + 2 + 2(1) = 4$. ✓
+
+</details>
+
+<hr />
+<h3>Exercice B.2 — Système avec paramètre</h3>
+<p>Discuter selon $a \in \mathbb{R}$ le nombre de solutions du système :<br />
+$$\begin{cases} ax + y + z = 1 \ x + ay + z = 1 \ x + y + az = 1 \end{cases}$$</p>
+<details>
+<summary><strong>✅ Correction complète</strong></summary>
+
+**Déterminant de la matrice :**
+$$A = \begin{pmatrix} a & 1 & 1 \\ 1 & a & 1 \\ 1 & 1 & a \end{pmatrix}$$
+
+En développant : $\det(A) = a(a^2-1) - 1(a-1) + 1(1-a) = a^3 - a - a + 1 + 1 - a = a^3 - 3a + 2$.
+
+Factorisons : on cherche les racines. $a=1$ : $1-3+2=0$. Donc $(a-1)$ divise.
+
+$a^3 - 3a + 2 = (a-1)(a^2+a-2) = (a-1)(a-1)(a+2) = (a-1)^2(a+2)$.
+
+**Cas $a \neq 1$ et $a \neq -2$** : $\det(A) \neq 0$. Solution unique (par Cramer) :
+
+Par symétrie du système, on essaie $x = y = z = t$. Alors $at + t + t = 1 \Rightarrow t(a+2) = 1 \Rightarrow t = \frac{1}{a+2}$.
+
+Solution unique : $\left(\frac{1}{a+2}, \frac{1}{a+2}, \frac{1}{a+2}\right)$.
+
+**Cas $a = 1$** : Le système devient $x + y + z = 1$ (trois équations identiques). Infinité de solutions : $x + y + z = 1$ (plan affine). $\dim = 2$ paramètres libres.
+
+**Cas $a = -2$** : Les équations donnent $-2x + y + z = 1$, $x - 2y + z = 1$, $x + y - 2z = 1$. Leur somme : $0 = 3$. **Contradiction !** Aucune solution.
+
+**Conclusion :**
+- $a \neq 1$ et $a \neq -2$ : une unique solution
+- $a = 1$ : infinité de solutions (droite... non, plan : dimension 2)
+- $a = -2$ : aucune solution
+
+</details>
+
+<hr />
+<h2>🟡 Thème 3 : Sous-espaces vectoriels</h2>
+<h3>Exercice C.1 — Reconnaissance de sev (type partiel !)</h3>
+<p>Dans $\mathbb{R}^3$, les sous-ensembles suivants sont-ils des sous-espaces vectoriels ?</p>
+<ol>
+<li>$F_1 = {(x,y,z) \in \mathbb{R}^3 \mid x + y - z = 0}$</li>
+<li>$F_2 = {(x,y) \in \mathbb{R}^2 \mid x \geq 0 \text{ et } y \geq 0}$</li>
+<li>$F_3 = {(x,y,z) \in \mathbb{R}^3 \mid xy = 0}$</li>
+<li>$F_4 = {(x,y,z) \in \mathbb{R}^3 \mid x = 2z}$</li>
+</ol>
+<details>
+<summary><strong>✅ Correction complète</strong></summary>
+
+**1. $F_1$ est un sev.**
+
+- $0 \in F_1$ : $0 + 0 - 0 = 0$. ✓
+- Stabilité addition : si $(x,y,z), (x',y',z') \in F_1$ (i.e., $x+y-z=0$ et $x'+y'-z'=0$), alors $(x+x') + (y+y') - (z+z') = (x+y-z) + (x'+y'-z') = 0$. ✓
+- Stabilité scalaire : $\lambda(x+y-z) = 0$. ✓
+
+**2. $F_2$ n'est pas un sev.**
+
+$(1, 0) \in F_2$ (car $1 \geq 0, 0 \geq 0$). Mais $(-1)(1,0) = (-1, 0) \notin F_2$ (car $-1 < 0$). Pas stable par multiplication scalaire.
+
+**3. $F_3$ n'est pas un sev.**
+
+$(1, 0, 0) \in F_3$ (car $1 \times 0 = 0$) et $(0, 1, 0) \in F_3$ (car $0 \times 1 = 0$).
+
+Mais $(1,0,0) + (0,1,0) = (1,1,0)$, et $1 \times 1 = 1 \neq 0$. Pas stable par addition.
+
+**4. $F_4$ est un sev.**
+
+$F_4 = \{(x,y,z) \mid x - 2z = 0\}$ est le noyau de l'application linéaire $(x,y,z) \mapsto x - 2z$. Tout noyau d'une application linéaire est un sev. $\blacksquare$
+
+*Vérification directe :* $0 - 2 \times 0 = 0$ ✓. $\lambda(x - 2z) = 0$ ✓. $(x-2z) + (x'-2z') = 0$ ✓.
+
+</details>
+
+<hr />
+<h3>Exercice C.2 — Familles libres/liées</h3>
+<p>Dans $\mathbb{R}^4$, la famille $\mathcal{F} = {u_1, u_2, u_3}$ avec $u_1 = (3,0,1,2)$, $u_2 = (1,5,0,-1)$, $u_3 = (7,5,2,1)$ est-elle libre ?</p>
+<details>
+<summary><strong>✅ Correction complète</strong></summary>
+
+On résout $\lambda_1 u_1 + \lambda_2 u_2 + \lambda_3 u_3 = 0$ :
+$$\begin{cases} 3\lambda_1 + \lambda_2 + 7\lambda_3 = 0 \\ 5\lambda_2 + 5\lambda_3 = 0 \\ \lambda_1 + 2\lambda_3 = 0 \\ 2\lambda_1 - \lambda_2 + \lambda_3 = 0 \end{cases}$$
+
+De la 2e équation : $\lambda_2 = -\lambda_3$.
+
+De la 3e : $\lambda_1 = -2\lambda_3$.
+
+Substituons dans la 1re : $3(-2\lambda_3) + (-\lambda_3) + 7\lambda_3 = -6\lambda_3 - \lambda_3 + 7\lambda_3 = 0$. ✓
+
+Substituons dans la 4e : $2(-2\lambda_3) - (-\lambda_3) + \lambda_3 = -4\lambda_3 + \lambda_3 + \lambda_3 = -2\lambda_3$. Pour que ce soit $= 0$, il faut $\lambda_3 = 0$.
+
+Donc $\lambda_3 = \lambda_2 = \lambda_1 = 0$. **La famille est libre.** $\blacksquare$
+
+*Remarque :* $u_3 = 2u_1 + u_2$ (vérifier) — non, vérifions : $2(3,0,1,2) + (1,5,0,-1) = (7,5,2,3) \neq u_3 = (7,5,2,1)$. Donc $u_3$ n'est pas combinaison linéaire de $u_1, u_2$. La famille est bien libre.
+
+</details>
+
+<hr />
+<h2>🟡 Thème 4 : Dimension et théorème du rang</h2>
+<h3>Exercice D.1 — Applications linéaires (type partiel !)</h3>
+<p>Soit $f : \mathbb{R}^2 \to \mathbb{R}^3$ définie par $f(x,y) = (x+y, x-y, 2x)$.</p>
+<ol>
+<li>Montrer que $f$ est linéaire.</li>
+<li>Calculer $\text{Ker}(f)$ et $\dim(\text{Ker}(f))$.</li>
+<li>Calculer $\text{Im}(f)$ et $\dim(\text{Im}(f))$.</li>
+<li>Vérifier le théorème du rang.</li>
+</ol>
+<details>
+<summary><strong>✅ Correction complète</strong></summary>
+
+**1. Linéarité.**
+
+$f(\lambda(x,y) + \mu(x',y')) = f(\lambda x + \mu x', \lambda y + \mu y')$
+$= (\lambda x + \mu x' + \lambda y + \mu y', \lambda x + \mu x' - \lambda y - \mu y', 2\lambda x + 2\mu x')$
+$= \lambda(x+y, x-y, 2x) + \mu(x'+y', x'-y', 2x')$
+$= \lambda f(x,y) + \mu f(x',y')$. ✓
+
+**2. Noyau.**
+
+$f(x,y) = (0,0,0) \Leftrightarrow \begin{cases} x+y=0 \\ x-y=0 \\ 2x=0 \end{cases}$
+
+De la 3e : $x = 0$. De la 1re : $y = -x = 0$. Donc $\text{Ker}(f) = \{(0,0)\}$.
+
+$\dim(\text{Ker}(f)) = 0$ : $f$ est **injective**.
+
+**3. Image.**
+
+$\text{Im}(f) = \text{Vect}(f(1,0), f(0,1)) = \text{Vect}((1,1,2), (1,-1,0))$.
+
+Ces deux vecteurs sont-ils libres ? Supposons $\lambda(1,1,2) + \mu(1,-1,0) = (0,0,0)$ :
+$$\lambda + \mu = 0,\quad \lambda - \mu = 0 \Rightarrow \lambda = \mu = 0.$$
+
+Donc $\text{Im}(f) = \text{Vect}((1,1,2),(1,-1,0))$, $\dim(\text{Im}(f)) = 2$.
+
+**4. Théorème du rang.**
+
+$\dim(\text{Ker}(f)) + \dim(\text{Im}(f)) = 0 + 2 = 2 = \dim(\mathbb{R}^2)$. ✓
+
+</details>
+
+<hr />
+<h3>Exercice D.2 — Supplémentaires</h3>
+<p>Soit $E = \mathbb{R}^3$, $F = {(x,y,z) \mid x+y-z = 0}$ et $G = \text{Vect}((1,0,1))$.</p>
+<ol>
+<li>Montrer que $F$ et $G$ sont des sev. Calculer leurs dimensions.</li>
+<li>Montrer que $E = F \oplus G$.</li>
+</ol>
+<details>
+<summary><strong>✅ Correction complète</strong></summary>
+
+**1.** $F$ est le noyau de $(x,y,z) \mapsto x+y-z$ (linéaire), donc c'est un sev. $\dim F = 3 - 1 = 2$ (une équation de rang 1).
+
+$G$ est engendré par un vecteur non nul, c'est une droite vectorielle. $\dim G = 1$.
+
+**2.** Montrons $F \cap G = \{0\}$ et $F + G = \mathbb{R}^3$.
+
+*Intersection :* Soit $v \in F \cap G$. Alors $v = t(1,0,1)$ pour un $t \in \mathbb{R}$, et $v \in F$ donc $t + 0 - t = 0$. Toujours vrai ! Mais attendons : $v = (t, 0, t)$ et la condition $F$ donne $t + 0 - t = 0$ pour tout $t$. Donc $F \cap G = G$ ?
+
+Vérifions : $(1, 0, 1) \in F$ ? $1 + 0 - 1 = 0$. Oui ! Donc $(1,0,1) \in F \cap G$.
+
+Donc $F \cap G = G \neq \{0\}$. $F$ et $G$ ne sont **pas** supplémentaires dans $\mathbb{R}^3$.
+
+Prenons plutôt $G' = \text{Vect}((1,0,0))$.
+
+$(1,0,0) \in F$ ? $1 + 0 - 0 = 1 \neq 0$. Donc $(1,0,0) \notin F$.
+
+$F \cap G' = \{0\}$ (car si $t(1,0,0) \in F$ alors $t = 0$). ✓
+
+$\dim F + \dim G' = 2 + 1 = 3 = \dim \mathbb{R}^3$. Par la formule de Grassmann, $\dim(F+G') = 3$. Donc $F + G' = \mathbb{R}^3$.
+
+Conclusion : $\mathbb{R}^3 = F \oplus G'$. $\blacksquare$
+
+</details>
+
+<hr />
+<h2>🟡 Thème 5 : Matrices inversibles</h2>
+<h3>Exercice E.1 — Inversion par Gauss-Jordan</h3>
+<p>Inverser la matrice $A = \begin{pmatrix} 1 &amp; 2 &amp; 0 \ 0 &amp; 1 &amp; 3 \ 1 &amp; 0 &amp; 1 \end{pmatrix}$.</p>
+<details>
+<summary><strong>✅ Correction complète</strong></summary>
+
+Méthode : augmenter $[A | I_3]$ et réduire à $[I_3 | A^{-1}]$.
+
+$$\left(\begin{array}{ccc|ccc} 1 & 2 & 0 & 1 & 0 & 0 \\ 0 & 1 & 3 & 0 & 1 & 0 \\ 1 & 0 & 1 & 0 & 0 & 1 \end{array}\right)$$
+
+$L_3 \leftarrow L_3 - L_1$ :
+$$\left(\begin{array}{ccc|ccc} 1 & 2 & 0 & 1 & 0 & 0 \\ 0 & 1 & 3 & 0 & 1 & 0 \\ 0 & -2 & 1 & -1 & 0 & 1 \end{array}\right)$$
+
+$L_3 \leftarrow L_3 + 2L_2$ :
+$$\left(\begin{array}{ccc|ccc} 1 & 2 & 0 & 1 & 0 & 0 \\ 0 & 1 & 3 & 0 & 1 & 0 \\ 0 & 0 & 7 & -1 & 2 & 1 \end{array}\right)$$
+
+$L_3 \leftarrow L_3/7$ :
+$$\left(\begin{array}{ccc|ccc} 1 & 2 & 0 & 1 & 0 & 0 \\ 0 & 1 & 3 & 0 & 1 & 0 \\ 0 & 0 & 1 & -1/7 & 2/7 & 1/7 \end{array}\right)$$
+
+$L_2 \leftarrow L_2 - 3L_3$ :
+$$\left(\begin{array}{ccc|ccc} 1 & 2 & 0 & 1 & 0 & 0 \\ 0 & 1 & 0 & 3/7 & 1/7 & -3/7 \\ 0 & 0 & 1 & -1/7 & 2/7 & 1/7 \end{array}\right)$$
+
+$L_1 \leftarrow L_1 - 2L_2$ :
+$$\left(\begin{array}{ccc|ccc} 1 & 0 & 0 & 1/7 & -2/7 & 6/7 \\ 0 & 1 & 0 & 3/7 & 1/7 & -3/7 \\ 0 & 0 & 1 & -1/7 & 2/7 & 1/7 \end{array}\right)$$
+
+$$A^{-1} = \frac{1}{7}\begin{pmatrix} 1 & -2 & 6 \\ 3 & 1 & -3 \\ -1 & 2 & 1 \end{pmatrix}$$
+
+*Vérification :* $AA^{-1} = I_3$ (à vérifier en multipliant). ✓
+
+</details>
+    </section>
+    <section class="tab-panel" id="panel-partiels" role="tabpanel">
+<h1>📋 Sujets de Partiels avec Corrections — Algèbre 1 &amp; 2</h1>
+<h3>L1 Informatique — Institut Galilée</h3>
+<blockquote>
+<p>3 sujets complets d'après les annales réelles 2021–2024.</p>
+</blockquote>
+<hr />
+<h1>🏆 SUJET 1 — PARTIEL ALGÈBRE 1 (simulé d'après annales)</h1>
+<p><strong>Durée : 2h — Documents et calculatrice interdits</strong></p>
+<hr />
+<h3>Exercice 1 — Questions de cours (4 points)</h3>
+<ol>
+<li>Donner la définition de l'inclusion $A \subset B$ pour deux ensembles $A$ et $B$.</li>
+<li>Énoncer les lois de De Morgan.</li>
+<li>Donner la définition d'une application bijective $f : A \to B$.</li>
+<li>Énoncer le principe de récurrence simple.</li>
+</ol>
+<hr />
+<h3>Exercice 2 — Opérations sur les ensembles (5 points)</h3>
+<p>Soient $A$, $B$, $C$ des sous-ensembles d'un ensemble $E$.</p>
+<ol>
+<li>Montrer par double inclusion que $(A \cap B) \cup C = (A \cup C) \cap (B \cup C)$.</li>
+<li>Montrer que si $A \subset B$ et $B \subset C$, alors $A \subset C$.</li>
+<li>Soit $f : X \to Y$ une application. Montrer que $f(A \cup B) = f(A) \cup f(B)$ pour $A, B \subset X$.</li>
+<li>Donner un exemple montrant que $f(A \cap B) \subsetneq f(A) \cap f(B)$ peut être une inclusion stricte.</li>
+</ol>
+<hr />
+<h3>Exercice 3 — Quantificateurs et négations (4 points)</h3>
+<ol>
+<li>Écrire avec des quantificateurs la définition de "$f : \mathbb{R} \to \mathbb{R}$ est continue en $a$".</li>
+<li>Écrire la négation de la proposition : "$\forall x \in \mathbb{R},\ \exists n \in \mathbb{N},\ x &lt; n$".</li>
+<li>L'ordre des quantificateurs est-il important ? Illustrer avec un exemple.</li>
+<li>Écrire la négation de "la suite $(u_n)$ converge vers $\ell$".</li>
+</ol>
+<hr />
+<h3>Exercice 4 — Injections, surjections, bijections (4 points)</h3>
+<p>Soit $f : \mathbb{R} \to \mathbb{R}$ définie par $f(x) = x^3 - x$.</p>
+<ol>
+<li>Montrer que $f$ n'est pas injective.</li>
+<li>Montrer que $f$ est surjective.</li>
+<li>Restreindre le domaine pour obtenir une bijection. Justifier.</li>
+</ol>
+<hr />
+<h3>Exercice 5 — Récurrence et combinatoire (3 points)</h3>
+<ol>
+<li>Démontrer par récurrence que pour tout $n \geq 1$ : $\sum_{k=1}^n k^2 = \frac{n(n+1)(2n+1)}{6}$.</li>
+<li>Calculer $\binom{10}{4}$ et $\binom{12}{2}$.</li>
+<li>Combien y a-t-il d'injections de ${1,2,3}$ dans ${1,2,3,4,5}$ ?</li>
+</ol>
+<hr />
+<h2>✅ CORRECTION SUJET 1</h2>
+<hr />
+<h3>Exercice 1</h3>
+<p><strong>1.</strong> $A \subset B$ signifie : $\forall x,\ (x \in A \Rightarrow x \in B)$.</p>
+<p><strong>2.</strong> Lois de De Morgan :<br />
+$$\overline{A \cup B} = \overline{A} \cap \overline{B} \qquad \text{et} \qquad \overline{A \cap B} = \overline{A} \cup \overline{B}$$</p>
+<p><strong>3.</strong> $f : A \to B$ est bijective si elle est injective ($f(x)=f(x') \Rightarrow x=x'$) ET surjective ($\forall y \in B, \exists x \in A, f(x)=y$).</p>
+<p><strong>4.</strong> Principe de récurrence : si $P(0)$ est vraie, et si pour tout $n \in \mathbb{N}$, $P(n) \Rightarrow P(n+1)$, alors $P(n)$ est vraie pour tout $n \in \mathbb{N}$.</p>
+<hr />
+<h3>Exercice 2</h3>
+<p><strong>1.</strong> Montrons $(A \cap B) \cup C = (A \cup C) \cap (B \cup C)$.</p>
+<p><em>$\subset$ :</em> Soit $x \in (A \cap B) \cup C$.<br />
+- Cas $x \in C$ : $x \in A \cup C$ et $x \in B \cup C$, donc $x \in (A\cup C) \cap (B\cup C)$.<br />
+- Cas $x \in A \cap B$ (et $x \notin C$) : $x \in A$ donc $x \in A\cup C$, et $x \in B$ donc $x \in B\cup C$. Donc $x \in (A\cup C)\cap(B\cup C)$.</p>
+<p><em>$\supset$ :</em> Soit $x \in (A\cup C)\cap(B\cup C)$. Alors $x \in A\cup C$ et $x \in B\cup C$.<br />
+- Si $x \in C$ : $x \in (A\cap B)\cup C$. ✓<br />
+- Si $x \notin C$ : alors $x \in A$ (car $x \in A\cup C$ et $x\notin C$) et $x \in B$ (car $x \in B\cup C$ et $x\notin C$). Donc $x \in A\cap B \subset (A\cap B)\cup C$. ✓</p>
+<p><strong>2.</strong> Transitivité : voir Exercice 1.1 du cahier d'exercices.</p>
+<p><strong>3.</strong> $f(A \cup B) = f(A) \cup f(B)$ : voir Exercice 1.2.</p>
+<p><strong>4.</strong> Contre-exemple : $f : {1,2} \to {0}$, $f(1) = f(2) = 0$. Prendre $A = {1}$, $B = {2}$. $f(A \cap B) = f(\emptyset) = \emptyset$ mais $f(A) \cap f(B) = {0} \cap {0} = {0} \neq \emptyset$.</p>
+<hr />
+<h3>Exercice 3</h3>
+<p><strong>1.</strong> $f$ est continue en $a$ :<br />
+$$\forall \varepsilon &gt; 0,\ \exists \eta &gt; 0,\ \forall x \in \mathbb{R},\ |x-a| &lt; \eta \Rightarrow |f(x)-f(a)| &lt; \varepsilon$$</p>
+<p><strong>2.</strong> Négation de "$\forall x \in \mathbb{R},\ \exists n \in \mathbb{N},\ x &lt; n$" :<br />
+$$\exists x \in \mathbb{R},\ \forall n \in \mathbb{N},\ x \geq n$$<br />
+(Il existe un réel plus grand que tout entier naturel — cette proposition est fausse, car $\mathbb{N}$ est non borné dans $\mathbb{R}$.)</p>
+<p><strong>3.</strong> L'ordre est crucial. Exemple :<br />
+- $P_1 : \forall m \in \mathbb{N},\ \exists k \in \mathbb{N},\ m &lt; k$ — VRAIE (pour tout entier, l'entier suivant est plus grand)<br />
+- $P_2 : \exists k \in \mathbb{N},\ \forall m \in \mathbb{N},\ m &lt; k$ — FAUSSE (il n'existe pas d'entier qui majore tous les entiers)</p>
+<p><strong>4.</strong> Négation de "$(u_n)$ converge vers $\ell$" :<br />
+$$\exists \varepsilon &gt; 0,\ \forall N \in \mathbb{N},\ \exists n \geq N,\ |u_n - \ell| \geq \varepsilon$$</p>
+<hr />
+<h3>Exercice 4</h3>
+<p><strong>1. Non-injectivité.</strong> $f(0) = 0$, $f(1) = 0$, $f(-1) = 0$. Donc $f(1) = f(-1) = 0$ avec $1 \neq -1$. $f$ n'est pas injective.</p>
+<p><strong>2. Surjectivité.</strong> $f$ est un polynôme de degré impair (3) à coefficients réels, donc $\lim_{x\to+\infty} f(x) = +\infty$ et $\lim_{x\to-\infty} f(x) = -\infty$.</p>
+<p>Pour tout $y \in \mathbb{R}$, posons $g(x) = f(x) - y = x^3 - x - y$. $g$ est continue, $g(-\infty) = -\infty$, $g(+\infty) = +\infty$. Par le TVI, il existe $c$ tel que $g(c) = 0$, i.e., $f(c) = y$. Donc $f$ est surjective. $\blacksquare$</p>
+<p><strong>3. Restriction.</strong> $f'(x) = 3x^2 - 1 &gt; 0 \Leftrightarrow |x| &gt; 1/\sqrt{3}$. Donc $f$ est strictement croissante sur $[1/\sqrt{3}, +\infty[$ et $f([1/\sqrt{3}, +\infty[) = [f(1/\sqrt{3}), +\infty[$.</p>
+<p>$f(1/\sqrt{3}) = 1/(3\sqrt{3}) - 1/\sqrt{3} = -2/(3\sqrt{3})$.</p>
+<p>Donc $f : [1/\sqrt{3}, +\infty[ \to [-2/(3\sqrt{3}), +\infty[$ est bijective. $\blacksquare$</p>
+<hr />
+<h3>Exercice 5</h3>
+<p><strong>1. Récurrence.</strong></p>
+<p>$P(n) : \sum_{k=1}^n k^2 = \frac{n(n+1)(2n+1)}{6}$.</p>
+<p><em>Init :</em> $P(1) : 1 = \frac{1 \cdot 2 \cdot 3}{6} = 1$. ✓</p>
+<p><em>Hérédité :</em><br />
+$$\sum_{k=1}^{n+1}k^2 = \sum_{k=1}^n k^2 + (n+1)^2 = \frac{n(n+1)(2n+1)}{6} + (n+1)^2 = (n+1)\left[\frac{n(2n+1)}{6} + (n+1)\right]$$<br />
+$$= (n+1) \cdot \frac{n(2n+1) + 6(n+1)}{6} = (n+1) \cdot \frac{2n^2+7n+6}{6} = (n+1) \cdot \frac{(n+2)(2n+3)}{6}$$<br />
+C'est bien $\frac{(n+1)(n+2)(2(n+1)+1)}{6} = P(n+1)$. $\blacksquare$</p>
+<p><strong>2.</strong> $\binom{10}{4} = \frac{10!}{4! \cdot 6!} = \frac{10 \times 9 \times 8 \times 7}{4!} = \frac{5040}{24} = 210$.</p>
+<p>$\binom{12}{2} = \frac{12 \times 11}{2} = 66$.</p>
+<p><strong>3.</strong> Injections de ${1,2,3}$ dans ${1,2,3,4,5}$ : pour $1$ on a 5 choix, pour $2$ il reste 4 choix, pour $3$ il reste 3 choix. Total : $5 \times 4 \times 3 = 60$.</p>
+<h2>---</h2>
+<h1>🏆 SUJET 2 — PARTIEL ALGÈBRE 2, PARTIEL 1 (simulé d'après annales 2021–2023)</h1>
+<p><strong>Durée : 2h — Documents interdits</strong></p>
+<hr />
+<h3>Exercice 1 — Espaces vectoriels (6 points)</h3>
+<p>Soit $E$ un $\mathbb{K}$-espace vectoriel.</p>
+<ol>
+<li>Donner la définition de la somme $F + G$ de deux sous-espaces vectoriels $F$ et $G$ de $E$, et montrer que $F + G$ est un sous-espace vectoriel de $E$.</li>
+<li>Donner la définition de "F et G sont en somme directe".</li>
+<li>Parmi les familles suivantes de vecteurs de $\mathbb{C}^3$, déterminer les familles libres et les familles liées :<br />
+   - $\mathcal{F}_1 = {(1, 2, 1-3i), (0, 0, 0)}$<br />
+   - $\mathcal{F}_2 = {(1, 2, 3)}$<br />
+   - $\mathcal{F}_3 = {(1,0,0), (0,1,0), (0,0,1)}$<br />
+   - $\mathcal{F}_4 = {(1,1,1), (1-i, 1+i, 1-i)}$</li>
+</ol>
+<hr />
+<h3>Exercice 2 — Nombres complexes (5 points)</h3>
+<p>Soit $x$ un nombre réel.</p>
+<ol>
+<li>Justifier la formule $\cos(2x) = \text{Re}((e^{ix})^2)$.</li>
+<li>En déduire la formule trigonométrique $\cos(2x) = 2\cos^2(x) - 1$.</li>
+<li>De même, calculer $\cos(3x)$ en fonction de $\cos(x)$.</li>
+<li>Résoudre dans $\mathbb{C}$ : $z^2 - (1-i)z - i = 0$.</li>
+</ol>
+<hr />
+<h3>Exercice 3 — Systèmes linéaires (4 points)</h3>
+<p>Résoudre le système suivant en discutant selon la valeur du paramètre $a \in \mathbb{R}$ :<br />
+$$\begin{cases} x + y + z = 1 \ x + ay + z = a \ ax + y + z = a^2 \end{cases}$$</p>
+<hr />
+<h3>Exercice 4 — Questions de cours (5 points)</h3>
+<ol>
+<li>Énoncer le théorème du rang.</li>
+<li>Soit $f : \mathbb{R}^3 \to \mathbb{R}^3$ une application linéaire. Quelles sont les dimensions possibles de $\text{Ker}(f)$ ? Donner un exemple dans chaque cas.</li>
+<li>Soient $F$ et $G$ deux sous-espaces vectoriels supplémentaires d'un espace vectoriel de dimension finie $E$. Donner une formule reliant $\dim E$, $\dim F$ et $\dim G$.</li>
+</ol>
+<hr />
+<h2>✅ CORRECTION SUJET 2</h2>
+<hr />
+<h3>Exercice 1</h3>
+<p><strong>1. Somme $F+G$.</strong></p>
+<p><strong>Définition.</strong> $F + G = {u + v \mid u \in F,\ v \in G}$.</p>
+<p><em>Montrons que c'est un sev :</em><br />
+- $0 \in F+G$ : $0 = 0_F + 0_G \in F+G$ (car $0_F \in F$ et $0_G \in G$). ✓<br />
+- Stabilité addition : si $w = u+v$ et $w' = u'+v'$ (avec $u,u' \in F$, $v,v' \in G$), alors $w+w' = (u+u') + (v+v')$ avec $u+u' \in F$ et $v+v' \in G$. ✓<br />
+- Stabilité scalaire : $\lambda w = \lambda u + \lambda v$ avec $\lambda u \in F$ et $\lambda v \in G$. ✓</p>
+<p>Donc $F + G$ est un sev. $\blacksquare$</p>
+<p><strong>2. Somme directe.</strong> $F$ et $G$ sont en <strong>somme directe</strong> (notée $F \oplus G$) si $F \cap G = {0}$.</p>
+<p>Équivalent : tout vecteur de $F + G$ s'écrit de façon <strong>unique</strong> comme $u + v$ avec $u \in F$, $v \in G$.</p>
+<p><strong>3.</strong><br />
+- $\mathcal{F}_1$ : contient le vecteur nul $(0,0,0)$ → toute famille contenant le vecteur nul est <strong>liée</strong> ($1 \cdot (0,0,0) = 0$).<br />
+- $\mathcal{F}_2$ : un seul vecteur non nul → <strong>libre</strong>.<br />
+- $\mathcal{F}_3$ : base canonique de $\mathbb{C}^3$ → <strong>libre</strong> (et génératrice).<br />
+- $\mathcal{F}_4$ : deux vecteurs. Sont-ils proportionnels ? $(1-i, 1+i, 1-i) = \lambda(1,1,1)$ impliquerait $\lambda = 1-i$ (1re coord.), $\lambda = 1+i$ (2e coord.) → $1-i = 1+i$, faux. Donc <strong>libre</strong>.</p>
+<hr />
+<h3>Exercice 2</h3>
+<p><strong>1.</strong> $(e^{ix})^2 = e^{i \cdot 2x} = \cos(2x) + i\sin(2x)$ par la formule d'Euler. Donc $\cos(2x) = \text{Re}((e^{ix})^2)$. $\blacksquare$</p>
+<p><strong>2.</strong> $(e^{ix})^2 = (\cos x + i\sin x)^2 = \cos^2 x + 2i\cos x\sin x - \sin^2 x = (\cos^2 x - \sin^2 x) + i(2\cos x\sin x)$.</p>
+<p>Partie réelle : $\cos(2x) = \cos^2 x - \sin^2 x = \cos^2 x - (1-\cos^2 x) = 2\cos^2 x - 1$. $\blacksquare$</p>
+<p><strong>3.</strong> $(e^{ix})^3 = e^{3ix} = \cos(3x) + i\sin(3x)$.</p>
+<p>$(\cos x + i\sin x)^3 = \cos^3 x + 3\cos^2 x (i\sin x) + 3\cos x(i\sin x)^2 + (i\sin x)^3$</p>
+<p>$= \cos^3 x - 3\cos x\sin^2 x + i(3\cos^2 x\sin x - \sin^3 x)$</p>
+<p>Partie réelle : $\cos(3x) = \cos^3 x - 3\cos x\sin^2 x = \cos^3 x - 3\cos x(1-\cos^2 x) = 4\cos^3 x - 3\cos x$.</p>
+<p><strong>4.</strong> Discriminant : $\Delta = (1-i)^2 + 4i = 1 - 2i - 1 + 4i = 2i$.</p>
+<p>Racines carrées de $2i$ : $2i = 2e^{i\pi/2}$, donc $\sqrt{2i} = \sqrt{2} e^{i\pi/4} = 1+i$ et $-(1+i)$.</p>
+<p>Solutions : $z = \frac{(1-i) \pm (1+i)}{2}$.</p>
+<ul>
+<li>$z_1 = \frac{(1-i)+(1+i)}{2} = \frac{2}{2} = 1$</li>
+<li>$z_2 = \frac{(1-i)-(1+i)}{2} = \frac{-2i}{2} = -i$</li>
+</ul>
+<p><em>Vérification :</em> $1 - (1-i)(1) - i = 1 - 1 + i - i = 0$ ✓. $(-i)^2 - (1-i)(-i) - i = -1 + (i + i^2) - i = -1 + i - 1 - i = -2 \neq 0$...</p>
+<p>Recalculons : $(-i)^2 - (1-i)(-i) - i = -1 - (-i + i^2) - i = -1 + i + 1 - i = 0$. ✓</p>
+<hr />
+<h3>Exercice 3</h3>
+<p>Matrice augmentée :<br />
+$$\begin{pmatrix} 1 &amp; 1 &amp; 1 &amp; | &amp; 1 \ 1 &amp; a &amp; 1 &amp; | &amp; a \ a &amp; 1 &amp; 1 &amp; | &amp; a^2 \end{pmatrix}$$</p>
+<p>$L_2 \leftarrow L_2 - L_1$, $L_3 \leftarrow L_3 - aL_1$ :<br />
+$$\begin{pmatrix} 1 &amp; 1 &amp; 1 &amp; | &amp; 1 \ 0 &amp; a-1 &amp; 0 &amp; | &amp; a-1 \ 0 &amp; 1-a &amp; 1-a &amp; | &amp; a^2-a \end{pmatrix}$$</p>
+<p>$L_3 \leftarrow L_3 + L_2$ :<br />
+$$\begin{pmatrix} 1 &amp; 1 &amp; 1 &amp; | &amp; 1 \ 0 &amp; a-1 &amp; 0 &amp; | &amp; a-1 \ 0 &amp; 0 &amp; 1-a &amp; | &amp; a^2-1 \end{pmatrix}$$</p>
+<p>$a^2 - 1 = (a-1)(a+1)$.</p>
+<p><strong>Cas $a = 1$ :</strong> Matrice $\begin{pmatrix}1&amp;1&amp;1&amp;|&amp;1\0&amp;0&amp;0&amp;|&amp;0\0&amp;0&amp;0&amp;|&amp;0\end{pmatrix}$. Infinité de solutions : $x + y + z = 1$ avec $y, z$ libres. $\dim = 2$.</p>
+<p><strong>Cas $a \neq 1$ :</strong> $L_2 \div (a-1)$ et $L_3 \div (1-a)$ :<br />
+$$\begin{pmatrix} 1 &amp; 1 &amp; 1 &amp; | &amp; 1 \ 0 &amp; 1 &amp; 0 &amp; | &amp; 1 \ 0 &amp; 0 &amp; 1 &amp; | &amp; -(a+1) \end{pmatrix}$$</p>
+<ul>
+<li>$z = -(a+1)$</li>
+<li>$y = 1$</li>
+<li>$x = 1 - y - z = 1 - 1 + (a+1) = a+1$</li>
+</ul>
+<p>Solution unique : $(x,y,z) = (a+1, 1, -(a+1))$.</p>
+<p><strong>Résumé :</strong><br />
+- $a = 1$ : infinité de solutions ($y, z$ libres avec $x = 1-y-z$)<br />
+- $a \neq 1$ : solution unique $(a+1, 1, -(a+1))$</p>
+<hr />
+<h3>Exercice 4</h3>
+<p><strong>1. Théorème du rang.</strong> Soit $f : E \to F$ linéaire avec $E$ de dimension finie. Alors :<br />
+$$\dim(\text{Ker}(f)) + \dim(\text{Im}(f)) = \dim E$$</p>
+<p><strong>2. Dimensions possibles de $\text{Ker}(f)$ pour $f : \mathbb{R}^3 \to \mathbb{R}^3$ :</strong></p>
+<p>Par le théorème du rang, $\dim\text{Ker}(f) + \dim\text{Im}(f) = 3$. Donc $\dim\text{Ker}(f) \in {0, 1, 2, 3}$.</p>
+<ul>
+<li>$\dim = 0$ : $f$ injective. Ex : $f(x,y,z) = (x,y,z)$ (identité).</li>
+<li>$\dim = 1$ : Ex : $f(x,y,z) = (x,y,0)$ ($\text{Ker} = \text{Vect}(e_3)$).</li>
+<li>$\dim = 2$ : Ex : $f(x,y,z) = (x,0,0)$ ($\text{Ker} = {y\text{-axis}} \times {z\text{-axis}}$).</li>
+<li>$\dim = 3$ : $f = 0$ (application nulle). $\text{Ker}(f) = \mathbb{R}^3$.</li>
+</ul>
+<p><strong>3. Supplémentaires.</strong> Si $E = F \oplus G$ (supplémentaires), alors :<br />
+$$\dim E = \dim F + \dim G$$</p>
+<h2>---</h2>
+<h1>🏆 SUJET 3 — PARTIEL ALGÈBRE 2, PARTIEL 2 (simulé d'après annales 2022–2024)</h1>
+<p><strong>Durée : 2h — Documents interdits</strong></p>
+<hr />
+<h3>Exercice 1 — Questions de cours (4 points)</h3>
+<ol>
+<li>Donner la définition d'une famille de vecteurs libre.</li>
+<li>Énoncer le théorème du rang.</li>
+<li>Soit $f : E \to F$ injective avec $\dim E$ et $\dim F$ finis. Montrer que $\dim E \leq \dim F$.</li>
+<li>Soient $F$ et $G$ deux sous-espaces vectoriels supplémentaires de $E$. Donner une formule pour $\dim E$.</li>
+</ol>
+<hr />
+<h3>Exercice 2 — Matrices (5 points)</h3>
+<p>On considère la famille de vecteurs de $\mathbb{R}^3$ dépendant d'un paramètre $a$ :<br />
+$${(a, 1, 1), (1, a, 1), (1, 1, a)}$$</p>
+<ol>
+<li>Déterminer les valeurs de $a$ pour lesquelles cette famille est libre.</li>
+<li>Pour les valeurs de $a$ où la famille est liée, décrire les relations de dépendance.</li>
+</ol>
+<hr />
+<h3>Exercice 3 — Application linéaire (6 points)</h3>
+<p>Soit $f : \mathbb{R}^2 \to \mathbb{R}^2$ définie par $f(e_1) = e_1 + 2e_2$ et $f(e_2) = 2e_1 + e_2$ où $(e_1, e_2)$ est la base canonique.</p>
+<ol>
+<li>Montrer que $f$ est linéaire.</li>
+<li>Écrire la matrice $A$ de $f$ dans la base canonique.</li>
+<li>Calculer $\text{Ker}(f)$ et $\text{Im}(f)$.</li>
+<li>$f$ est-elle bijective ? Calculer $A^{-1}$ si possible.</li>
+<li>Trouver une base $(u, v)$ de $\mathbb{R}^2$ telle que $f(u) = 3u$ et $f(v) = -v$.</li>
+</ol>
+<hr />
+<h3>Exercice 4 — Nombres complexes (5 points)</h3>
+<ol>
+<li>Résoudre dans $\mathbb{C}$ : $z^6 = -64$.</li>
+<li>Mettre les solutions sous forme algébrique $a + bi$.</li>
+<li>Calculer $(1+i)^{16}$.</li>
+<li>Trouver toutes les solutions de $z^4 + 4 = 0$. <em>(On pourra utiliser $z^4 + 4 = (z^2 + 2i)(z^2 - 2i)$.)</em></li>
+</ol>
+<hr />
+<h2>✅ CORRECTION SUJET 3</h2>
+<hr />
+<h3>Exercice 1</h3>
+<p><strong>1.</strong> La famille $(v_1, \ldots, v_k)$ est <strong>libre</strong> (ou linéairement indépendante) si :<br />
+$$\lambda_1 v_1 + \cdots + \lambda_k v_k = 0 \Rightarrow \lambda_1 = \cdots = \lambda_k = 0$$</p>
+<p><strong>2. Théorème du rang.</strong> (Voir Sujet 2, Ex. 4.)</p>
+<p><strong>3.</strong> $f$ injective $\Rightarrow \text{Ker}(f) = {0} \Rightarrow \dim\text{Ker}(f) = 0$.</p>
+<p>Par le théorème du rang : $\dim\text{Im}(f) = \dim E - 0 = \dim E$.</p>
+<p>Or $\text{Im}(f) \subset F$, donc $\dim\text{Im}(f) \leq \dim F$.</p>
+<p>Donc $\dim E = \dim\text{Im}(f) \leq \dim F$. $\blacksquare$</p>
+<p><strong>4.</strong> $E = F \oplus G \Rightarrow \dim E = \dim F + \dim G$.</p>
+<hr />
+<h3>Exercice 2</h3>
+<p><strong>Matrice</strong> : $A = \begin{pmatrix}a&amp;1&amp;1\1&amp;a&amp;1\1&amp;1&amp;a\end{pmatrix}$.</p>
+<p><strong>Déterminant :</strong><br />
+$$\det(A) = a(a^2-1) - 1(a-1) + 1(1-a)$$<br />
+$$= a^3 - a - a + 1 + 1 - a = a^3 - 3a + 2 = (a-1)^2(a+2)$$</p>
+<p><strong>La famille est libre</strong> $\Leftrightarrow$ $\det(A) \neq 0$ $\Leftrightarrow$ $a \neq 1$ et $a \neq -2$.</p>
+<p><strong>Cas $a = 1$ :</strong> Les trois vecteurs sont $(1,1,1)$, $(1,1,1)$, $(1,1,1)$ : identiques, donc $1 \cdot v_1 - 1 \cdot v_2 = 0$. Relation : $v_1 = v_2 = v_3$.</p>
+<p><strong>Cas $a = -2$ :</strong> On cherche $(\lambda_1, \lambda_2, \lambda_3)$ tel que $\lambda_1(-2,1,1) + \lambda_2(1,-2,1) + \lambda_3(1,1,-2) = 0$.</p>
+<p>Système : $-2\lambda_1 + \lambda_2 + \lambda_3 = 0$, $\lambda_1 - 2\lambda_2 + \lambda_3 = 0$, $\lambda_1 + \lambda_2 - 2\lambda_3 = 0$.</p>
+<p>Somme des équations : $0 = 0$ (redondant). Résolution : $\lambda_1 = \lambda_2 = \lambda_3 = t$ convient pour tout $t$. Relation : $v_1 + v_2 + v_3 = 0$ (car $(-2+1+1, 1-2+1, 1+1-2) = (0,0,0)$).</p>
+<hr />
+<h3>Exercice 3</h3>
+<p><strong>1.</strong> $f$ est entièrement définie par ses valeurs sur la base. Par définition d'une application linéaire, les valeurs $f(e_1)$ et $f(e_2)$ déterminent $f$ uniquement, et $f$ est linéaire car $f(x e_1 + y e_2) = x f(e_1) + y f(e_2)$.</p>
+<p><strong>2.</strong> $A = \begin{pmatrix}1&amp;2\2&amp;1\end{pmatrix}$ (colonnes = images des vecteurs de base).</p>
+<p><strong>3.</strong> $\text{Ker}(f) = {(x,y) \mid f(x,y) = (0,0)}$, i.e., $x + 2y = 0$ et $2x + y = 0$.</p>
+<p>De $x + 2y = 0$ et $2x + y = 0$ : soustraire → $-x + y = 0 \Rightarrow y = x$. Donc $x + 2x = 0 \Rightarrow x = 0$, $y = 0$.</p>
+<p>$\text{Ker}(f) = {0}$, $\dim\text{Ker}(f) = 0$.</p>
+<p>Par le théorème du rang : $\dim\text{Im}(f) = 2$. Donc $\text{Im}(f) = \mathbb{R}^2$.</p>
+<p><strong>4.</strong> $f$ bijective (injective + $\dim$ égales). $\det(A) = 1-4 = -3 \neq 0$. ✓</p>
+<p>$$A^{-1} = \frac{1}{-3}\begin{pmatrix}1&amp;-2\-2&amp;1\end{pmatrix} = \begin{pmatrix}-1/3 &amp; 2/3 \ 2/3 &amp; -1/3\end{pmatrix}$$</p>
+<p><strong>5.</strong> On cherche les vecteurs propres : $f(u) = \lambda u$, i.e., $Au = \lambda u$.</p>
+<p>Valeurs propres : $\det(A - \lambda I) = (1-\lambda)^2 - 4 = \lambda^2 - 2\lambda - 3 = (\lambda-3)(\lambda+1) = 0$.</p>
+<ul>
+<li>$\lambda = 3$ : $(A - 3I)u = 0 \Rightarrow \begin{pmatrix}-2&amp;2\2&amp;-2\end{pmatrix}u = 0 \Rightarrow -2x+2y=0 \Rightarrow y=x$. Donc $u = (1,1)$.</li>
+<li>$\lambda = -1$ : $(A+I)u = 0 \Rightarrow \begin{pmatrix}2&amp;2\2&amp;2\end{pmatrix}u = 0 \Rightarrow x+y=0$. Donc $v = (1,-1)$.</li>
+</ul>
+<p>Vérification : $f(1,1) = (1+2, 2+1) = (3,3) = 3(1,1)$. ✓ $f(1,-1) = (1-2, 2-1) = (-1, 1) = -(1,-1)$. ✓</p>
+<p>Base : $(u, v) = ((1,1), (1,-1))$. $\blacksquare$</p>
+<hr />
+<h3>Exercice 4</h3>
+<p><strong>1. Résolution de $z^6 = -64$.</strong></p>
+<p>$-64 = 64 e^{i\pi}$. Les solutions : $z_k = 64^{1/6} e^{i(\pi + 2k\pi)/6} = 2 e^{i\pi(2k+1)/6}$ pour $k = 0, 1, 2, 3, 4, 5$.</p>
+<p><strong>2. Forme algébrique :</strong></p>
+<table>
+<thead>
+<tr>
+<th>$k$</th>
+<th>Argument</th>
+<th>$\cos$</th>
+<th>$\sin$</th>
+<th>Forme $a+bi$</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0</td>
+<td>$\pi/6$</td>
+<td>$\sqrt{3}/2$</td>
+<td>$1/2$</td>
+<td>$\sqrt{3}+i$</td>
+</tr>
+<tr>
+<td>1</td>
+<td>$\pi/2$</td>
+<td>$0$</td>
+<td>$1$</td>
+<td>$2i$</td>
+</tr>
+<tr>
+<td>2</td>
+<td>$5\pi/6$</td>
+<td>$-\sqrt{3}/2$</td>
+<td>$1/2$</td>
+<td>$-\sqrt{3}+i$</td>
+</tr>
+<tr>
+<td>3</td>
+<td>$7\pi/6$</td>
+<td>$-\sqrt{3}/2$</td>
+<td>$-1/2$</td>
+<td>$-\sqrt{3}-i$</td>
+</tr>
+<tr>
+<td>4</td>
+<td>$3\pi/2$</td>
+<td>$0$</td>
+<td>$-1$</td>
+<td>$-2i$</td>
+</tr>
+<tr>
+<td>5</td>
+<td>$11\pi/6$</td>
+<td>$\sqrt{3}/2$</td>
+<td>$-1/2$</td>
+<td>$\sqrt{3}-i$</td>
+</tr>
+</tbody>
+</table>
+<p><strong>3. $(1+i)^{16}$.</strong></p>
+<p>$1+i = \sqrt{2} e^{i\pi/4}$.</p>
+<p>$(1+i)^{16} = (\sqrt{2})^{16} e^{i \cdot 16\pi/4} = 2^8 e^{4i\pi} = 256 \cdot 1 = 256$.</p>
+<p><strong>4. $z^4 + 4 = 0$.</strong></p>
+<p>En utilisant la factorisation $z^4 + 4 = (z^2+2i)(z^2-2i)$ :</p>
+<p><em>$z^2 = -2i = 2e^{-i\pi/2}$ :</em> $z = \sqrt{2}e^{-i\pi/4} = 1-i$ et $z = \sqrt{2}e^{i3\pi/4} = -1+i$.</p>
+<p><em>$z^2 = 2i = 2e^{i\pi/2}$ :</em> $z = \sqrt{2}e^{i\pi/4} = 1+i$ et $z = \sqrt{2}e^{i5\pi/4} = -1-i$.</p>
+<p>Les 4 solutions sont : $1+i,\ 1-i,\ -1+i,\ -1-i$.</p>
+<p><em>Vérification :</em> $(1+i)^4 = ((1+i)^2)^2 = (2i)^2 = -4$. Donc $(1+i)^4 + 4 = 0$. ✓</p>
+<hr />
+<h2>📌 Tableau récapitulatif — Réflexes pour les partiels</h2>
+<h3>Algèbre 1</h3>
+<table>
+<thead>
+<tr>
+<th>Type de question</th>
+<th>Réflexe</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>$A = B$</td>
+<td>Double inclusion</td>
+</tr>
+<tr>
+<td>Contradiction pour $\neg P$</td>
+<td>Absurde</td>
+</tr>
+<tr>
+<td>Récurrence</td>
+<td>Init + Hérédité proprement rédigées</td>
+</tr>
+<tr>
+<td>$f$ surjective</td>
+<td>Montrer $\forall y, \exists x, f(x)=y$ (souvent par TVI pour fonctions continues)</td>
+</tr>
+<tr>
+<td>$f$ injective</td>
+<td>Montrer $f(x)=f(x') \Rightarrow x=x'$</td>
+</tr>
+</tbody>
+</table>
+<h3>Algèbre 2 — Nombres complexes</h3>
+<table>
+<thead>
+<tr>
+<th>Type de question</th>
+<th>Réflexe</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Mettre $z$ sous forme polaire</td>
+<td>$r = |z|$, $\theta = \text{Arg}(z)$</td>
+</tr>
+<tr>
+<td>Résoudre $z^n = a$</td>
+<td>Forme polaire $a = re^{i\theta}$, solutions $r^{1/n}e^{i(\theta+2k\pi)/n}$</td>
+</tr>
+<tr>
+<td>Résoudre $az^2+bz+c=0$</td>
+<td>Discriminant $\Delta$, racine carrée complexe si $\Delta \in \mathbb{C}$</td>
+</tr>
+<tr>
+<td>Formules trig</td>
+<td>Moivre : $(\cos\theta+i\sin\theta)^n$</td>
+</tr>
+</tbody>
+</table>
+<h3>Algèbre 2 — Algèbre linéaire</h3>
+<table>
+<thead>
+<tr>
+<th>Type de question</th>
+<th>Réflexe</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Montrer $F$ sev</td>
+<td>$0 \in F$, stable $+$, stable $\cdot$</td>
+</tr>
+<tr>
+<td>Famille libre ?</td>
+<td>Résoudre $\sum\lambda_i v_i=0$, montrer $\lambda_i=0$</td>
+</tr>
+<tr>
+<td>$\dim(\text{Ker}f)$</td>
+<td>Résoudre $f(x)=0$, compter les param. libres</td>
+</tr>
+<tr>
+<td>$\dim(\text{Im}f)$</td>
+<td>Théorème du rang : $\dim E - \dim\text{Ker}f$</td>
+</tr>
+<tr>
+<td>$f$ bijective si même dim</td>
+<td>Injective $\Leftrightarrow$ surjective $\Leftrightarrow$ bijective</td>
+</tr>
+<tr>
+<td>Inverser une matrice</td>
+<td>Gauss-Jordan sur $[A</td>
+</tr>
+</tbody>
+</table>
+    </section>
+  </main>
+</div>
+
+<button id="back-top" title="Haut">↑</button>
+
+<script>
+// Tabs
+const tabs = document.querySelectorAll('.tab-btn');
+const panels = document.querySelectorAll('.tab-panel');
+
+function switchTab(name){
+  tabs.forEach(t=>t.classList.toggle('active',t.dataset.tab===name));
+  panels.forEach(p=>p.classList.toggle('active',p.id==='panel-'+name));
+  document.getElementById('sidebar').className='sidebar active';
+  buildTOC();
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+tabs.forEach(t=>t.addEventListener('click',()=>switchTab(t.dataset.tab)));
+
+// TOC
+function buildTOC(){
+  const panel=document.querySelector('.tab-panel.active');
+  const hs=panel.querySelectorAll('h1,h2,h3');
+  const toc=document.getElementById('toc-list');
+  toc.innerHTML='';
+  hs.forEach((h,i)=>{
+    if(!h.id)h.id='h'+i+h.tagName;
+    const li=document.createElement('li');
+    const a=document.createElement('a');
+    a.href='#'+h.id;
+    a.className='toc-link '+h.tagName.toLowerCase();
+    a.textContent=h.textContent.replace(/[📐✏️🏆🔵🟡]/g,'').trim();
+    a.addEventListener('click',e=>{e.preventDefault();document.getElementById(h.id).scrollIntoView({behavior:'smooth',block:'start'});});
+    li.appendChild(a);
+    toc.appendChild(li);
+  });
+}
+
+// Active TOC
+function updateTOC(){
+  const panel=document.querySelector('.tab-panel.active');
+  const hs=[...panel.querySelectorAll('h1,h2,h3')];
+  const links=document.querySelectorAll('.toc-link');
+  const y=window.scrollY+140;
+  let cur=0;
+  hs.forEach((h,i)=>{if(h.getBoundingClientRect().top+window.scrollY<=y)cur=i;});
+  links.forEach((l,i)=>l.classList.toggle('active',i===cur));
+}
+
+// Progress
+function updateProgress(){
+  const t=document.body.scrollHeight-window.innerHeight;
+  document.getElementById('progress').style.width=(t>0?window.scrollY/t*100:0)+'%';
+}
+
+// Back top
+const bt=document.getElementById('back-top');
+bt.addEventListener('click',()=>window.scrollTo({top:0,behavior:'smooth'}));
+
+window.addEventListener('scroll',()=>{
+  updateProgress();
+  updateTOC();
+  bt.classList.toggle('visible',window.scrollY>400);
+});
+
+// Search
+let st;
+const si=document.getElementById('search-input');
+const sc=document.getElementById('search-count');
+
+function clearSearch(){document.querySelectorAll('mark').forEach(m=>m.outerHTML=m.innerHTML);sc.textContent='';}
+
+function doSearch(q){
+  clearSearch();
+  if(!q||q.length<2)return;
+  const panel=document.querySelector('.tab-panel.active');
+  const walker=document.createTreeWalker(panel,NodeFilter.SHOW_TEXT,{acceptNode(n){const p=n.parentNode;if(!p)return NodeFilter.FILTER_REJECT;if(['SCRIPT','STYLE','MARK'].includes(p.tagName))return NodeFilter.FILTER_REJECT;return NodeFilter.FILTER_ACCEPT;}});
+  const regex=new RegExp(q.replace(/[.*+?^${}()|[\]\\]/g,'\\$&'),'gi');
+  const nodes=[];let n;
+  while((n=walker.nextNode()))nodes.push(n);
+  let count=0;
+  nodes.forEach(node=>{
+    const text=node.textContent;
+    if(!regex.test(text))return;
+    regex.lastIndex=0;
+    const frag=document.createDocumentFragment();
+    let last=0,m;
+    while((m=regex.exec(text))){
+      frag.appendChild(document.createTextNode(text.slice(last,m.index)));
+      const mk=document.createElement('mark');mk.textContent=m[0];
+      frag.appendChild(mk);last=regex.lastIndex;count++;
+    }
+    frag.appendChild(document.createTextNode(text.slice(last)));
+    node.parentNode.replaceChild(frag,node);
+  });
+  sc.textContent=count>0?count+' résultat'+(count>1?'s':''):'Aucun résultat';
+  if(count>0){const f=document.querySelector('.tab-panel.active mark');if(f)f.scrollIntoView({behavior:'smooth',block:'center'});}
+}
+
+si.addEventListener('input',e=>{clearTimeout(st);st=setTimeout(()=>doSearch(e.target.value.trim()),350);});
+
+buildTOC();
+updateProgress();
+</script>
+</body>
+</html>
